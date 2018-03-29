@@ -36,21 +36,51 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_abrir = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        txt_simbolosDeEntrada = new javax.swing.JTextField();
-        txt_simbolosDeEntrada1 = new javax.swing.JTextField();
-        txt_simbolosDeEntrada2 = new javax.swing.JTextField();
-        txt_simbolosDeEntrada3 = new javax.swing.JTextField();
-        txt_simbolosDeEntrada4 = new javax.swing.JTextField();
         jPanel1 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        txt_simbolosDeEntrada2 = new javax.swing.JTextField();
+        txt_simbolosDeEntrada1 = new javax.swing.JTextField();
+        txt_simbolosDeEntrada = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        txt_simbolosDeEntrada3 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        txt_simbolosDeEntrada4 = new javax.swing.JTextField();
+        btn_abrir = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setText("Simbolos de entrada:");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+        jPanel1.add(txt_simbolosDeEntrada2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 101, 28));
+        jPanel1.add(txt_simbolosDeEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 101, 28));
+        jPanel1.add(txt_simbolosDeEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 110, 101, 28));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Simbolos en la Pila:");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("Configuración inicial de la Pila:");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Estados:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, -1, -1));
+        jPanel1.add(txt_simbolosDeEntrada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 101, 28));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Estado Inicial:");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+        jPanel1.add(txt_simbolosDeEntrada4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 149, 101, 28));
 
         btn_abrir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn_abrir.setText("Abrir Archivo");
@@ -59,36 +89,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_abrirActionPerformed(evt);
             }
         });
-        getContentPane().add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 69, -1, -1));
+        jPanel1.add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 69, -1, -1));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 330, 180));
 
-        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel1.setText("Simbolos de entrada:");
-        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel2.setText("Simbolos en la Pila:");
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("Estados:");
-        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, -1, -1));
-
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel4.setText("Estado Inicial:");
-        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel5.setText("Configuración inicial de la Pila:");
-        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
-        getContentPane().add(txt_simbolosDeEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 110, 101, 28));
-        getContentPane().add(txt_simbolosDeEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 101, 28));
-        getContentPane().add(txt_simbolosDeEntrada2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 101, 28));
-        getContentPane().add(txt_simbolosDeEntrada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 101, 28));
-        getContentPane().add(txt_simbolosDeEntrada4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 149, 101, 28));
-
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 330, 420));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 530));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -142,6 +146,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosDeEntrada1;
     private javax.swing.JTextField txt_simbolosDeEntrada2;
