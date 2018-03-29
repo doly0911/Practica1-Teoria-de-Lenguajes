@@ -49,6 +49,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txt_simbolosDeEntrada4 = new javax.swing.JTextField();
         btn_abrir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -91,6 +92,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 69, -1, -1));
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, 330, 180));
+
+        jButton1.setText("jButton1");
+        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 190, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 400, 530));
 
@@ -140,6 +144,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_abrir;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
