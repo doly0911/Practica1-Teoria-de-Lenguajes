@@ -47,6 +47,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txt_simbolosDeEntrada2 = new javax.swing.JTextField();
         txt_simbolosDeEntrada3 = new javax.swing.JTextField();
         txt_simbolosDeEntrada4 = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -84,6 +85,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         getContentPane().add(txt_simbolosDeEntrada2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 101, 28));
         getContentPane().add(txt_simbolosDeEntrada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 101, 28));
         getContentPane().add(txt_simbolosDeEntrada4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 149, 101, 28));
+
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 330, 420));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -136,6 +141,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosDeEntrada1;
     private javax.swing.JTextField txt_simbolosDeEntrada2;
