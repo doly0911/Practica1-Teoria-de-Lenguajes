@@ -20,7 +20,7 @@ public class ConversorAutomata {
 
     private static final String SIMBOLOS_ENTRADAS = "Simbolos de entrada";
     private static final String SIMBOLOS_PILA = "simbolos en la pila";
-    private static final String TRANSICIONES = "Transiciones";
+  //  private static final String TRANSICIONES = "Transiciones";
     private static final String CONFIGURACION = "configuracion inicial";
     private static final String TRANSICION = "transicion";
     private int esLineaDeEstado;
@@ -31,7 +31,7 @@ public class ConversorAutomata {
     AutomataPila convertir(String rutaArchivo) throws FileNotFoundException, IOException {
 //      
         BufferedReader br = new BufferedReader(new FileReader(rutaArchivo));
-        String linea = br.readLine();
+        String linea = br.readLine(); 
         AutomataPila automataPila = new AutomataPila();
         esLineaDeEstado = 0;
         lineasEstado = new ArrayList<>();
@@ -80,10 +80,9 @@ public class ConversorAutomata {
         valoresStr = valoresStr.replaceAll("\\[", "").replaceAll("\\]", "");//eliminar corchetes
         String[] valores = valoresStr.split(",");
         for (int i = 0; i < valores.length; i++) {
-            //if (!valores[i].isEmpty() && valores[i] != null) {
             valores[i] = valores[i].replace("\"", "");
             simbolos.add(valores[i]);
-            //}
+            
         }
         return simbolos;
     }

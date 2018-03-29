@@ -37,32 +37,53 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         btn_abrir = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        txt_simbolosDeEntrada = new javax.swing.JTextField();
+        txt_simbolosDeEntrada1 = new javax.swing.JTextField();
+        txt_simbolosDeEntrada2 = new javax.swing.JTextField();
+        txt_simbolosDeEntrada3 = new javax.swing.JTextField();
+        txt_simbolosDeEntrada4 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        btn_abrir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn_abrir.setText("Abrir Archivo");
         btn_abrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_abrirActionPerformed(evt);
             }
         });
+        getContentPane().add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(95, 69, -1, -1));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(btn_abrir)
-                .addContainerGap(378, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(40, 40, 40)
-                .addComponent(btn_abrir)
-                .addContainerGap(361, Short.MAX_VALUE))
-        );
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel1.setText("Simbolos de entrada:");
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, -1, -1));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel2.setText("Simbolos en la Pila:");
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, -1, -1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel3.setText("Estados:");
+        getContentPane().add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 200, -1, -1));
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel4.setText("Estado Inicial:");
+        getContentPane().add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 240, -1, -1));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel5.setText("Configuración inicial de la Pila:");
+        getContentPane().add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+        getContentPane().add(txt_simbolosDeEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 110, 101, 28));
+        getContentPane().add(txt_simbolosDeEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 101, 28));
+        getContentPane().add(txt_simbolosDeEntrada2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 101, 28));
+        getContentPane().add(txt_simbolosDeEntrada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 101, 28));
+        getContentPane().add(txt_simbolosDeEntrada4, new org.netbeans.lib.awtextra.AbsoluteConstraints(207, 149, 101, 28));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -110,5 +131,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_abrir;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JTextField txt_simbolosDeEntrada;
+    private javax.swing.JTextField txt_simbolosDeEntrada1;
+    private javax.swing.JTextField txt_simbolosDeEntrada2;
+    private javax.swing.JTextField txt_simbolosDeEntrada3;
+    private javax.swing.JTextField txt_simbolosDeEntrada4;
     // End of variables declaration//GEN-END:variables
 }
