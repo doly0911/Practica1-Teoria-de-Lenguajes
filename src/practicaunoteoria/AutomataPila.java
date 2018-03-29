@@ -1,0 +1,88 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package practicaunoteoria;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
+
+
+/**
+ *
+ * @author Usuario externo
+ */
+public class AutomataPila {
+    ArrayList<String> simbolosEntrada;
+    ArrayList<String> simbolosPila;
+    ArrayList<Estado> estados;
+    ArrayList<String> configuracion;
+    HashMap<String, ArrayList<String>> transiciones;
+    Stack<String> pila;
+    ArrayList<String[][]> matrizTransiciones;
+
+    public ArrayList<String> getSimbolosEntrada() {
+        return simbolosEntrada;
+    }
+
+    public void setSimbolosEntrada(ArrayList<String> simbolosEntrada) {
+        this.simbolosEntrada = simbolosEntrada;
+    }
+
+    public ArrayList<String> getSimbolosPila() {
+        return simbolosPila;
+    }
+
+    public void setSimbolosPila(ArrayList<String> simbolosPila) {
+        this.simbolosPila = simbolosPila;
+    }
+
+    public ArrayList<Estado> getEstados() {
+        return estados;
+    }
+
+    public void setEstados(ArrayList<Estado> estados) {
+        this.estados = estados;
+    }
+
+    public ArrayList<String> getConfiguracion() {
+        return configuracion;
+    }
+
+    public void setConfiguracion(ArrayList<String> configuracion) {
+        this.configuracion = configuracion;
+    }
+
+    public HashMap<String, ArrayList<String>> getTransiciones() {
+        return transiciones;
+    }
+
+    public void setTransiciones(HashMap<String, ArrayList<String>> transiciones) {
+        this.transiciones = transiciones;
+    }
+
+    public Stack<String> getPila() {
+        return pila;
+    }
+
+    public void setPila(Stack<String> pila) {
+        this.pila = pila;
+    }
+
+    public ArrayList<String[][]> getMatrizTransiciones() {
+        return matrizTransiciones;
+    }
+
+    public void setMatrizTransiciones(ArrayList<String[][]> matrizTransiciones) {
+        this.matrizTransiciones = matrizTransiciones;
+    }
+    
+    
+    
+    
+    
+    
+    
+}
