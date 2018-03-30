@@ -19,7 +19,9 @@ public class PracticaUnoTeoria {
     public static void main(String[] args) throws IOException {
         
         ConversorAutomata conversorAutomata= new ConversorAutomata();
-        AutomataPila a =conversorAutomata.convertir("C:\\Users\\Doly Jimenez\\Desktop\\Json_valido.txt");
+        AutomataPila a =conversorAutomata.convertir("C:\\Users\\pao\\Desktop\\json.txt");
+        
+        System.out.println("FIN");
        
         // TODO code application logic here
     }

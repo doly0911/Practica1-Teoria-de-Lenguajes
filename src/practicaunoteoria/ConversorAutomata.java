@@ -31,7 +31,7 @@ public class ConversorAutomata {
     AutomataPila convertir(String rutaArchivo) throws FileNotFoundException, IOException {
 //      
         BufferedReader br = new BufferedReader(new FileReader(rutaArchivo));
-        String linea = br.readLine(); 
+        String linea = br.readLine();
         AutomataPila automataPila = new AutomataPila();
         esLineaDeEstado = 0;
         lineasEstado = new ArrayList<>();
@@ -39,6 +39,7 @@ public class ConversorAutomata {
         lineasTransicion = new ArrayList<>();
         ArrayList<String> simbolos;
         while (linea != null) {
+            linea = linea.trim();
             String[] partes = linea.split(":");    //separo mi linea de texto donde encuentre :
             if (partes.length != 1) {
                 simbolos = crearSimbolos(partes, SIMBOLOS_ENTRADAS);
@@ -62,7 +63,7 @@ public class ConversorAutomata {
             if (esLineaDeTransicion == 2) {
                 automataPila.setTransiciones(crearTransiciones());
             }
-            linea = br.readLine();
+            linea = br.readLine();   
         }
         br.close();
         return automataPila;
