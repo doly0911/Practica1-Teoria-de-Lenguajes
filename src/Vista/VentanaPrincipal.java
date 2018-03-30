@@ -3,11 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practicaunoteoria.vista;
+package Vista;
 
+import Control.CtrlMatrizTransiciones;
+import Modelo.AutomataPila;
+import Modelo.ConversorAutomata;
 import java.io.File;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,12 +26,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     File archivo;
     FileImageInputStream entrada;
     FileImageInputStream salida;
+    CtrlMatrizTransiciones matrizT;
 
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
+        matrizT = null;
     }
 
     /**
@@ -49,7 +58,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txt_simbolosEnLaPila = new javax.swing.JTextField();
         btn_abrir = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jButton1 = new javax.swing.JButton();
+        tblMatrizT = new javax.swing.JTable();
+        btnGenerarMatrizT = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
@@ -113,10 +123,29 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
+
+        tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblMatrizT);
+
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 350, 150));
 
-        jButton1.setText("Generar tabla de transiciones");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 190, -1));
+        btnGenerarMatrizT.setText("Generar tabla(s) de transiciones");
+        btnGenerarMatrizT.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarMatrizTActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnGenerarMatrizT, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 190, -1));
 
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(5);
@@ -185,6 +214,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
+    private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
+        ConversorAutomata conversorAutomata= new ConversorAutomata();
+        JFileChooser abrir;
+        File archivo;
+        abrir = new JFileChooser();
+        abrir.showOpenDialog(this);
+        archivo = abrir.getSelectedFile();
+        if(archivo != null){
+        try {
+            AutomataPila automata = conversorAutomata.convertir(archivo);
+            matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
+            tblMatrizT.setModel(matrizT);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        }  
+    }//GEN-LAST:event_btnGenerarMatrizTActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -221,8 +268,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnGenerarMatrizT;
     private javax.swing.JButton btn_abrir;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -240,6 +287,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
+    private javax.swing.JTable tblMatrizT;
     private javax.swing.JTextField txt_estados;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosDeEntrada2;

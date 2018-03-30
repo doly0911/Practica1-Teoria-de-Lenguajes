@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practicaunoteoria;
+package Modelo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,7 +29,7 @@ public class ConversorAutomata {
     private ArrayList<String> lineasEstado;
     private ArrayList<String> lineasTransicion;
 
-    AutomataPila convertir(String rutaArchivo) throws FileNotFoundException, IOException {
+    public AutomataPila convertir(File rutaArchivo) throws FileNotFoundException, IOException {
 //      
         BufferedReader br = new BufferedReader(new FileReader(rutaArchivo));
         String linea = br.readLine();
