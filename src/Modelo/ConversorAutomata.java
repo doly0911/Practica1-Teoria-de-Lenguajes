@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package practicaunoteoria;
+package Modelo;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,10 +29,10 @@ public class ConversorAutomata {
     private ArrayList<String> lineasEstado;
     private ArrayList<String> lineasTransicion;
 
-    AutomataPila convertir(String rutaArchivo) throws FileNotFoundException, IOException {
+    public AutomataPila convertir(File rutaArchivo) throws FileNotFoundException, IOException {
 //      
         BufferedReader br = new BufferedReader(new FileReader(rutaArchivo));
-        String linea = br.readLine(); 
+        String linea = br.readLine();
         AutomataPila automataPila = new AutomataPila();
         esLineaDeEstado = 0;
         lineasEstado = new ArrayList<>();
@@ -39,6 +40,7 @@ public class ConversorAutomata {
         lineasTransicion = new ArrayList<>();
         ArrayList<String> simbolos;
         while (linea != null) {
+            linea = linea.trim();
             String[] partes = linea.split(":");    //separo mi linea de texto donde encuentre :
             if (partes.length != 1) {
                 simbolos = crearSimbolos(partes, SIMBOLOS_ENTRADAS);
@@ -62,7 +64,7 @@ public class ConversorAutomata {
             if (esLineaDeTransicion == 2) {
                 automataPila.setTransiciones(crearTransiciones());
             }
-            linea = br.readLine();
+            linea = br.readLine();   
         }
         br.close();
         return automataPila;
