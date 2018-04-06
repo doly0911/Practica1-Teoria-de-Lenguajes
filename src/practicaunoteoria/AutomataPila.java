@@ -21,7 +21,7 @@ public class AutomataPila {
     ArrayList<String> configuracion;
     HashMap<String, ArrayList<String>> transiciones;
     Stack<String> pila;
-    ArrayList<String[][]> matrizTransiciones;
+   
 
     public ArrayList<String> getSimbolosEntrada() {
         return simbolosEntrada;
@@ -71,13 +71,6 @@ public class AutomataPila {
         this.pila = pila;
     }
 
-    public ArrayList<String[][]> getMatrizTransiciones() {
-        return matrizTransiciones;
-    }
-
-    public void setMatrizTransiciones(ArrayList<String[][]> matrizTransiciones) {
-        this.matrizTransiciones = matrizTransiciones;
-    }
     
     
     
