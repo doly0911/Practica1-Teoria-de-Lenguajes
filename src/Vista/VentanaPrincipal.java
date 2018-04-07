@@ -216,15 +216,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
         ConversorAutomata conversorAutomata= new ConversorAutomata();
-        JFileChooser abrir;
-        File archivo;
+        JFileChooser abrir;       
         abrir = new JFileChooser();
         abrir.showOpenDialog(this);
         archivo = abrir.getSelectedFile();
         if(archivo != null){
         try {
             AutomataPila automata = conversorAutomata.convertir(archivo);
-            matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
+           // matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
             tblMatrizT.setModel(matrizT);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
