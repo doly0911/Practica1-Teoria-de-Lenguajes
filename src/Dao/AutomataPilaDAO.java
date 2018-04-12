@@ -144,10 +144,10 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         if (automataPila.getSimbolosPila().contains(simbolosPila)) {
             throw new AutomataPilaExcepcion("El simbolo de la pila ya esta definido");
         }
-        validarSimboloPila(automataPila, simbolosPila);
+        validarSimbolos(automataPila, simbolosPila);
         int filas = automataPila.getSimbolosPila().size();
         int columnas = automataPila.getSimbolosEntrada().size();
-        String[][] nuevaTransicionesEstado = new String[filas][columnas + 1];
+        String[][] nuevaTransicionesEstado = new String[filas + 1][columnas];
         String[][] transicionesEstado;
         ArrayList<Estado> estados = automataPila.getEstados();
         for (Estado e : estados) {
@@ -163,7 +163,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
 
     @Override
     public void modificarSimboloPila(AutomataPila automataPila, String simboloPila, String nuevoSimboloPila) throws AutomataPilaExcepcion {
-        validarSimboloPila(automataPila, nuevoSimboloPila);
+        validarSimbolos(automataPila, nuevoSimboloPila);
         ArrayList<String> simbolosPila = automataPila.getSimbolosPila();
         if (simbolosPila.contains(simboloPila)) {
             int indice = simbolosPila.indexOf(simboloPila);
@@ -195,11 +195,68 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         automataPila.setTransiciones(transiciones); //actualiza el AP 
     }
 
-    public void validarSimboloPila(AutomataPila automataPila, String simbolosPila) throws AutomataPilaExcepcion {
-        if (simbolosPila == null || simbolosPila.isEmpty()) {
-            throw new AutomataPilaExcepcion("El simbolo de la pila no puede ser vacio");
+    public void validarSimbolos(AutomataPila automataPila, String simbolos) throws AutomataPilaExcepcion {
+        if (simbolos == null || simbolos.isEmpty()) {
+            throw new AutomataPilaExcepcion("El simbolo no puede ser vacio");
         }
 
+    }
+    
+    @Override
+    public void agregarSimboloEntrada(AutomataPila automataPila, String simbolosEntrada) throws AutomataPilaExcepcion {
+        if (automataPila.getSimbolosPila().contains(simbolosEntrada)) {
+            throw new AutomataPilaExcepcion("El simbolo de entrada ya esta definido");
+        }
+        validarSimbolos(automataPila, simbolosEntrada);
+        int filas = automataPila.getSimbolosPila().size();
+        int columnas = automataPila.getSimbolosEntrada().size();
+        String[][] nuevaTransicionesEstado = new String[filas][columnas + 1];
+        String[][] transicionesEstado;
+        ArrayList<Estado> estados = automataPila.getEstados();
+        for (Estado e : estados) {
+            transicionesEstado = e.getTransicionesEstado();
+            for (int i = 0; i < filas; i++) {
+                for (int j = 0; j < columnas; j++) {
+                    nuevaTransicionesEstado[i][j] = transicionesEstado[i][j];
+                }
+            }
+            e.setTransicionesEstado(nuevaTransicionesEstado);
+        }
+    }
+    
+    @Override
+    public void modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion {
+    validarSimbolos(automataPila, nuevoSimboloEntrada);
+        ArrayList<String> simbolosEntrada = automataPila.getSimbolosEntrada();
+        if (simbolosEntrada.contains(simboloEntrada)) {
+            int indice = simbolosEntrada.indexOf(simboloEntrada);
+            simbolosEntrada.add(indice, nuevoSimboloEntrada);
+        } else {
+            throw new AutomataPilaExcepcion("El simbolo de entrada que quiere modificar no existe");
+        }
+        
+    }
+
+    @Override
+    public Estado consultarEstadoInicial(AutomataPila automataPila) {
+       ArrayList<Estado> estados = automataPila.getEstados();
+       for(Estado estado: estados){
+           if(estado.isInicial()){
+               return estado;
+           }
+       }
+       return null;
+    }
+
+    @Override
+    public String[][] consultarMatrizTransiciones(AutomataPila automataPila, Estado estado) {
+       ArrayList<Estado> estados = automataPila.getEstados();
+       for(Estado e: estados){
+           if(e.getNombre().equalsIgnoreCase(estado.getNombre())){
+              return e.getTransicionesEstado();
+           }
+       }
+       return null;
     }
 
 }

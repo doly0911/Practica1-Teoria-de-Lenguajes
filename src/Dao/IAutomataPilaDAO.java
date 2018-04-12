@@ -16,6 +16,14 @@ import java.util.ArrayList;
  */
 public interface IAutomataPilaDAO {
     
+    public void agregarSimboloPila(AutomataPila automataPila,String simbolosPila) throws AutomataPilaExcepcion;
+    
+    public void modificarSimboloPila(AutomataPila automataPila,String simboloPila,String nuevoSimboloPila) throws AutomataPilaExcepcion;
+    
+    public void agregarSimboloEntrada(AutomataPila automataPila,String simbolosEntrada) throws AutomataPilaExcepcion;
+    
+    public void modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion;
+    
     public void agregarEstado(AutomataPila automataPila,Estado estado) throws AutomataPilaExcepcion;
     
     public void modificarEstado(AutomataPila automataPila,Estado estado,int indice) throws AutomataPilaExcepcion;
@@ -28,8 +36,8 @@ public interface IAutomataPilaDAO {
     
     public void modificarTransicion(AutomataPila automataPila, String llave, String nuevaLlave, ArrayList<String> valor)throws AutomataPilaExcepcion;
     
-    public void agregarSimboloPila(AutomataPila automataPila,String simbolosPila) throws AutomataPilaExcepcion;
+    public Estado consultarEstadoInicial(AutomataPila automataPila);
     
-    public void modificarSimboloPila(AutomataPila automataPila,String simboloPila,String nuevoSimboloPila) throws AutomataPilaExcepcion;
+    public String[][] consultarMatrizTransiciones(AutomataPila automataPila, Estado estado);
     
 }
