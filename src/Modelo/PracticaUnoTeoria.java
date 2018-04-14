@@ -5,6 +5,7 @@
  */
 package Modelo;
 
+import Utils.ConversorAutomata;
 import java.io.IOException;
 
 /**

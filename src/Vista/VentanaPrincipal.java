@@ -7,7 +7,7 @@ package Vista;
 
 import Control.CtrlMatrizTransiciones;
 import Modelo.AutomataPila;
-import Modelo.ConversorAutomata;
+import Utils.ConversorAutomata;
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;

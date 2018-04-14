@@ -5,6 +5,8 @@
  */
 package Modelo;
 
+import Utils.ConversorAutomata;
+import Utils.ReconocedorHilera;
 import java.io.File;
 import java.util.ArrayList;
 import org.junit.After;

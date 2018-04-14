@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Modelo;
+package Utils;
 
 import Dao.AutomataPilaDAO;
 import Dao.IAutomataPilaDAO;
+import Modelo.AutomataPila;
+import Modelo.Estado;
 import excepcion.AutomataPilaExcepcion;
 import java.util.ArrayList;
 import java.util.HashMap;
