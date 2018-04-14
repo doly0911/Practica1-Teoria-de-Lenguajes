@@ -15,7 +15,8 @@ import java.util.logging.Logger;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
-import Control.CtrlVentanaPrincipal;
+import Modelo.Estado;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,12 +29,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     FileImageInputStream entrada;
     FileImageInputStream salida;
     CtrlMatrizTransiciones matrizT;
+    public static ArrayList<Estado> estados;
+    public static String estadoSeleccionado;
+    
 
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(null);
         matrizT = null;
     }
 
@@ -49,7 +54,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txt_estadoInicial = new javax.swing.JTextField();
-        txt_estados = new javax.swing.JTextField();
         txt_simbolosDeEntrada = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -63,6 +67,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnGenerarMatrizT = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
+        cboEstados = new javax.swing.JComboBox<>();
+        btnVer = new javax.swing.JButton();
+        btnAñadir = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -83,7 +90,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel1.setText("Simbolos de entrada:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
         jPanel1.add(txt_estadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 170, 28));
-        jPanel1.add(txt_estados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 170, 28));
 
         txt_simbolosDeEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -163,6 +169,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 370, 40));
 
+        jPanel1.add(cboEstados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 100, 30));
+
+        btnVer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnVer.setForeground(new java.awt.Color(255, 255, 255));
+        btnVer.setIcon(new javax.swing.ImageIcon("G:\\My Drive\\U\\2018-1\\Teoria de lenguajes y laboratorio\\Práctica 1\\Practica1-Teoria-de-Lenguajes\\src\\Imagenes\\menu_show.png")); // NOI18N
+        btnVer.setToolTipText("Ver o Editar");
+        btnVer.setActionCommand("");
+        btnVer.setBorder(null);
+        btnVer.setBorderPainted(false);
+        btnVer.setContentAreaFilled(false);
+        btnVer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnVer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 30, 30));
+
+        btnAñadir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAñadir.setForeground(new java.awt.Color(255, 255, 255));
+        btnAñadir.setIcon(new javax.swing.ImageIcon("G:\\My Drive\\U\\2018-1\\Teoria de lenguajes y laboratorio\\Práctica 1\\Practica1-Teoria-de-Lenguajes\\src\\Imagenes\\add_dark.png")); // NOI18N
+        btnAñadir.setToolTipText("Añadir");
+        btnAñadir.setBorder(null);
+        btnAñadir.setBorderPainted(false);
+        btnAñadir.setContentAreaFilled(false);
+        btnAñadir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAñadir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadirActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAñadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 30, 30));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 410, 530));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -198,7 +237,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarArchivoActionPerformed
-        //CtrlVentanaPrincipal ctrlVP;
         JFileChooser abrir;       
         abrir = new JFileChooser();
         abrir.showOpenDialog(this);
@@ -226,6 +264,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             txt_confInicial.setText(simbolos);
             txt_estadoInicial.setText(automata.getEstadoInicial());
             
+            estados = automata.getEstados();
+            for(Estado e : estados){
+                cboEstados.addItem(e.getNombre());
+            }
+            
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
@@ -249,6 +292,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
           
     }//GEN-LAST:event_btnGenerarMatrizTActionPerformed
+
+    private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAñadirActionPerformed
+
+    private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
+        estadoSeleccionado = cboEstados.getSelectedItem().toString();
+        VistaEditarEstado vee = new VistaEditarEstado();
+        vee.setVisible(true);
+        
+    }//GEN-LAST:event_btnVerActionPerformed
 
     /**
      * @param args the command line arguments
@@ -286,8 +340,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAñadir;
     private javax.swing.JButton btnGenerarMatrizT;
+    private javax.swing.JButton btnVer;
     private javax.swing.JButton cargarArchivo;
+    private javax.swing.JComboBox<String> cboEstados;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -308,7 +365,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTable tblMatrizT;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_estadoInicial;
-    private javax.swing.JTextField txt_estados;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosEnLaPila;
     // End of variables declaration//GEN-END:variables
