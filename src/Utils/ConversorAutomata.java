@@ -22,8 +22,7 @@ import java.util.HashMap;
 public class ConversorAutomata {
 
     private static final String SIMBOLOS_ENTRADAS = "Simbolos de entrada";
-    private static final String SIMBOLOS_PILA = "simbolos en la pila";
-  //  private static final String TRANSICIONES = "Transiciones";
+    private static final String SIMBOLOS_PILA = "simbolos en la pila";  
     private static final String CONFIGURACION = "configuracion inicial";
     private static final String TRANSICION = "transicion";
     private int esLineaDeEstado;
