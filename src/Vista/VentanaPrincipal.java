@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import Control.CtrlVentanaPrincipal;
 
 /**
  *
@@ -47,16 +48,16 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        txt_simbolosDeEntrada2 = new javax.swing.JTextField();
+        txt_estadoInicial = new javax.swing.JTextField();
         txt_estados = new javax.swing.JTextField();
         txt_simbolosDeEntrada = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txt_simbolosDeEntrada3 = new javax.swing.JTextField();
+        txt_confInicial = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txt_simbolosEnLaPila = new javax.swing.JTextField();
-        btn_abrir = new javax.swing.JButton();
+        cargarArchivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMatrizT = new javax.swing.JTable();
         btnGenerarMatrizT = new javax.swing.JButton();
@@ -81,7 +82,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Simbolos de entrada:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
-        jPanel1.add(txt_simbolosDeEntrada2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 170, 28));
+        jPanel1.add(txt_estadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 170, 28));
         jPanel1.add(txt_estados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 170, 28));
 
         txt_simbolosDeEntrada.addActionListener(new java.awt.event.ActionListener() {
@@ -102,7 +103,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Estados:");
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
-        jPanel1.add(txt_simbolosDeEntrada3, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 170, 28));
+        jPanel1.add(txt_confInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 170, 28));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Estado Inicial:");
@@ -115,14 +116,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(txt_simbolosEnLaPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 170, 28));
 
-        btn_abrir.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        btn_abrir.setText("Cargar archivo");
-        btn_abrir.addActionListener(new java.awt.event.ActionListener() {
+        cargarArchivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        cargarArchivo.setText("Cargar archivo");
+        cargarArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_abrirActionPerformed(evt);
+                cargarArchivoActionPerformed(evt);
             }
         });
-        jPanel1.add(btn_abrir, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
+        jPanel1.add(cargarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
 
         tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -196,11 +197,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btn_abrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_abrirActionPerformed
-
+    private void cargarArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cargarArchivoActionPerformed
+        //CtrlVentanaPrincipal ctrlVP;
+        JFileChooser abrir;       
+        abrir = new JFileChooser();
+        abrir.showOpenDialog(this);
+        archivo = abrir.getSelectedFile();
+        if(archivo != null){
+        try {
+            ConversorAutomata conversor = new ConversorAutomata();
+            AutomataPila automata = conversor.convertir(archivo);
+            //matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
+            //tblMatrizT.setModel(matrizT);
+            String simbolos = "";
+            for(String i : automata.getSimbolosEntrada()){
+                simbolos += i + " ";
+            }
+            txt_simbolosDeEntrada.setText(simbolos);
+            simbolos = "";
+            for(String i : automata.getSimbolosPila()){
+                simbolos += i + " ";
+            }
+            txt_simbolosEnLaPila.setText(simbolos);
+            simbolos = "";
+            for(String i : automata.getConfiguracionInicial()){
+                simbolos += i + " ";
+            }
+            txt_confInicial.setText(simbolos);
+            txt_estadoInicial.setText(automata.getEstadoInicial());
+            
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+        }
+        }
 
         // TODO add your handling code here:
-    }//GEN-LAST:event_btn_abrirActionPerformed
+    }//GEN-LAST:event_cargarArchivoActionPerformed
 
     private void txt_simbolosDeEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txt_simbolosDeEntradaActionPerformed
         // TODO add your handling code here:
@@ -215,20 +247,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField2ActionPerformed
 
     private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
-        ConversorAutomata conversorAutomata= new ConversorAutomata();
-        JFileChooser abrir;       
-        abrir = new JFileChooser();
-        abrir.showOpenDialog(this);
-        archivo = abrir.getSelectedFile();
-        if(archivo != null){
-        try {
-            AutomataPila automata = conversorAutomata.convertir(archivo);
-           // matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
-            tblMatrizT.setModel(matrizT);
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
-        }
-        }  
+          
     }//GEN-LAST:event_btnGenerarMatrizTActionPerformed
 
     /**
@@ -268,7 +287,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarMatrizT;
-    private javax.swing.JButton btn_abrir;
+    private javax.swing.JButton cargarArchivo;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -287,10 +306,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTable tblMatrizT;
+    private javax.swing.JTextField txt_confInicial;
+    private javax.swing.JTextField txt_estadoInicial;
     private javax.swing.JTextField txt_estados;
     private javax.swing.JTextField txt_simbolosDeEntrada;
-    private javax.swing.JTextField txt_simbolosDeEntrada2;
-    private javax.swing.JTextField txt_simbolosDeEntrada3;
     private javax.swing.JTextField txt_simbolosEnLaPila;
     // End of variables declaration//GEN-END:variables
 }

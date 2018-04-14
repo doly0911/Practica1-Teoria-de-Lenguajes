@@ -71,6 +71,14 @@ public class AutomataPila {
         this.pila = pila;
     }
 
+    public String getEstadoInicial(){
+        for(Estado e : estados){
+            if(e.isInicial()){
+                return e.getNombre();
+            }
+        }
+        return "error, no hay estado inicial";
+    }
     
     
     
