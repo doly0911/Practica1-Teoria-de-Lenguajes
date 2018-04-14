@@ -39,7 +39,7 @@ public class ReconocedorHilera {
         automataPilaDAO = new AutomataPilaDAO();
         estadoActual = automataPilaDAO.consultarEstadoInicial(automataPila);
         pila = new Stack<>();
-        for(String simbolo: automataPila.getConfiguracion()){
+        for(String simbolo: automataPila.getConfiguracionInicial()){
              pila.push(simbolo);
         }
     }

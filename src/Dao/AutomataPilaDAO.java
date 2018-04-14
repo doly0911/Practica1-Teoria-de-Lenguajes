@@ -12,8 +12,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  *
@@ -22,6 +20,7 @@ import java.util.regex.Pattern;
 public class AutomataPilaDAO implements IAutomataPilaDAO {
 
     private static final String INSTRUCCION_APILAR = "apile";
+    private static final String INSTRUCCION_NINGUNA = "ninguna";
 
     @Override
     public void agregarEstado(AutomataPila automataPila, Estado estado) throws AutomataPilaExcepcion {
@@ -162,6 +161,31 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     }
 
     @Override
+    public void eliminarSimboloPila(AutomataPila automataPila, String simboloPila) throws AutomataPilaExcepcion {
+        ArrayList<String> simbolosPila = automataPila.getSimbolosPila();
+        if (simbolosPila.contains(simboloPila)) {
+            simbolosPila.remove(simboloPila); 
+            automataPila.setSimbolosPila(simbolosPila);
+            //actualizar la matriz de transiciones 
+            HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
+            Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
+            while (it.hasNext()) {
+                Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+                ArrayList<String> instrucciones = (ArrayList<String>) transicion.getValue(); //casting para convertir el object en arraylist
+                String instruccion = instrucciones.get(0); // obtengo la primera posición de las transiciones = operacion pila
+                if (instruccion.contains(simboloPila)) {
+                    instrucciones.add(0, INSTRUCCION_NINGUNA);
+                }
+                it.remove(); // avoids a ConcurrentModificationException 
+            }
+            //falta la modificacion de la matriz, quitar una fila.
+        } else {
+            throw new AutomataPilaExcepcion("El simbolo de la pila que desea eliminar no existe");
+        }
+
+    }
+
+    @Override
     public void modificarSimboloPila(AutomataPila automataPila, String simboloPila, String nuevoSimboloPila) throws AutomataPilaExcepcion {
         validarSimbolos(automataPila, nuevoSimboloPila);
         ArrayList<String> simbolosPila = automataPila.getSimbolosPila();
@@ -171,25 +195,26 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         } else {
             throw new AutomataPilaExcepcion("El simbolo de la pila que quiere modificar no existe");
         }
-        ArrayList<String> configuracion = automataPila.getConfiguracion();
-        if (configuracion.contains(simboloPila)) {
-            int indice = configuracion.indexOf(simboloPila);
-            configuracion.add(indice, nuevoSimboloPila);
+        //Agregar la configuracion inicial de la pila
+        ArrayList<String> configuracionInicial = automataPila.getConfiguracionInicial();
+        if (configuracionInicial.contains(simboloPila)) {
+            int indice = configuracionInicial.indexOf(simboloPila);
+            configuracionInicial.add(indice, nuevoSimboloPila);
         }
         //actualizar las instrucciones de las transiciones
         HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
         Iterator it = transiciones.entrySet().iterator(); //recorreindo el HashMap
         while (it.hasNext()) {
             Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
-            ArrayList<String> instrucciones = (ArrayList<String>) transicion.getValue(); //casting
+            ArrayList<String> instrucciones = (ArrayList<String>) transicion.getValue(); //casting para convertir el objevt en arraylist
             String instruccion = instrucciones.get(0); // obtengo la primera posición de las transiciones = operac pila
-                if (instruccion.contains(INSTRUCCION_APILAR)) {
-                    String simbolo = instruccion.substring(instruccion.indexOf("(")+1,instruccion.indexOf(")")); //subtraigo el simbolo a apilar
-                    if(simbolo.equalsIgnoreCase(simboloPila)){ // si es igual al valor viejo (antes de la modificacion)
-                        instrucciones.add(0,INSTRUCCION_APILAR +"("+nuevoSimboloPila+")");   // reemplacelo apile(valor nuevo)
-                    }
-                    transiciones.replace(transicion.getKey().toString(), instrucciones); //actualiza el hashmap
+            if (instruccion.contains(INSTRUCCION_APILAR)) {
+                String simbolo = instruccion.substring(instruccion.indexOf("(") + 1, instruccion.indexOf(")")); //subtraigo el simbolo a apilar
+                if (simbolo.equalsIgnoreCase(simboloPila)) { // si es igual al valor viejo (antes de la modificacion)
+                    instrucciones.add(0, INSTRUCCION_APILAR + "(" + nuevoSimboloPila + ")");   // reemplacelo apile(valor nuevo)
                 }
+                transiciones.replace(transicion.getKey().toString(), instrucciones); //actualiza el hashmap
+            }
             it.remove(); // avoids a ConcurrentModificationException 
         }
         automataPila.setTransiciones(transiciones); //actualiza el AP 
@@ -201,7 +226,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         }
 
     }
-    
+
     @Override
     public void agregarSimboloEntrada(AutomataPila automataPila, String simbolosEntrada) throws AutomataPilaExcepcion {
         if (automataPila.getSimbolosPila().contains(simbolosEntrada)) {
@@ -223,10 +248,10 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
             e.setTransicionesEstado(nuevaTransicionesEstado);
         }
     }
-    
+
     @Override
-    public void modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion {
-    validarSimbolos(automataPila, nuevoSimboloEntrada);
+    public void modificarSimboloEntrada(AutomataPila automataPila, String simboloEntrada, String nuevoSimboloEntrada) throws AutomataPilaExcepcion {
+        validarSimbolos(automataPila, nuevoSimboloEntrada);
         ArrayList<String> simbolosEntrada = automataPila.getSimbolosEntrada();
         if (simbolosEntrada.contains(simboloEntrada)) {
             int indice = simbolosEntrada.indexOf(simboloEntrada);
@@ -234,29 +259,29 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         } else {
             throw new AutomataPilaExcepcion("El simbolo de entrada que quiere modificar no existe");
         }
-        
+
     }
 
     @Override
     public Estado consultarEstadoInicial(AutomataPila automataPila) {
-       ArrayList<Estado> estados = automataPila.getEstados();
-       for(Estado estado: estados){
-           if(estado.isInicial()){
-               return estado;
-           }
-       }
-       return null;
+        ArrayList<Estado> estados = automataPila.getEstados();
+        for (Estado estado : estados) {
+            if (estado.isInicial()) {
+                return estado;
+            }
+        }
+        return null;
     }
 
     @Override
     public String[][] consultarMatrizTransiciones(AutomataPila automataPila, Estado estado) {
-       ArrayList<Estado> estados = automataPila.getEstados();
-       for(Estado e: estados){
-           if(e.getNombre().equalsIgnoreCase(estado.getNombre())){
-              return e.getTransicionesEstado();
-           }
-       }
-       return null;
+        ArrayList<Estado> estados = automataPila.getEstados();
+        for (Estado e : estados) {
+            if (e.getNombre().equalsIgnoreCase(estado.getNombre())) {
+                return e.getTransicionesEstado();
+            }
+        }
+        return null;
     }
 
 }

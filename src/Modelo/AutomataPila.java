@@ -18,7 +18,7 @@ public class AutomataPila {
     ArrayList<String> simbolosEntrada;
     ArrayList<String> simbolosPila;
     ArrayList<Estado> estados;
-    ArrayList<String> configuracion;
+    ArrayList<String> configuracionInicial;
     HashMap<String, ArrayList<String>> transiciones;
     Stack<String> pila;
    
@@ -47,12 +47,12 @@ public class AutomataPila {
         this.estados = estados;
     }
 
-    public ArrayList<String> getConfiguracion() {
-        return configuracion;
+    public ArrayList<String> getConfiguracionInicial() {
+        return configuracionInicial;
     }
 
-    public void setConfiguracion(ArrayList<String> configuracion) {
-        this.configuracion = configuracion;
+    public void setConfiguracionInicial(ArrayList<String> configuracionInicial) {
+        this.configuracionInicial = configuracionInicial;
     }
 
     public HashMap<String, ArrayList<String>> getTransiciones() {

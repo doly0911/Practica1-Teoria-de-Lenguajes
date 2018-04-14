@@ -53,7 +53,7 @@ public class ConversorAutomata {
                 }
                 simbolos = crearSimbolos(partes, CONFIGURACION);
                 if (simbolos != null) {
-                    automataPila.setConfiguracion(simbolos);
+                    automataPila.setConfiguracionInicial(simbolos);
                 }
             }
             crearLineaEstado(linea, partes.length);

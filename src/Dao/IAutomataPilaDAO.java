@@ -16,11 +16,13 @@ import java.util.ArrayList;
  */
 public interface IAutomataPilaDAO {
     
-    public void agregarSimboloPila(AutomataPila automataPila,String simbolosPila) throws AutomataPilaExcepcion;
+    public void agregarSimboloPila(AutomataPila automataPila,String simboloPila) throws AutomataPilaExcepcion;
+    
+    public void eliminarSimboloPila(AutomataPila automataPila,String simboloPila) throws AutomataPilaExcepcion; 
     
     public void modificarSimboloPila(AutomataPila automataPila,String simboloPila,String nuevoSimboloPila) throws AutomataPilaExcepcion;
     
-    public void agregarSimboloEntrada(AutomataPila automataPila,String simbolosEntrada) throws AutomataPilaExcepcion;
+    public void agregarSimboloEntrada(AutomataPila automataPila,String simboloEntrada) throws AutomataPilaExcepcion;
     
     public void modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion;
     
