@@ -27,8 +27,7 @@ public class ReconocedorHilera {
     
     private static final String INSTRUCCION_APILAR = "apile(";
     private static final String INSTRUCCION_DESAPILAR = "desapile";
-    private static final String INSTRUCCION_NINGUNA = "ninguna";
-    private static final String INSTRUCCION_PERMANEZCA = "permanezca";
+    private static final String INSTRUCCION_NINGUNA = "ninguna";    
     private static final String INSTRUCCION_RETENGA = "retenga";
     private static final String INSTRUCCION_AVANCE = "avance";
     private static final String INSTRUCCION_CAMBIA = "cambia";
