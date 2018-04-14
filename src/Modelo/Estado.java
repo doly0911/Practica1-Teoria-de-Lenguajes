@@ -14,6 +14,7 @@ public class Estado {
     private String nombre;
     private boolean inicial;
     private String [][] transicionesEstado;
+    private String [][] matrizT;
 
     public String getNombre() {
         return nombre;
@@ -37,6 +38,14 @@ public class Estado {
 
     public void setTransicionesEstado(String [][] transicionesEstado) {
         this.transicionesEstado = transicionesEstado;
+    }
+
+    public String[][] getMatrizT() {
+        return matrizT;
+    }
+
+    public void setMatrizT(String[][] matrizT) {
+        this.matrizT = matrizT;
     }
     
     

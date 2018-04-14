@@ -59,7 +59,7 @@ public class ConversorAutomata {
             }
             crearLineaEstado(linea, partes.length);
             if (esLineaDeEstado == 2) {
-                automataPila.setEstados(crearEstados(automataPila.getSimbolosEntrada().size(), automataPila.getSimbolosPila().size()));
+                automataPila.setEstados(crearEstados(automataPila.getSimbolosEntrada(), automataPila.getSimbolosPila()));
             }
             crearLineaTransicion(linea, partes.length);
             if (esLineaDeTransicion == 2) {
@@ -133,7 +133,9 @@ public class ConversorAutomata {
         return null;
     }
 
-    public ArrayList<Estado> crearEstados(int simbolosEntrada, int simbolosPilas) {
+    public ArrayList<Estado> crearEstados(ArrayList<String> SimEntrada, ArrayList<String> SimPila) {
+        int numSimEntrada = SimEntrada.size();
+        int numSimPila = SimPila.size();
         int n = lineasEstado.size();
         ArrayList<Estado> estados = new ArrayList<>();
         if (esLineaDeEstado == 2) {
@@ -153,7 +155,8 @@ public class ConversorAutomata {
                         estado.setInicial(Boolean.parseBoolean(partes[1]));
                         break;
                     case 2:
-                        estado.setTransicionesEstado(crearTransicionesEstado(partes[1], simbolosEntrada, simbolosPilas));
+                        estado.setTransicionesEstado(crearTransicionesEstado(partes[1], numSimEntrada, numSimPila));
+                        estado.setMatrizT(crearMatrizT(SimEntrada, SimPila, estado.getTransicionesEstado()));
                         estados.add(estado);
                         estado = new Estado();
                         break;
@@ -190,6 +193,27 @@ public class ConversorAutomata {
             }
         }
         return matrizEstado;
+    }
+    
+    public String[][] crearMatrizT(ArrayList<String> SimEntrada, ArrayList<String> SimPila, String [][] transicionesEstado){
+        String[][] matrizT = new String[SimPila.size()+1][SimEntrada.size()+1];
+        int i = 1;
+        for(String s : SimEntrada){
+            matrizT[0][i] = s;
+            i++;
+        }
+        i = 1;
+        for(String s : SimPila){
+            matrizT[i][0] = s;
+            i++;
+        }
+        
+        for(i = 1; i <= SimPila.size(); i++){
+            for(int j = 1; j <= SimEntrada.size(); j++){
+                matrizT[i][j] = transicionesEstado[i-1][j-1];
+            }
+        }
+        return matrizT;
     }
 
 }

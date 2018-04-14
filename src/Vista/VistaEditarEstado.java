@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Control.CtrlMatrizTransiciones;
 import Modelo.Estado;
 import javax.swing.WindowConstants;
 
@@ -13,7 +14,9 @@ import javax.swing.WindowConstants;
  * @author pao
  */
 public class VistaEditarEstado extends javax.swing.JFrame {
-
+    
+    CtrlMatrizTransiciones modeloT;
+    
     /**
      * Creates new form EditarEstado
      */
@@ -21,11 +24,14 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-        //VentanaPrincipal vp = new VentanaPrincipal();
+        tblMatrizT.getTableHeader().setVisible(false);
+
         for(Estado e : VentanaPrincipal.estados){
             if(VentanaPrincipal.estadoSeleccionado.equals(e.getNombre())){
                 txtNombre.setText(e.getNombre());
                 rbEsInicial.setSelected(e.isInicial());
+                modeloT = new CtrlMatrizTransiciones(e.getMatrizT());
+                tblMatrizT.setModel(modeloT);
             }
         }
         
@@ -46,6 +52,8 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         txtNombre = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblMatrizT = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -68,7 +76,22 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
         jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 100, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 300, 300));
+        tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblMatrizT);
+
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 300, 120));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -114,7 +137,9 @@ public class VistaEditarEstado extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JRadioButton rbEsInicial;
+    private javax.swing.JTable tblMatrizT;
     private javax.swing.JTextField txtNombre;
     // End of variables declaration//GEN-END:variables
 }

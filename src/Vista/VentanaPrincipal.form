@@ -184,19 +184,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JButton" name="btnGenerarMatrizT">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Generar tabla(s) de transiciones"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarMatrizTActionPerformed"/>
-          </Events>
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="100" y="320" width="190" height="-1"/>
-            </Constraint>
-          </Constraints>
-        </Component>
         <Container class="javax.swing.JScrollPane" name="jScrollPane3">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
@@ -265,7 +252,6 @@
               <Image iconType="2" name="G:\My Drive\U\2018-1\Teoria de lenguajes y laboratorio\Pr&#xe1;ctica 1\Practica1-Teoria-de-Lenguajes\src\Imagenes\menu_show.png"/>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="Ver o Editar"/>
-            <Property name="actionCommand" type="java.lang.String" value=""/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="null"/>
             </Property>

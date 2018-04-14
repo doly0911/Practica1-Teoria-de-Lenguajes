@@ -5,13 +5,10 @@
  */
 package Vista;
 
-import Control.CtrlMatrizTransiciones;
 import Modelo.AutomataPila;
 import Utils.ConversorAutomata;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -28,7 +25,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     File archivo;
     FileImageInputStream entrada;
     FileImageInputStream salida;
-    CtrlMatrizTransiciones matrizT;
     public static ArrayList<Estado> estados;
     public static String estadoSeleccionado;
     
@@ -39,7 +35,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     public VentanaPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        matrizT = null;
     }
 
     /**
@@ -64,7 +59,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         cargarArchivo = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblMatrizT = new javax.swing.JTable();
-        btnGenerarMatrizT = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         cboEstados = new javax.swing.JComboBox<>();
@@ -146,14 +140,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 350, 150));
 
-        btnGenerarMatrizT.setText("Generar tabla(s) de transiciones");
-        btnGenerarMatrizT.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarMatrizTActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnGenerarMatrizT, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 190, -1));
-
         jTextArea1.setEditable(false);
         jTextArea1.setColumns(5);
         jTextArea1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
@@ -175,7 +161,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnVer.setForeground(new java.awt.Color(255, 255, 255));
         btnVer.setIcon(new javax.swing.ImageIcon("G:\\My Drive\\U\\2018-1\\Teoria de lenguajes y laboratorio\\Práctica 1\\Practica1-Teoria-de-Lenguajes\\src\\Imagenes\\menu_show.png")); // NOI18N
         btnVer.setToolTipText("Ver o Editar");
-        btnVer.setActionCommand("");
         btnVer.setBorder(null);
         btnVer.setBorderPainted(false);
         btnVer.setContentAreaFilled(false);
@@ -289,10 +274,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
 
-    private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
-          
-    }//GEN-LAST:event_btnGenerarMatrizTActionPerformed
-
     private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAñadirActionPerformed
@@ -341,7 +322,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAñadir;
-    private javax.swing.JButton btnGenerarMatrizT;
     private javax.swing.JButton btnVer;
     private javax.swing.JButton cargarArchivo;
     private javax.swing.JComboBox<String> cboEstados;

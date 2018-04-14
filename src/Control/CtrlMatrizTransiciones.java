@@ -5,7 +5,6 @@
  */
 package Control;
 
-import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 
 /**
@@ -13,25 +12,25 @@ import javax.swing.table.AbstractTableModel;
  * @author pao
  */
 public class CtrlMatrizTransiciones extends AbstractTableModel{
-    ArrayList<String[][]> matrizTransiciones;
+    String[][] matrizTransiciones;
     
-    public CtrlMatrizTransiciones(ArrayList<String[][]> matrizTransiciones) {
+    public CtrlMatrizTransiciones(String[][] matrizTransiciones) {
         this.matrizTransiciones = matrizTransiciones;
     }
 
     @Override
     public int getRowCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return matrizTransiciones.length;
     }
 
     @Override
     public int getColumnCount() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return matrizTransiciones[0].length;
     }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return matrizTransiciones[rowIndex][columnIndex];
     }
     
 }
