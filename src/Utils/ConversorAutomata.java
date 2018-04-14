@@ -80,10 +80,11 @@ public class ConversorAutomata {
         }
         ArrayList<String> simbolos = new ArrayList<>();
         String valoresStr = partes[1];
-        valoresStr = valoresStr.replaceAll("\\[", "").replaceAll("\\]", "");//eliminar corchetes
+        valoresStr = valoresStr.replaceAll("\\[", "").replaceAll("\\]", "").trim();//eliminar corchetes y espacios en blanco
         String[] valores = valoresStr.split(",");
         for (int i = 0; i < valores.length; i++) {
             valores[i] = valores[i].replace("\"", "");
+            valores[i] = valores[i].trim();
             simbolos.add(valores[i]);
             
         }
