@@ -45,7 +45,7 @@ public class ReconocedorHilera {
         }
     }
     
-    public boolean recorrerCaracter(String caracter) throws AutomataPilaExcepcion{
+    public int recorrerCaracter(String caracter) {
         ArrayList<String> simbolosEntrada = this.automataPila.getSimbolosEntrada();
         ArrayList<String> simbolosPila = this.automataPila.getSimbolosPila();
         HashMap<String, ArrayList<String>> transiciones = this.automataPila.getTransiciones();
@@ -54,8 +54,8 @@ public class ReconocedorHilera {
         int fila = simbolosPila.indexOf(simboloPila);
         matrizTransicionesActual = automataPilaDAO.consultarMatrizTransiciones(automataPila, estadoActual);
         String nombreTransicion = matrizTransicionesActual[fila][col];
-        if(nombreTransicion== null || nombreTransicion.isEmpty()){
-            throw new AutomataPilaExcepcion("Hilera rechazada"); //Falta especificar el error
+        if(nombreTransicion == null || nombreTransicion.isEmpty()){
+            return 2;
         }
         ArrayList<String> instrucciones = transiciones.get(nombreTransicion);
         return ejecutarOperacion(instrucciones);
@@ -63,7 +63,7 @@ public class ReconocedorHilera {
     }
     
     
-    protected boolean ejecutarOperacion(ArrayList<String> instrucciones) throws AutomataPilaExcepcion{
+    protected int ejecutarOperacion(ArrayList<String> instrucciones) {
         for(String instruccion: instrucciones){
             int operacion = instrucciones.indexOf(instruccion);
             switch(operacion){
@@ -77,9 +77,9 @@ public class ReconocedorHilera {
                     }else if(instruccion.equalsIgnoreCase(INSTRUCCION_DESAPILAR)){
                         pila.pop();
                     }else if(instruccion.equalsIgnoreCase(INSTRUCCION_ACEPTE)){
-                        return true;
+                        return 1;
                     }else if(instruccion.equalsIgnoreCase(INSTRUCCION_RECHACE)){
-                        throw new AutomataPilaExcepcion("Hilera rechazada");
+                        return 2;
                     }
                     break;
                 case 1:
@@ -87,18 +87,59 @@ public class ReconocedorHilera {
                        String partes[] = instruccion.split(" ");
                        String estado = partes[1];
                        estadoActual = automataPilaDAO.consultarEstadoPorNombre(automataPila, estado);
-                       //matrizTransicionesActual = automataPilaDAO.consultarMatrizTransiciones(automataPila, estadoActual);
                     }
                     break;
                 case 2:
                     if(instruccion.equalsIgnoreCase(INSTRUCCION_AVANCE)){
-                        return true;
+                        return 0;
                     }else if(instruccion.equalsIgnoreCase(INSTRUCCION_RETENGA)){
-                        return false;
+                        return 3;
                     }
                     break;                   
             }
         }
-        return false;
+        return 2;
     }
+
+    public AutomataPila getAutomataPila() {
+        return automataPila;
+    }
+
+    public void setAutomataPila(AutomataPila automataPila) {
+        this.automataPila = automataPila;
+    }
+
+    public Stack<String> getPila() {
+        return pila;
+    }
+
+    public void setPila(Stack<String> pila) {
+        this.pila = pila;
+    }
+
+    public IAutomataPilaDAO getAutomataPilaDAO() {
+        return automataPilaDAO;
+    }
+
+    public void setAutomataPilaDAO(IAutomataPilaDAO automataPilaDAO) {
+        this.automataPilaDAO = automataPilaDAO;
+    }
+
+    public Estado getEstadoActual() {
+        return estadoActual;
+    }
+
+    public void setEstadoActual(Estado estadoActual) {
+        this.estadoActual = estadoActual;
+    }
+
+    public String[][] getMatrizTransicionesActual() {
+        return matrizTransicionesActual;
+    }
+
+    public void setMatrizTransicionesActual(String[][] matrizTransicionesActual) {
+        this.matrizTransicionesActual = matrizTransicionesActual;
+    }
+    
+    
 }

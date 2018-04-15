@@ -14,10 +14,13 @@ import java.io.IOException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import Modelo.Estado;
+import Utils.ReconocedorHilera;
 import excepcion.AutomataPilaExcepcion;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.List;
+import java.util.Stack;
+import javax.swing.table.DefaultTableModel;
+import Control.CtrlVentanaPrincipal;
 
 /**
  *
@@ -25,22 +28,33 @@ import java.util.logging.Logger;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
     
-    //JFileChooser seleccionar = new JFileChooser();
-    //FileImageInputStream entrada;
-    //FileImageInputStream salida;
     File archivo;
     AutomataPila automata;
     IAutomataPilaDAO automataDAO;
     public static ArrayList<Estado> estados;
     public static String estadoSeleccionado;
+    private DefaultTableModel defaultTableModel;
+    private Stack<String> pila;
+    private ReconocedorHilera reconocedorHilera;
+    private int estadoHilera;
+    private int numeroCaracter;
+    private String hilera;
+    private String caracterAcual;
+    private CtrlVentanaPrincipal ctrlVentanaPrincipal;
     
-
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
+        defaultTableModel = new DefaultTableModel(10, 1);
+        tbl_pila.setModel(defaultTableModel);
+        ctrlVentanaPrincipal = new CtrlVentanaPrincipal();
+        estadoHilera = 0;
+        numeroCaracter = 0;
+        hilera = "";
+        caracterAcual = "";
     }
 
     /**
@@ -75,11 +89,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txtSimboloEntrada = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        btn_iniciarPila = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtArea_hilera = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_pila = new javax.swing.JTable();
+        btn_siguienteCaracter = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -230,22 +245,43 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLabel6.setText("Hilera:");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 210, -1));
 
-        jButton2.setText("Evaluar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 30, 310));
-
-        jLabel7.setText("La hilera ingresada es : ");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, -1, -1));
-
-        jTextField2.setText("válida/inválida");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        btn_iniciarPila.setText("Iniciar pila");
+        btn_iniciarPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                btn_iniciarPilaActionPerformed(evt);
             }
         });
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, 90, -1));
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
+
+        txtArea_hilera.setColumns(20);
+        txtArea_hilera.setRows(5);
+        jScrollPane1.setViewportView(txtArea_hilera);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 200, 40));
+
+        tbl_pila.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane3.setViewportView(tbl_pila);
+
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 50, 340));
+
+        btn_siguienteCaracter.setText("Siguiente carácter");
+        btn_siguienteCaracter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_siguienteCaracterActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 480, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 300, 530));
 
@@ -282,10 +318,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_simbolosEnLaPilaActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
     private void btnAñadirEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirEstadoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAñadirEstadoActionPerformed
@@ -315,6 +347,54 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnEliminarSimEntradaActionPerformed
 
+    private void btn_iniciarPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_iniciarPilaActionPerformed
+       hilera = this.txtArea_hilera.getText();
+
+       ArrayList<String> configuracionInicial = automata.getConfiguracionInicial(); // obtengo la config de la pila
+       int numeroSimbolos = configuracionInicial.size();
+       defaultTableModel.setColumnCount(1);
+       defaultTableModel.setRowCount(numeroSimbolos); //que se configure segun los simbolos a apilar en la conf inicial
+       reconocedorHilera = new ReconocedorHilera(automata); //constructor que me apila la config inicial
+       pila = reconocedorHilera.getPila();
+       List<String> pilaCopia = new ArrayList<>(pila); //hago copia de la pila para usarla en btn_siguienteCaracter
+       llenarPila(pilaCopia); //mapea los valores de mi defaultTableModel a la pila Copia
+       
+       estadoHilera =0;
+       numeroCaracter =0;
+    }//GEN-LAST:event_btn_iniciarPilaActionPerformed
+
+    private void btn_siguienteCaracterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_siguienteCaracterActionPerformed
+        //0:avance, 1:acepte, 2:rechace, 3: retenga
+       List<String> pilaCopia;
+       switch (estadoHilera) {
+
+           case 0:
+               caracterAcual = String.valueOf(hilera.charAt(numeroCaracter));
+               numeroCaracter++;
+               estadoHilera = reconocedorHilera.recorrerCaracter(caracterAcual); // si es true significa que si existe en mi reocnomiento 
+               pila = reconocedorHilera.getPila(); // actualizo la pila  
+               pilaCopia = new ArrayList<>(pila);  //actualizo la pila
+               llenarPila(pilaCopia); //la lleno con los valores actuales                
+               break;
+
+           case 1:
+               JOptionPane.showMessageDialog(null, "Hilera Aceptada", "Anuncio", JOptionPane.INFORMATION_MESSAGE);
+               break;
+
+           case 2:
+               JOptionPane.showMessageDialog(null, "Hilera Rechazada", "Anuncio", JOptionPane.INFORMATION_MESSAGE);
+               break;
+
+           case 3:
+               estadoHilera = reconocedorHilera.recorrerCaracter(caracterAcual); // si es true significa que si existe en mi reocnomiento 
+               pila = reconocedorHilera.getPila(); // actualizo la pila  
+               pilaCopia = new ArrayList<>(pila);  //actualizo la pila
+               llenarPila(pilaCopia); //la lleno con los valores actuales
+               break;
+
+       }
+    }//GEN-LAST:event_btn_siguienteCaracterActionPerformed
+
     private void llenarFormulario(){
         String simbolos = "";
         for(String i : automata.getSimbolosEntrada()){
@@ -338,6 +418,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cboEstados.addItem(e.getNombre());
         } 
     }
+    
+    private void llenarPila(List<String> pila) {
+       int col = defaultTableModel.getColumnCount();
+       defaultTableModel.setRowCount(pila.size());
+       int fil = defaultTableModel.getRowCount();
+       for (int i = 0; i < fil; i++) {
+           for (int j = 0; j < col; j++) {
+               defaultTableModel.setValueAt(pila.get(i), i, j); // me modifica en defaultTable (objeto a agregar, en la fila y columna dada)
+           }
+       }
+   }
     
     /**
      * @param args the command line arguments
@@ -380,10 +471,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnEditarSimEntrada;
     private javax.swing.JButton btnEliminarSimEntrada;
     private javax.swing.JButton btnVerModificarEstado;
+    private javax.swing.JButton btn_iniciarPila;
+    private javax.swing.JButton btn_siguienteCaracter;
     private javax.swing.JButton cargarArchivo;
     private javax.swing.JComboBox<String> cboEstados;
     private javax.swing.JComboBox<String> cboSimEntrada;
-    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -391,14 +483,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable tbl_pila;
+    private javax.swing.JTextArea txtArea_hilera;
     private javax.swing.JTextField txtSimboloEntrada;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_estadoInicial;
