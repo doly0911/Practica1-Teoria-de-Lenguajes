@@ -7,6 +7,7 @@ package Vista;
 
 import Control.CtrlMatrizTransiciones;
 import Modelo.Estado;
+import javax.swing.JTable;
 import javax.swing.WindowConstants;
 
 /**
@@ -25,6 +26,7 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tblMatrizT.getTableHeader().setVisible(false);
+        tblMatrizT.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
 
         for(Estado e : VentanaPrincipal.estados){
             if(VentanaPrincipal.estadoSeleccionado.equals(e.getNombre())){
@@ -78,18 +80,18 @@ public class VistaEditarEstado extends javax.swing.JFrame {
 
         tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jScrollPane1.setViewportView(tblMatrizT);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 300, 120));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 290, 120));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
 

@@ -57,13 +57,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txt_simbolosEnLaPila = new javax.swing.JTextField();
         cargarArchivo = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblMatrizT = new javax.swing.JTable();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         cboEstados = new javax.swing.JComboBox<>();
         btnVer = new javax.swing.JButton();
         btnAñadir = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -125,36 +123,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(cargarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
 
-        tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(tblMatrizT);
-
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 350, 150));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(5);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jTextArea1.setRows(2);
-        jTextArea1.setTabSize(20);
-        jTextArea1.setText("    A continuación ingrese cada uno de los datos de su \nautómata de pila o carguelos desde un archivo de texto");
-        jTextArea1.setAutoscrolls(false);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jTextArea1.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextArea1.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 370, 40));
-
         jPanel1.add(cboEstados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 100, 30));
 
         btnVer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -186,6 +154,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             }
         });
         jPanel1.add(btnAñadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 30, 30));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel9.setText("autómata de pila o carguelos desde un archivo de texto");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel10.setText("A continuación ingrese cada uno de los datos de su ");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 410, 530));
 
@@ -327,6 +303,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboEstados;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -334,15 +311,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable tblMatrizT;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_estadoInicial;
     private javax.swing.JTextField txt_simbolosDeEntrada;
