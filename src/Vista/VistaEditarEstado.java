@@ -6,6 +6,7 @@
 package Vista;
 
 import Control.CtrlMatrizTransiciones;
+import Modelo.AutomataPila;
 import Modelo.Estado;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
@@ -20,15 +21,17 @@ public class VistaEditarEstado extends javax.swing.JFrame {
     
     /**
      * Creates new form EditarEstado
+     * @param a
      */
-    public VistaEditarEstado() {
+    public VistaEditarEstado(AutomataPila a) {
         initComponents();
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tblMatrizT.getTableHeader().setVisible(false);
         tblMatrizT.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-
-        for(Estado e : VentanaPrincipal.estados){
+        //vp = new VentanaPrincipal();
+        
+        for(Estado e : a.getEstados()){
             if(VentanaPrincipal.estadoSeleccionado.equals(e.getNombre())){
                 txtNombre.setText(e.getNombre());
                 rbEsInicial.setSelected(e.isInicial());
@@ -37,6 +40,10 @@ public class VistaEditarEstado extends javax.swing.JFrame {
             }
         }
         
+    }
+
+    private VistaEditarEstado() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -64,19 +71,19 @@ public class VistaEditarEstado extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Transiciones:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 120, -1, -1));
 
         rbEsInicial.setText("Si");
-        jPanel1.add(rbEsInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
+        jPanel1.add(rbEsInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 70, -1, -1));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Nombre:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 30, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Inicial:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, -1, -1));
-        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 30, 100, -1));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, -1, -1));
+        jPanel1.add(txtNombre, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 30, 100, -1));
 
         tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -91,9 +98,9 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblMatrizT);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 290, 120));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 520, 120));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 400, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 300));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

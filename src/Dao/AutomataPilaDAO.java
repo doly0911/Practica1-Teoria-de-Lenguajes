@@ -7,6 +7,7 @@ package Dao;
 
 import Modelo.AutomataPila;
 import Modelo.Estado;
+import Utils.ConversorAutomata;
 import excepcion.AutomataPilaExcepcion;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     private static final String INSTRUCCION_APILAR = "apile";
     private static final String INSTRUCCION_NINGUNA = "ninguna";
     private static final String INSTRUCCION_CAMBIA = "cambia ";
+    ConversorAutomata ca = new ConversorAutomata();
 
     @Override
     public void agregarEstado(AutomataPila automataPila, Estado estado) throws AutomataPilaExcepcion {
@@ -270,27 +272,32 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
 
     @Override
     public AutomataPila agregarSimboloEntrada(AutomataPila automataPila, String simboloEntrada) throws AutomataPilaExcepcion {
-        if (automataPila.getSimbolosPila().indexOf(simboloEntrada) != -1) {
+        ArrayList simbolos = automataPila.getSimbolosEntrada();
+        if (simbolos.contains(simboloEntrada)) {
             throw new AutomataPilaExcepcion("El simbolo de entrada ya esta definido");
         }
+        simbolos.add(simbolos.size(), simboloEntrada);
         validarSimbolos(automataPila, simboloEntrada);
         int filas = automataPila.getSimbolosPila().size();
         int columnas = automataPila.getSimbolosEntrada().size();
-        String[][] nuevaTransicionesEstado = new String[filas][columnas + 1];
+        String[][] nuevaTransicionesEstado = new String[filas][columnas];
         String[][] transicionesEstado;
         ArrayList<Estado> estados = automataPila.getEstados();
-        for (int k = 0; k <= estados.size(); k++) {
+        int k;
+        for ( k = 0; k < estados.size(); k++) {
             Estado e = estados.get(k);
             transicionesEstado = e.getTransicionesEstado();
             for (int i = 0; i < filas; i++) {
-                for (int j = 0; j < columnas; j++) {
+                for (int j = 0; j < columnas-1 ; j++) {
                     nuevaTransicionesEstado[i][j] = transicionesEstado[i][j];
                 }
             }
             e.setTransicionesEstado(nuevaTransicionesEstado);
-            estados.add(k, e);
+            e.setMatrizT(crearMatrizT(simbolos, automataPila.getSimbolosPila(), e.getTransicionesEstado()));
+            estados.set(k, e);
         }
         automataPila.setEstados(estados);
+        automataPila.setSimbolosEntrada(simbolos);
         return automataPila;
     }
 
@@ -359,6 +366,27 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
             }
         }
         return null;
+    }
+    
+    public String[][] crearMatrizT(ArrayList<String> SimEntrada, ArrayList<String> SimPila, String [][] transicionesEstado){
+        String[][] matrizT = new String[SimPila.size()+1][SimEntrada.size()+1];
+        int i = 1;
+        for(String s : SimEntrada){
+            matrizT[0][i] = s;
+            i++;
+        }
+        i = 1;
+        for(String s : SimPila){
+            matrizT[i][0] = s;
+            i++;
+        }
+        
+        for(i = 1; i <= SimPila.size(); i++){
+            for(int j = 1; j <= SimEntrada.size(); j++){
+                matrizT[i][j] = transicionesEstado[i-1][j-1];
+            }
+        }
+        return matrizT;
     }
 
 }

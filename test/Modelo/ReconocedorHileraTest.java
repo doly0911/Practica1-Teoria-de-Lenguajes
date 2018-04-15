@@ -33,12 +33,12 @@ public class ReconocedorHileraTest {
         int i =0;//en el frontEnd debe ser global
         boolean retenerHilera = false; //en el frontEnd debe ser global
        while(i< hilera.length()){
-           if(!retenerHilera){
-               c =String.valueOf(hilera.charAt(i));
-               i++;
-               
-           }
-           retenerHilera =!reconocedorHilera.recorrerCaracter(c); // desde el if va en el btn_avanzar
+//           if(!retenerHilera){
+//               c =String.valueOf(hilera.charAt(i));
+//               i++;
+//               
+//           }
+//           retenerHilera =!reconocedorHilera.recorrerCaracter(c); // desde el if va en el btn_avanzar
        }
         assertTrue(!retenerHilera);
        

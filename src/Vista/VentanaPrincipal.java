@@ -29,9 +29,9 @@ import Control.CtrlVentanaPrincipal;
 public class VentanaPrincipal extends javax.swing.JFrame {
     
     File archivo;
-    AutomataPila automata;
+    public AutomataPila automata;
     IAutomataPilaDAO automataDAO;
-    public static ArrayList<Estado> estados;
+    public static ArrayList<Estado> estados;  //no es necesario que sea global
     public static String estadoSeleccionado;
     private DefaultTableModel defaultTableModel;
     private Stack<String> pila;
@@ -86,7 +86,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnAgregarSimEntrada = new javax.swing.JButton();
         btnEditarSimEntrada = new javax.swing.JButton();
         btnEliminarSimEntrada = new javax.swing.JButton();
-        txtSimboloEntrada = new javax.swing.JTextField();
+        txt_nuevoSimboloEntrada = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         btn_iniciarPila = new javax.swing.JButton();
@@ -186,10 +187,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel10.setText("A continuación ingrese cada uno de los datos de su ");
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+        jLabel10.setText("Seleccione un símbolo para realizar la operación que desee");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 150, -1, -1));
 
-        jPanel1.add(cboSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 110, 30));
+        jPanel1.add(cboSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 180, 110, 30));
 
         btnAgregarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnAgregarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
@@ -204,7 +205,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btnAgregarSimEntradaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnAgregarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 30, 30));
+        jPanel1.add(btnAgregarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 180, 30, 30));
 
         btnEditarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEditarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
@@ -219,7 +220,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btnEditarSimEntradaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEditarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 30, 30));
+        jPanel1.add(btnEditarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 180, 30, 30));
 
         btnEliminarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEliminarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
@@ -234,8 +235,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btnEliminarSimEntradaActionPerformed(evt);
             }
         });
-        jPanel1.add(btnEliminarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 30, 30));
-        jPanel1.add(txtSimboloEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 90, 30));
+        jPanel1.add(btnEliminarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 180, 30, 30));
+        jPanel1.add(txt_nuevoSimboloEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 180, 90, 30));
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel11.setText("A continuación ingrese cada uno de los datos de su ");
+        jPanel1.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 410, 530));
 
@@ -324,7 +329,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     private void btnVerModificarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerModificarEstadoActionPerformed
         estadoSeleccionado = cboEstados.getSelectedItem().toString();
-        VistaEditarEstado vee = new VistaEditarEstado();
+        VistaEditarEstado vee = new VistaEditarEstado(automata);
         vee.setVisible(true);
         
     }//GEN-LAST:event_btnVerModificarEstadoActionPerformed
@@ -332,8 +337,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private void btnAgregarSimEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSimEntradaActionPerformed
         automataDAO = new AutomataPilaDAO();
         try {
-            automata = automataDAO.agregarSimboloEntrada(automata, txtSimboloEntrada.getText());
-            //llenarFormulario();
+            automata = automataDAO.agregarSimboloEntrada(automata, txt_nuevoSimboloEntrada.getText());
+            llenarFormulario();
         } catch (AutomataPilaExcepcion ex) {
             JOptionPane.showMessageDialog(null, "Error al agregar simbolo de entrada: "+ ex, "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -399,6 +404,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         String simbolos = "";
         for(String i : automata.getSimbolosEntrada()){
             simbolos += i + " ";
+            cboSimEntrada.addItem(i);
         }
         txt_simbolosDeEntrada.setText(simbolos);
         simbolos = "";
@@ -412,7 +418,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
         txt_confInicial.setText(simbolos);
         txt_estadoInicial.setText(automata.getEstadoInicial());
-
+        
+        cboEstados.removeAllItems();
         estados = automata.getEstados();
         for(Estado e : estados){
             cboEstados.addItem(e.getNombre());
@@ -478,6 +485,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboSimEntrada;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -491,9 +499,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tbl_pila;
     private javax.swing.JTextArea txtArea_hilera;
-    private javax.swing.JTextField txtSimboloEntrada;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_estadoInicial;
+    private javax.swing.JTextField txt_nuevoSimboloEntrada;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosEnLaPila;
     // End of variables declaration//GEN-END:variables
