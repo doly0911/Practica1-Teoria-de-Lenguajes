@@ -270,7 +270,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
 
     @Override
     public AutomataPila agregarSimboloEntrada(AutomataPila automataPila, String simboloEntrada) throws AutomataPilaExcepcion {
-        if (automataPila.getSimbolosPila().indexOf(simboloEntrada) == -1) {
+        if (automataPila.getSimbolosPila().indexOf(simboloEntrada) != -1) {
             throw new AutomataPilaExcepcion("El simbolo de entrada ya esta definido");
         }
         validarSimbolos(automataPila, simboloEntrada);
