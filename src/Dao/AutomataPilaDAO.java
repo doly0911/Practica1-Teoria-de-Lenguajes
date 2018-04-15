@@ -269,17 +269,18 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     }
 
     @Override
-    public void agregarSimboloEntrada(AutomataPila automataPila, String simbolosEntrada) throws AutomataPilaExcepcion {
-        if (automataPila.getSimbolosPila().contains(simbolosEntrada)) {
+    public AutomataPila agregarSimboloEntrada(AutomataPila automataPila, String simboloEntrada) throws AutomataPilaExcepcion {
+        if (automataPila.getSimbolosPila().indexOf(simboloEntrada) == -1) {
             throw new AutomataPilaExcepcion("El simbolo de entrada ya esta definido");
         }
-        validarSimbolos(automataPila, simbolosEntrada);
+        validarSimbolos(automataPila, simboloEntrada);
         int filas = automataPila.getSimbolosPila().size();
         int columnas = automataPila.getSimbolosEntrada().size();
         String[][] nuevaTransicionesEstado = new String[filas][columnas + 1];
         String[][] transicionesEstado;
         ArrayList<Estado> estados = automataPila.getEstados();
-        for (Estado e : estados) {
+        for (int k = 0; k <= estados.size(); k++) {
+            Estado e = estados.get(k);
             transicionesEstado = e.getTransicionesEstado();
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
@@ -287,7 +288,10 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                 }
             }
             e.setTransicionesEstado(nuevaTransicionesEstado);
+            estados.add(k, e);
         }
+        automataPila.setEstados(estados);
+        return automataPila;
     }
 
     @Override
