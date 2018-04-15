@@ -5,18 +5,22 @@
  */
 package Vista;
 
-import Control.CtrlMatrizTransiciones;
+import Dao.AutomataPilaDAO;
+import Dao.IAutomataPilaDAO;
 import Modelo.AutomataPila;
 import Utils.ConversorAutomata;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.imageio.stream.FileImageInputStream;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import Modelo.Estado;
+import Utils.ReconocedorHilera;
+import excepcion.AutomataPilaExcepcion;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
+import javax.swing.table.DefaultTableModel;
+import Control.CtrlVentanaPrincipal;
 
 /**
  *
@@ -24,22 +28,33 @@ import java.util.ArrayList;
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
     
-    JFileChooser seleccionar= new JFileChooser();
     File archivo;
-    FileImageInputStream entrada;
-    FileImageInputStream salida;
-    CtrlMatrizTransiciones matrizT;
+    AutomataPila automata;
+    IAutomataPilaDAO automataDAO;
     public static ArrayList<Estado> estados;
     public static String estadoSeleccionado;
+    private DefaultTableModel defaultTableModel;
+    private Stack<String> pila;
+    private ReconocedorHilera reconocedorHilera;
+    private int estadoHilera;
+    private int numeroCaracter;
+    private String hilera;
+    private String caracterAcual;
+    private CtrlVentanaPrincipal ctrlVentanaPrincipal;
     
-
     /**
      * Creates new form VentanaPrincipal
      */
     public VentanaPrincipal() {
         initComponents();
         this.setLocationRelativeTo(null);
-        matrizT = null;
+        defaultTableModel = new DefaultTableModel(10, 1);
+        tbl_pila.setModel(defaultTableModel);
+        ctrlVentanaPrincipal = new CtrlVentanaPrincipal();
+        estadoHilera = 0;
+        numeroCaracter = 0;
+        hilera = "";
+        caracterAcual = "";
     }
 
     /**
@@ -62,21 +77,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         txt_simbolosEnLaPila = new javax.swing.JTextField();
         cargarArchivo = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblMatrizT = new javax.swing.JTable();
-        btnGenerarMatrizT = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
         cboEstados = new javax.swing.JComboBox<>();
-        btnVer = new javax.swing.JButton();
-        btnAñadir = new javax.swing.JButton();
+        btnVerModificarEstado = new javax.swing.JButton();
+        btnAñadirEstado = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        cboSimEntrada = new javax.swing.JComboBox<>();
+        btnAgregarSimEntrada = new javax.swing.JButton();
+        btnEditarSimEntrada = new javax.swing.JButton();
+        btnEliminarSimEntrada = new javax.swing.JButton();
+        txtSimboloEntrada = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        btn_iniciarPila = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtArea_hilera = new javax.swing.JTextArea();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tbl_pila = new javax.swing.JTable();
+        btn_siguienteCaracter = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -88,39 +106,39 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel1.setText("Simbolos de entrada:");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 120, -1, -1));
-        jPanel1.add(txt_estadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 230, 170, 28));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 120, -1, -1));
+        jPanel1.add(txt_estadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 320, 170, 28));
 
         txt_simbolosDeEntrada.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_simbolosDeEntradaActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_simbolosDeEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 170, 28));
+        jPanel1.add(txt_simbolosDeEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 110, 200, 28));
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel2.setText("Simbolos en la Pila:");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, -1, -1));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel5.setText("Configuración inicial de la Pila:");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, -1, -1));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel3.setText("Estados:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 200, -1, -1));
-        jPanel1.add(txt_confInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 270, 170, 28));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, -1, -1));
+        jPanel1.add(txt_confInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 360, 170, 28));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel4.setText("Estado Inicial:");
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 240, -1, -1));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 330, -1, -1));
 
         txt_simbolosEnLaPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txt_simbolosEnLaPilaActionPerformed(evt);
             }
         });
-        jPanel1.add(txt_simbolosEnLaPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 170, 28));
+        jPanel1.add(txt_simbolosEnLaPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 240, 170, 28));
 
         cargarArchivo.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         cargarArchivo.setText("Cargar archivo");
@@ -131,7 +149,118 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel1.add(cargarArchivo, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 70, -1, -1));
 
-        tblMatrizT.setModel(new javax.swing.table.DefaultTableModel(
+        jPanel1.add(cboEstados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 280, 100, 30));
+
+        btnVerModificarEstado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnVerModificarEstado.setForeground(new java.awt.Color(255, 255, 255));
+        btnVerModificarEstado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/menu_show.png"))); // NOI18N
+        btnVerModificarEstado.setToolTipText("Ver o Editar");
+        btnVerModificarEstado.setBorder(null);
+        btnVerModificarEstado.setBorderPainted(false);
+        btnVerModificarEstado.setContentAreaFilled(false);
+        btnVerModificarEstado.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnVerModificarEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnVerModificarEstadoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnVerModificarEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, 30, 30));
+
+        btnAñadirEstado.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAñadirEstado.setForeground(new java.awt.Color(255, 255, 255));
+        btnAñadirEstado.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_dark.png"))); // NOI18N
+        btnAñadirEstado.setToolTipText("Añadir");
+        btnAñadirEstado.setBorder(null);
+        btnAñadirEstado.setBorderPainted(false);
+        btnAñadirEstado.setContentAreaFilled(false);
+        btnAñadirEstado.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAñadirEstado.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAñadirEstadoActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAñadirEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 280, 30, 30));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel9.setText("autómata de pila o carguelos desde un archivo de texto");
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel10.setText("A continuación ingrese cada uno de los datos de su ");
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, -1, -1));
+
+        jPanel1.add(cboSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 110, 30));
+
+        btnAgregarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarSimEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_dark.png"))); // NOI18N
+        btnAgregarSimEntrada.setToolTipText("Agregar");
+        btnAgregarSimEntrada.setBorder(null);
+        btnAgregarSimEntrada.setBorderPainted(false);
+        btnAgregarSimEntrada.setContentAreaFilled(false);
+        btnAgregarSimEntrada.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregarSimEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarSimEntradaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAgregarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 150, 30, 30));
+
+        btnEditarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnEditarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
+        btnEditarSimEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
+        btnEditarSimEntrada.setToolTipText("Modificar");
+        btnEditarSimEntrada.setBorder(null);
+        btnEditarSimEntrada.setBorderPainted(false);
+        btnEditarSimEntrada.setContentAreaFilled(false);
+        btnEditarSimEntrada.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEditarSimEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarSimEntradaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEditarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 150, 30, 30));
+
+        btnEliminarSimEntrada.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnEliminarSimEntrada.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarSimEntrada.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/showdeleted.png"))); // NOI18N
+        btnEliminarSimEntrada.setToolTipText("Eliminar");
+        btnEliminarSimEntrada.setBorder(null);
+        btnEliminarSimEntrada.setBorderPainted(false);
+        btnEliminarSimEntrada.setContentAreaFilled(false);
+        btnEliminarSimEntrada.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminarSimEntrada.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarSimEntradaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEliminarSimEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 150, 30, 30));
+        jPanel1.add(txtSimboloEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 150, 90, 30));
+
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 410, 530));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel6.setText("Hilera:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        btn_iniciarPila.setText("Iniciar pila");
+        btn_iniciarPila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_iniciarPilaActionPerformed(evt);
+            }
+        });
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
+
+        txtArea_hilera.setColumns(20);
+        txtArea_hilera.setRows(5);
+        jScrollPane1.setViewportView(txtArea_hilera);
+
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 200, 40));
+
+        tbl_pila.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -142,90 +271,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(tblMatrizT);
+        jScrollPane3.setViewportView(tbl_pila);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, 350, 150));
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 50, 340));
 
-        btnGenerarMatrizT.setText("Generar tabla(s) de transiciones");
-        btnGenerarMatrizT.addActionListener(new java.awt.event.ActionListener() {
+        btn_siguienteCaracter.setText("Siguiente carácter");
+        btn_siguienteCaracter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarMatrizTActionPerformed(evt);
+                btn_siguienteCaracterActionPerformed(evt);
             }
         });
-        jPanel1.add(btnGenerarMatrizT, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 320, 190, -1));
-
-        jTextArea1.setEditable(false);
-        jTextArea1.setColumns(5);
-        jTextArea1.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
-        jTextArea1.setRows(2);
-        jTextArea1.setTabSize(20);
-        jTextArea1.setText("    A continuación ingrese cada uno de los datos de su \nautómata de pila o carguelos desde un archivo de texto");
-        jTextArea1.setAutoscrolls(false);
-        jTextArea1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jTextArea1.setCaretColor(new java.awt.Color(255, 255, 255));
-        jTextArea1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jTextArea1.setDisabledTextColor(new java.awt.Color(255, 255, 255));
-        jScrollPane3.setViewportView(jTextArea1);
-
-        jPanel1.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, 370, 40));
-
-        jPanel1.add(cboEstados, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 100, 30));
-
-        btnVer.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnVer.setForeground(new java.awt.Color(255, 255, 255));
-        btnVer.setIcon(new javax.swing.ImageIcon("G:\\My Drive\\U\\2018-1\\Teoria de lenguajes y laboratorio\\Práctica 1\\Practica1-Teoria-de-Lenguajes\\src\\Imagenes\\menu_show.png")); // NOI18N
-        btnVer.setToolTipText("Ver o Editar");
-        btnVer.setActionCommand("");
-        btnVer.setBorder(null);
-        btnVer.setBorderPainted(false);
-        btnVer.setContentAreaFilled(false);
-        btnVer.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnVer.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVerActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnVer, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 190, 30, 30));
-
-        btnAñadir.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAñadir.setForeground(new java.awt.Color(255, 255, 255));
-        btnAñadir.setIcon(new javax.swing.ImageIcon("G:\\My Drive\\U\\2018-1\\Teoria de lenguajes y laboratorio\\Práctica 1\\Practica1-Teoria-de-Lenguajes\\src\\Imagenes\\add_dark.png")); // NOI18N
-        btnAñadir.setToolTipText("Añadir");
-        btnAñadir.setBorder(null);
-        btnAñadir.setBorderPainted(false);
-        btnAñadir.setContentAreaFilled(false);
-        btnAñadir.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAñadir.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAñadirActionPerformed(evt);
-            }
-        });
-        jPanel1.add(btnAñadir, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 190, 30, 30));
-
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 410, 530));
-
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel6.setText("Hilera:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
-        jPanel2.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 20, 210, -1));
-
-        jButton2.setText("Evaluar");
-        jPanel2.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, -1));
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 120, 30, 310));
-
-        jLabel7.setText("La hilera ingresada es : ");
-        jPanel2.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 470, -1, -1));
-
-        jTextField2.setText("válida/inválida");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jPanel2.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 470, 90, -1));
+        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 480, -1, -1));
 
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 50, 300, 530));
 
@@ -244,31 +300,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         if(archivo != null){
         try {
             ConversorAutomata conversor = new ConversorAutomata();
-            AutomataPila automata = conversor.convertir(archivo);
-            //matrizT = new CtrlMatrizTransiciones(automata.getMatrizTransiciones());
-            //tblMatrizT.setModel(matrizT);
-            String simbolos = "";
-            for(String i : automata.getSimbolosEntrada()){
-                simbolos += i + " ";
-            }
-            txt_simbolosDeEntrada.setText(simbolos);
-            simbolos = "";
-            for(String i : automata.getSimbolosPila()){
-                simbolos += i + " ";
-            }
-            txt_simbolosEnLaPila.setText(simbolos);
-            simbolos = "";
-            for(String i : automata.getConfiguracionInicial()){
-                simbolos += i + " ";
-            }
-            txt_confInicial.setText(simbolos);
-            txt_estadoInicial.setText(automata.getEstadoInicial());
-            
-            estados = automata.getEstados();
-            for(Estado e : estados){
-                cboEstados.addItem(e.getNombre());
-            }
-            
+            automata = conversor.convertir(archivo);
+            llenarFormulario();    
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
         }
@@ -285,25 +318,118 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txt_simbolosEnLaPilaActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void btnAñadirEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirEstadoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_btnAñadirEstadoActionPerformed
 
-    private void btnGenerarMatrizTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarMatrizTActionPerformed
-          
-    }//GEN-LAST:event_btnGenerarMatrizTActionPerformed
-
-    private void btnAñadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAñadirActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAñadirActionPerformed
-
-    private void btnVerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerActionPerformed
+    private void btnVerModificarEstadoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerModificarEstadoActionPerformed
         estadoSeleccionado = cboEstados.getSelectedItem().toString();
         VistaEditarEstado vee = new VistaEditarEstado();
         vee.setVisible(true);
         
-    }//GEN-LAST:event_btnVerActionPerformed
+    }//GEN-LAST:event_btnVerModificarEstadoActionPerformed
 
+    private void btnAgregarSimEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSimEntradaActionPerformed
+        automataDAO = new AutomataPilaDAO();
+        try {
+            automata = automataDAO.agregarSimboloEntrada(automata, txtSimboloEntrada.getText());
+            //llenarFormulario();
+        } catch (AutomataPilaExcepcion ex) {
+            JOptionPane.showMessageDialog(null, "Error al agregar simbolo de entrada: "+ ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarSimEntradaActionPerformed
+
+    private void btnEditarSimEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarSimEntradaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEditarSimEntradaActionPerformed
+
+    private void btnEliminarSimEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSimEntradaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnEliminarSimEntradaActionPerformed
+
+    private void btn_iniciarPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_iniciarPilaActionPerformed
+       hilera = this.txtArea_hilera.getText();
+
+       ArrayList<String> configuracionInicial = automata.getConfiguracionInicial(); // obtengo la config de la pila
+       int numeroSimbolos = configuracionInicial.size();
+       defaultTableModel.setColumnCount(1);
+       defaultTableModel.setRowCount(numeroSimbolos); //que se configure segun los simbolos a apilar en la conf inicial
+       reconocedorHilera = new ReconocedorHilera(automata); //constructor que me apila la config inicial
+       pila = reconocedorHilera.getPila();
+       List<String> pilaCopia = new ArrayList<>(pila); //hago copia de la pila para usarla en btn_siguienteCaracter
+       llenarPila(pilaCopia); //mapea los valores de mi defaultTableModel a la pila Copia
+       
+       estadoHilera =0;
+       numeroCaracter =0;
+    }//GEN-LAST:event_btn_iniciarPilaActionPerformed
+
+    private void btn_siguienteCaracterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_siguienteCaracterActionPerformed
+        //0:avance, 1:acepte, 2:rechace, 3: retenga
+       List<String> pilaCopia;
+       switch (estadoHilera) {
+
+           case 0:
+               caracterAcual = String.valueOf(hilera.charAt(numeroCaracter));
+               numeroCaracter++;
+               estadoHilera = reconocedorHilera.recorrerCaracter(caracterAcual); // si es true significa que si existe en mi reocnomiento 
+               pila = reconocedorHilera.getPila(); // actualizo la pila  
+               pilaCopia = new ArrayList<>(pila);  //actualizo la pila
+               llenarPila(pilaCopia); //la lleno con los valores actuales                
+               break;
+
+           case 1:
+               JOptionPane.showMessageDialog(null, "Hilera Aceptada", "Anuncio", JOptionPane.INFORMATION_MESSAGE);
+               break;
+
+           case 2:
+               JOptionPane.showMessageDialog(null, "Hilera Rechazada", "Anuncio", JOptionPane.INFORMATION_MESSAGE);
+               break;
+
+           case 3:
+               estadoHilera = reconocedorHilera.recorrerCaracter(caracterAcual); // si es true significa que si existe en mi reocnomiento 
+               pila = reconocedorHilera.getPila(); // actualizo la pila  
+               pilaCopia = new ArrayList<>(pila);  //actualizo la pila
+               llenarPila(pilaCopia); //la lleno con los valores actuales
+               break;
+
+       }
+    }//GEN-LAST:event_btn_siguienteCaracterActionPerformed
+
+    private void llenarFormulario(){
+        String simbolos = "";
+        for(String i : automata.getSimbolosEntrada()){
+            simbolos += i + " ";
+        }
+        txt_simbolosDeEntrada.setText(simbolos);
+        simbolos = "";
+        for(String i : automata.getSimbolosPila()){
+            simbolos += i + " ";
+        }
+        txt_simbolosEnLaPila.setText(simbolos);
+        simbolos = "";
+        for(String i : automata.getConfiguracionInicial()){
+            simbolos += i + " ";
+        }
+        txt_confInicial.setText(simbolos);
+        txt_estadoInicial.setText(automata.getEstadoInicial());
+
+        estados = automata.getEstados();
+        for(Estado e : estados){
+            cboEstados.addItem(e.getNombre());
+        } 
+    }
+    
+    private void llenarPila(List<String> pila) {
+       int col = defaultTableModel.getColumnCount();
+       defaultTableModel.setRowCount(pila.size());
+       int fil = defaultTableModel.getRowCount();
+       for (int i = 0; i < fil; i++) {
+           for (int j = 0; j < col; j++) {
+               defaultTableModel.setValueAt(pila.get(i), i, j); // me modifica en defaultTable (objeto a agregar, en la fila y columna dada)
+           }
+       }
+   }
+    
     /**
      * @param args the command line arguments
      */
@@ -340,29 +466,32 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnAñadir;
-    private javax.swing.JButton btnGenerarMatrizT;
-    private javax.swing.JButton btnVer;
+    private javax.swing.JButton btnAgregarSimEntrada;
+    private javax.swing.JButton btnAñadirEstado;
+    private javax.swing.JButton btnEditarSimEntrada;
+    private javax.swing.JButton btnEliminarSimEntrada;
+    private javax.swing.JButton btnVerModificarEstado;
+    private javax.swing.JButton btn_iniciarPila;
+    private javax.swing.JButton btn_siguienteCaracter;
     private javax.swing.JButton cargarArchivo;
     private javax.swing.JComboBox<String> cboEstados;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> cboSimEntrada;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTable tblMatrizT;
+    private javax.swing.JTable tbl_pila;
+    private javax.swing.JTextArea txtArea_hilera;
+    private javax.swing.JTextField txtSimboloEntrada;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_estadoInicial;
     private javax.swing.JTextField txt_simbolosDeEntrada;

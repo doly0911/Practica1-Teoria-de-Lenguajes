@@ -5,10 +5,29 @@
  */
 package Control;
 
+import Modelo.AutomataPila;
+import Utils.ReconocedorHilera;
+import java.util.Stack;
+
 /**
  *
  * @author pao
  */
 public class CtrlVentanaPrincipal {
-    
+    private Stack<String> pila;
+    private ReconocedorHilera reconocedorHilera;
+
+    public Stack<String> cargarPila(AutomataPila automataPils){
+    reconocedorHilera = new ReconocedorHilera(automataPils);
+    this.setPila(reconocedorHilera.getPila());
+    return reconocedorHilera.getPila();
+    }
+
+    public void setPila(Stack<String> pila) {
+    this.pila = pila;
+    }
+
+    public void setReconocedorHilera(ReconocedorHilera reconocedorHilera) {
+    this.reconocedorHilera = reconocedorHilera;
+    }
 }
