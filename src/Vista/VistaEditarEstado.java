@@ -6,7 +6,6 @@
 package Vista;
 
 import Control.CtrlMatrizTransiciones;
-import Control.GeneradorImagen;
 import Modelo.AutomataPila;
 import Modelo.Estado;
 import javax.swing.JOptionPane;

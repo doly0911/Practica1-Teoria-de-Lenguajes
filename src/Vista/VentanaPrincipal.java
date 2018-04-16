@@ -102,7 +102,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         cbo_listaTransiciones = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         txt_operacionEntrada = new javax.swing.JTextField();
         txt_nomTransicion = new javax.swing.JTextField();
         txt_operacionPila = new javax.swing.JTextField();
@@ -110,6 +109,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel5 = new javax.swing.JPanel();
         btn_agregarTransicion = new javax.swing.JButton();
         btn_modificarTransicion = new javax.swing.JButton();
+        jLabel15 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         btn_iniciarPila = new javax.swing.JButton();
@@ -119,6 +119,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         tbl_pila = new javax.swing.JTable();
         btn_siguienteCaracter = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        jLabel16 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -338,10 +340,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel7.setText("Instrucciones:");
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 600, -1, -1));
-
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel14.setText("Transiciones:");
-        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
         jPanel1.add(txt_operacionEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 590, 80, 30));
         jPanel1.add(txt_nomTransicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 540, 80, 30));
         jPanel1.add(txt_operacionPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 590, 80, 30));
@@ -381,14 +379,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 380, 160));
 
+        jLabel15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel15.setText("Transiciones:");
+        jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 420, 660));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel6.setText("Hilera:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
 
         btn_iniciarPila.setText("Iniciar pila");
         btn_iniciarPila.addActionListener(new java.awt.event.ActionListener() {
@@ -396,13 +399,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_iniciarPilaActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 70, -1, -1));
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, -1));
 
         txtArea_hilera.setColumns(20);
         txtArea_hilera.setRows(5);
         jScrollPane1.setViewportView(txtArea_hilera);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 10, 200, 40));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 200, 40));
 
         tbl_pila.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -417,7 +420,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tbl_pila);
 
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 120, 50, 340));
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 50, 340));
 
         btn_siguienteCaracter.setText("Siguiente carácter");
         btn_siguienteCaracter.addActionListener(new java.awt.event.ActionListener() {
@@ -425,13 +428,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_siguienteCaracterActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 480, -1, -1));
+        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 500, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 300, 530));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 300, 550));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel8.setText("Autómatas de pila");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel14.setText("Es importante iniciar la pila cada vez que se ingrese ");
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 620, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel16.setText("una hilera.");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 640, -1, 20));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -785,6 +796,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
+    private javax.swing.JLabel jLabel15;
+    private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
