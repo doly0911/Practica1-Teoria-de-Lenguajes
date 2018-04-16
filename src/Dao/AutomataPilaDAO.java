@@ -53,7 +53,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                 instrucciones.add(1, INSTRUCCION_CAMBIA + estado.getNombre()); 
                 transiciones.replace(transicion.getKey().toString(), instrucciones);   //actualizo el Hashmap        
             }            
-            it.remove(); // avoids a ConcurrentModificationException 
+            
         }
         automataPila.setEstados(estados);   //actualizo el AP     
         automataPila.setTransiciones(transiciones);        
@@ -113,17 +113,18 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     }
 
     @Override
-    public void agregarTransicion(AutomataPila automataPila, String llave, ArrayList<String> valor) throws AutomataPilaExcepcion {
+    public AutomataPila agregarTransicion(AutomataPila automataPila, String llave, ArrayList<String> valor) throws AutomataPilaExcepcion {
         validarTransicion(llave, valor);
         if (automataPila.getTransiciones().get(llave) == null) {
             HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
             transiciones.put(llave, valor);
-            //automataPila.setTransiciones(transiciones);
+            automataPila.setTransiciones(transiciones);
         }
+        return automataPila;
     }
 
     @Override
-    public void modificarTransicion(AutomataPila automataPila, String llave, String nuevaLlave, ArrayList<String> valor) throws AutomataPilaExcepcion {
+    public AutomataPila modificarTransicion(AutomataPila automataPila, String llave, String nuevaLlave, ArrayList<String> valor) throws AutomataPilaExcepcion {
         validarTransicion(llave, valor);
         HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
         if (llave.equalsIgnoreCase(nuevaLlave)) {
@@ -132,10 +133,12 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
             transiciones.remove(llave);
             transiciones.put(nuevaLlave, valor);
         }
+        automataPila.setTransiciones(transiciones);
         int filas = automataPila.getSimbolosPila().size();
         int columnas = automataPila.getSimbolosEntrada().size();
         ArrayList<Estado> estados = automataPila.getEstados();
         String[][] transicionesEstado;
+        String[][] transicionesMatrizT;
         for (Estado e : estados) {
             transicionesEstado = e.getTransicionesEstado();
             for (int i = 0; i < filas; i++) {
@@ -145,8 +148,19 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                     }
                 }
             }
+            
+            transicionesMatrizT = e.getMatrizT();
+           for (int i = 1; i < filas+1; i++) {
+               for (int j = 1; j < columnas+1; j++) {
+                   if (transicionesMatrizT[i][j].equalsIgnoreCase(llave)) {
+                       transicionesMatrizT[i][j] = nuevaLlave;
+                   }
+               }                
+           }
             e.setTransicionesEstado(transicionesEstado);
+            e.setMatrizT(transicionesMatrizT);
         }
+        return automataPila;
     }
 
     protected void validarTransicion(String llave, ArrayList<String> valor) throws AutomataPilaExcepcion {
@@ -230,7 +244,6 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                 if (instruccion.contains(simboloPila)) {
                     instrucciones.add(0, INSTRUCCION_NINGUNA);
                 }
-                it.remove(); // avoids a ConcurrentModificationException 
             }
 
         } else {
@@ -282,7 +295,6 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
 //                }
 //                transiciones.replace(transicion.getKey().toString(), instrucciones); //actualiza el hashmap
 //            }
-//            it.remove(); // avoids a ConcurrentModificationException 
 //        }
 //        automataPila.setTransiciones(transiciones); //actualiza el AP 
         return automataPila;

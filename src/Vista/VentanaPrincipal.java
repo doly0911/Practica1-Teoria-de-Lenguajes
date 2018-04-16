@@ -21,6 +21,9 @@ import java.util.List;
 import java.util.Stack;
 import javax.swing.table.DefaultTableModel;
 import Control.CtrlVentanaPrincipal;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  *
@@ -31,7 +34,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     File archivo;
     public AutomataPila automata;
     IAutomataPilaDAO automataDAO;
-    public static ArrayList<Estado> estados;  //no es necesario que sea global
     public static String estadoSeleccionado;
     private DefaultTableModel defaultTableModel;
     private Stack<String> pila;
@@ -41,6 +43,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private String hilera;
     private String caracterAcual;
     private CtrlVentanaPrincipal ctrlVentanaPrincipal;
+    private HashMap<String, ArrayList<String>> transiciones;
     
     /**
      * Creates new form VentanaPrincipal
@@ -92,10 +95,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         cboSimPila = new javax.swing.JComboBox<>();
         btnAgregarSimPila = new javax.swing.JButton();
-        btnModificarSimPila = new javax.swing.JButton();
         btnEliminarSimPila = new javax.swing.JButton();
         txt_nuevoSimboloPila = new javax.swing.JTextField();
+        btnModificarSimPila = new javax.swing.JButton();
         txtEstadoInicial = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        cbo_listaTransiciones = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel14 = new javax.swing.JLabel();
+        txt_operacionEntrada = new javax.swing.JTextField();
+        txt_nomTransicion = new javax.swing.JTextField();
+        txt_operacionPila = new javax.swing.JTextField();
+        txt_operacionEstado = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        btn_agregarTransicion = new javax.swing.JButton();
+        btn_modificarTransicion = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         btn_iniciarPila = new javax.swing.JButton();
@@ -118,8 +132,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 440, -1, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel3.setText("Estados:");
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+        jLabel3.setText("Nombre:");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 550, -1, -1));
         jPanel1.add(txt_confInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 430, 190, 28));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
@@ -276,21 +290,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel4.add(btnAgregarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 30, 30));
 
-        btnModificarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnModificarSimPila.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
-        btnModificarSimPila.setToolTipText("Modificar");
-        btnModificarSimPila.setBorder(null);
-        btnModificarSimPila.setBorderPainted(false);
-        btnModificarSimPila.setContentAreaFilled(false);
-        btnModificarSimPila.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnModificarSimPila.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarSimPilaActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnModificarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 30, 30));
-
         btnEliminarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         btnEliminarSimPila.setForeground(new java.awt.Color(255, 255, 255));
         btnEliminarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/showdeleted.png"))); // NOI18N
@@ -307,8 +306,80 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel4.add(btnEliminarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 30, 30));
         jPanel4.add(txt_nuevoSimboloPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 90, 30));
 
+        btnModificarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnModificarSimPila.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
+        btnModificarSimPila.setToolTipText("Modificar");
+        btnModificarSimPila.setBorder(null);
+        btnModificarSimPila.setBorderPainted(false);
+        btnModificarSimPila.setContentAreaFilled(false);
+        btnModificarSimPila.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificarSimPila.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarSimPilaActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnModificarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 30, 30));
+
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 380, 120));
         jPanel1.add(txtEstadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 80, 30));
+
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel13.setText("Estados:");
+        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+
+        cbo_listaTransiciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbo_listaTransicionesActionPerformed(evt);
+            }
+        });
+        jPanel1.add(cbo_listaTransiciones, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 500, 80, -1));
+
+        jLabel7.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel7.setText("Instrucciones:");
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 600, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel14.setText("Transiciones:");
+        jPanel1.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
+        jPanel1.add(txt_operacionEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 590, 80, 30));
+        jPanel1.add(txt_nomTransicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 540, 80, 30));
+        jPanel1.add(txt_operacionPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 590, 80, 30));
+        jPanel1.add(txt_operacionEstado, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 590, 80, 30));
+
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btn_agregarTransicion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_agregarTransicion.setForeground(new java.awt.Color(255, 255, 255));
+        btn_agregarTransicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_dark.png"))); // NOI18N
+        btn_agregarTransicion.setToolTipText("Añadir");
+        btn_agregarTransicion.setBorder(null);
+        btn_agregarTransicion.setBorderPainted(false);
+        btn_agregarTransicion.setContentAreaFilled(false);
+        btn_agregarTransicion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_agregarTransicion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_agregarTransicionActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btn_agregarTransicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 20, 30, 30));
+
+        btn_modificarTransicion.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btn_modificarTransicion.setForeground(new java.awt.Color(255, 255, 255));
+        btn_modificarTransicion.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
+        btn_modificarTransicion.setToolTipText("Modificar");
+        btn_modificarTransicion.setBorder(null);
+        btn_modificarTransicion.setBorderPainted(false);
+        btn_modificarTransicion.setContentAreaFilled(false);
+        btn_modificarTransicion.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btn_modificarTransicion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_modificarTransicionActionPerformed(evt);
+            }
+        });
+        jPanel5.add(btn_modificarTransicion, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 30, 30));
+
+        jPanel1.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 480, 380, 160));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 420, 660));
 
@@ -516,7 +587,90 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnEliminarSimPilaActionPerformed
 
+    private void btn_modificarTransicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_modificarTransicionActionPerformed
+       String llaveActual = (String) cbo_listaTransiciones.getSelectedItem();
+       String llaveNueva = txt_nomTransicion.getText();
+       automataDAO = new AutomataPilaDAO();
+
+       ArrayList<String> instruccion = new ArrayList<>();
+       instruccion.add(txt_operacionPila.getText());
+       instruccion.add(txt_operacionEstado.getText());
+       instruccion.add(txt_operacionEntrada.getText());
+
+       try {
+           automata = automataDAO.modificarTransicion(automata, llaveActual, llaveNueva, instruccion);
+           cbo_listaTransiciones.removeAllItems();
+           cbo_listaTransiciones.addItem("agregar");
+           transiciones = automata.getTransiciones();
+           Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
+           while (it.hasNext()) {
+               Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+               String llave = (String) transicion.getKey();
+               cbo_listaTransiciones.addItem(llave);
+           }
+           JOptionPane.showMessageDialog(null, "Transicion modificada");
+
+       } catch (AutomataPilaExcepcion ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+       }      
+    }//GEN-LAST:event_btn_modificarTransicionActionPerformed
+
+    private void btn_agregarTransicionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_agregarTransicionActionPerformed
+        String nomNuevaTransicion = txt_nomTransicion.getText();
+       ArrayList<String> instruccion = new ArrayList<>();
+       instruccion.add(txt_operacionPila.getText());
+       instruccion.add(txt_operacionEstado.getText());
+       instruccion.add(txt_operacionEntrada.getText());
+       automataDAO = new AutomataPilaDAO();
+       try {
+           automata = automataDAO.agregarTransicion(automata, nomNuevaTransicion, instruccion);            
+           cbo_listaTransiciones.removeAllItems();
+           cbo_listaTransiciones.addItem("agregar");
+           transiciones = automata.getTransiciones();
+           Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
+           while (it.hasNext()) {
+               Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+               String llave = (String) transicion.getKey();
+               cbo_listaTransiciones.addItem(llave);
+           }
+           JOptionPane.showMessageDialog(null, "Transicion agregada");
+       } catch (AutomataPilaExcepcion ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+       }
+    }//GEN-LAST:event_btn_agregarTransicionActionPerformed
+
+    private void cbo_listaTransicionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbo_listaTransicionesActionPerformed
+         if (transiciones != null) {
+           String llaveActual = (String) cbo_listaTransiciones.getSelectedItem();
+           if (llaveActual != null){
+           if (llaveActual.equalsIgnoreCase("agregar")) {
+               txt_nomTransicion.setText("");
+               txt_operacionPila.setText("");
+               txt_operacionEstado.setText("");
+               txt_operacionEntrada.setText("");
+               return;
+           }
+           }
+
+           ArrayList<String> instrucciones = transiciones.get(llaveActual);
+           if (instrucciones != null) {
+               txt_nomTransicion.setText(llaveActual);
+               txt_operacionPila.setText(instrucciones.get(0));
+
+               if (instrucciones.size() > 1) {
+                   txt_operacionEstado.setText(instrucciones.get(1));
+                   txt_operacionEntrada.setText(instrucciones.get(2));
+               } else {
+                   txt_operacionEstado.setText("");
+                   txt_operacionEntrada.setText("");
+               }
+           }
+
+       }
+    }//GEN-LAST:event_cbo_listaTransicionesActionPerformed
+
     private void llenarFormulario(){
+        ArrayList<Estado> estados;
         
         String simbolos = "";
         cboSimEntrada.removeAllItems();
@@ -547,7 +701,18 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         estados = automata.getEstados();
         for(Estado e : estados){
             cboEstados.addItem(e.getNombre());
-        } 
+        }
+        
+        cbo_listaTransiciones.removeAllItems();
+       transiciones = automata.getTransiciones();
+       cbo_listaTransiciones.addItem("agregar");
+       Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
+       while (it.hasNext()) {
+
+           Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+           String llave = (String) transicion.getKey();
+           cbo_listaTransiciones.addItem(llave);
+       }
     }
     
     private void llenarPila(List<String> pila) {
@@ -605,35 +770,46 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnModificarSimEntrada;
     private javax.swing.JButton btnModificarSimPila;
     private javax.swing.JButton btnVerModificarEstado;
+    private javax.swing.JButton btn_agregarTransicion;
     private javax.swing.JButton btn_iniciarPila;
+    private javax.swing.JButton btn_modificarTransicion;
     private javax.swing.JButton btn_siguienteCaracter;
     private javax.swing.JButton cargarArchivo;
     private javax.swing.JComboBox<String> cboEstados;
     private javax.swing.JComboBox<String> cboSimEntrada;
     private javax.swing.JComboBox<String> cboSimPila;
+    private javax.swing.JComboBox<String> cbo_listaTransiciones;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tbl_pila;
     private javax.swing.JTextArea txtArea_hilera;
     private javax.swing.JTextField txtEstadoInicial;
     private javax.swing.JTextField txt_confInicial;
+    private javax.swing.JTextField txt_nomTransicion;
     private javax.swing.JTextField txt_nuevoSimboloEntrada;
     private javax.swing.JTextField txt_nuevoSimboloPila;
+    private javax.swing.JTextField txt_operacionEntrada;
+    private javax.swing.JTextField txt_operacionEstado;
+    private javax.swing.JTextField txt_operacionPila;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosEnLaPila;
     // End of variables declaration//GEN-END:variables

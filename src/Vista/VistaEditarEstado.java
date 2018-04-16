@@ -20,6 +20,7 @@ import javax.swing.WindowConstants;
 public class VistaEditarEstado extends javax.swing.JFrame {
     
     CtrlMatrizTransiciones modeloT;
+    AutomataPila automata;
     
     /**
      * Creates new form EditarEstado
@@ -31,7 +32,7 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         tblMatrizT.getTableHeader().setVisible(false);
         tblMatrizT.setAutoResizeMode( JTable.AUTO_RESIZE_OFF );
-        //vp = new VentanaPrincipal();
+        automata = a;
         
         for(Estado e : a.getEstados()){
             if(VentanaPrincipal.estadoSeleccionado.equals(e.getNombre())){

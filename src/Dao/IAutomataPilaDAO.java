@@ -36,9 +36,9 @@ public interface IAutomataPilaDAO {
     
     public int consultarPosicionEstado(AutomataPila automataPila,String nombreEstado);
     
-    public void agregarTransicion (AutomataPila automataPila, String llave, ArrayList<String> valor) throws AutomataPilaExcepcion;
+    public AutomataPila agregarTransicion (AutomataPila automataPila, String llave, ArrayList<String> valor) throws AutomataPilaExcepcion;
     
-    public void modificarTransicion(AutomataPila automataPila, String llave, String nuevaLlave, ArrayList<String> valor)throws AutomataPilaExcepcion;
+    public AutomataPila modificarTransicion(AutomataPila automataPila, String llave, String nuevaLlave, ArrayList<String> valor)throws AutomataPilaExcepcion;
     
     public Estado consultarEstadoInicial(AutomataPila automataPila);
     
