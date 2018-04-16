@@ -159,35 +159,45 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     }
 
     @Override
-    public void agregarSimboloPila(AutomataPila automataPila, String simbolosPila) throws AutomataPilaExcepcion {
-        if (automataPila.getSimbolosPila().contains(simbolosPila)) {
+    public AutomataPila agregarSimboloPila(AutomataPila automataPila, String simbolosPila) throws AutomataPilaExcepcion {
+        ArrayList simbolos = automataPila.getSimbolosPila();
+        if (simbolos.contains(simbolosPila)) {
             throw new AutomataPilaExcepcion("El simbolo de la pila ya esta definido");
         }
+        simbolos.add(simbolos.size(), simbolosPila);
         validarSimbolos(automataPila, simbolosPila);
         int filas = automataPila.getSimbolosPila().size();
         int columnas = automataPila.getSimbolosEntrada().size();
-        String[][] nuevaTransicionesEstado = new String[filas + 1][columnas];
+        String[][] nuevaTransicionesEstado = new String[filas][columnas];
         String[][] transicionesEstado;
         ArrayList<Estado> estados = automataPila.getEstados();
-        for (Estado e : estados) {
+        int k;
+        for ( k = 0; k < estados.size(); k++) {
+            Estado e = estados.get(k);
             transicionesEstado = e.getTransicionesEstado();
-            for (int i = 0; i < filas; i++) {
-                for (int j = 0; j < columnas; j++) {
+            for (int i = 0; i < filas-1; i++) {
+                for (int j = 0; j < columnas ; j++) {
                     nuevaTransicionesEstado[i][j] = transicionesEstado[i][j];
                 }
             }
             e.setTransicionesEstado(nuevaTransicionesEstado);
+            e.setMatrizT(crearMatrizT(automataPila.getSimbolosEntrada(), simbolos, e.getTransicionesEstado()));
+            estados.set(k, e);
         }
+        automataPila.setEstados(estados);
+        automataPila.setSimbolosEntrada(simbolos);
+        return automataPila;
     }
 
     @Override
-    public void eliminarSimboloPila(AutomataPila automataPila, String simboloPila) throws AutomataPilaExcepcion {
+    public AutomataPila eliminarSimboloPila(AutomataPila automataPila, String simboloPila) throws AutomataPilaExcepcion {
         ArrayList<String> simbolosPila = automataPila.getSimbolosPila();
         if (simbolosPila.contains(simboloPila)) {
             //Modifico la matriz de estados,eliminando una fila
             int indice = simbolosPila.indexOf(simboloPila); //posicion del simbolo a eliminar
             int filas = automataPila.getSimbolosPila().size();
             int columnas = automataPila.getSimbolosEntrada().size();
+            simbolosPila.remove(simboloPila);
             String[][] nuevaTransicionesEstado = new String[filas - 1][columnas]; // creo mi nueva matriz de estados
             String[][] transicionesEstado; // la usare para recorrer la antigua matriz
             ArrayList<Estado> estados = automataPila.getEstados();  // obtengo todos mis estados
@@ -197,6 +207,7 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                 transicionesEstado = e.getTransicionesEstado(); // me trae los estados de la antigua matriz                
                 for (int i = 0; i < filas; i++) {
                     //si es diferente a la posicion que busco, que la mapee a la nueva matriz
+                    k = 0;
                     if (i != indice) {
                         for (int j = 0; j < columnas; j++) {
                             nuevaTransicionesEstado[k][j] = transicionesEstado[i][j];
@@ -205,9 +216,9 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                     }
                 }
                 e.setTransicionesEstado(nuevaTransicionesEstado);
+                e.setMatrizT(crearMatrizT(automataPila.getSimbolosEntrada(), simbolosPila, nuevaTransicionesEstado));
             }
-            //elimino el simbolo de entrada
-            simbolosPila.remove(simboloPila);
+
             automataPila.setSimbolosPila(simbolosPila);
             //actualizar las transiciones 
             HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
@@ -225,16 +236,28 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         } else {
             throw new AutomataPilaExcepcion("El simbolo de la pila que desea eliminar no existe");
         }
-
+        return automataPila;
     }
 
     @Override
-    public void modificarSimboloPila(AutomataPila automataPila, String simboloPila, String nuevoSimboloPila) throws AutomataPilaExcepcion {
+    public AutomataPila modificarSimboloPila(AutomataPila automataPila, String simboloPila, String nuevoSimboloPila) throws AutomataPilaExcepcion {
         validarSimbolos(automataPila, nuevoSimboloPila);
         ArrayList<String> simbolosPila = automataPila.getSimbolosPila();
         if (simbolosPila.contains(simboloPila)) {
             int indice = simbolosPila.indexOf(simboloPila);
-            simbolosPila.add(indice, nuevoSimboloPila);
+            simbolosPila.set(indice, nuevoSimboloPila);
+            automataPila.setSimbolosPila(simbolosPila);
+            
+            String [][] matrizT;
+            ArrayList<Estado> estados = automataPila.getEstados();
+            for (int k = 0; k < estados.size(); k++) {
+                Estado e = estados.get(k); 
+                matrizT = e.getMatrizT();
+                matrizT[indice+1][0] = nuevoSimboloPila; 
+                e.setMatrizT(matrizT);
+                estados.set(k, e);
+            }
+            automataPila.setEstados(estados); 
         } else {
             throw new AutomataPilaExcepcion("El simbolo de la pila que quiere modificar no existe");
         }
@@ -242,25 +265,27 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
         ArrayList<String> configuracionInicial = automataPila.getConfiguracionInicial();
         if (configuracionInicial.contains(simboloPila)) {
             int indice = configuracionInicial.indexOf(simboloPila);
-            configuracionInicial.add(indice, nuevoSimboloPila);
+            configuracionInicial.set(indice, nuevoSimboloPila);
+            automataPila.setConfiguracionInicial(configuracionInicial);
         }
         //actualizar las instrucciones de las transiciones
-        HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
-        Iterator it = transiciones.entrySet().iterator(); //recorreindo el HashMap
-        while (it.hasNext()) {
-            Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
-            ArrayList<String> instrucciones = (ArrayList<String>) transicion.getValue(); //casting para convertir el objevt en arraylist
-            String instruccion = instrucciones.get(0); // obtengo la primera posición de las transiciones = operac pila
-            if (instruccion.contains(INSTRUCCION_APILAR)) {
-                String simbolo = instruccion.substring(instruccion.indexOf("(") + 1, instruccion.indexOf(")")); //subtraigo el simbolo a apilar
-                if (simbolo.equalsIgnoreCase(simboloPila)) { // si es igual al valor viejo (antes de la modificacion)
-                    instrucciones.add(0, INSTRUCCION_APILAR + "(" + nuevoSimboloPila + ")");   // reemplacelo apile(valor nuevo)
-                }
-                transiciones.replace(transicion.getKey().toString(), instrucciones); //actualiza el hashmap
-            }
-            it.remove(); // avoids a ConcurrentModificationException 
-        }
-        automataPila.setTransiciones(transiciones); //actualiza el AP 
+//        HashMap<String, ArrayList<String>> transiciones = automataPila.getTransiciones();
+//        Iterator it = transiciones.entrySet().iterator(); //recorreindo el HashMap
+//        while (it.hasNext()) {
+//            Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+//            ArrayList<String> instrucciones = (ArrayList<String>) transicion.getValue(); //casting para convertir el objevt en arraylist
+//            String instruccion = instrucciones.get(0); // obtengo la primera posición de las transiciones = operac pila
+//            if (instruccion.contains(INSTRUCCION_APILAR)) {
+//                String simbolo = instruccion.substring(instruccion.indexOf("(") + 1, instruccion.indexOf(")")); //subtraigo el simbolo a apilar
+//                if (simbolo.equalsIgnoreCase(simboloPila)) { // si es igual al valor viejo (antes de la modificacion)
+//                    instrucciones.add(0, INSTRUCCION_APILAR + "(" + nuevoSimboloPila + ")");   // reemplacelo apile(valor nuevo)
+//                }
+//                transiciones.replace(transicion.getKey().toString(), instrucciones); //actualiza el hashmap
+//            }
+//            it.remove(); // avoids a ConcurrentModificationException 
+//        }
+//        automataPila.setTransiciones(transiciones); //actualiza el AP 
+        return automataPila;
     }
 
     public void validarSimbolos(AutomataPila automataPila, String simbolos) throws AutomataPilaExcepcion {

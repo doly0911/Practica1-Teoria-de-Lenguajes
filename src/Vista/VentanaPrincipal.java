@@ -90,11 +90,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         txt_simbolosEnLaPila = new javax.swing.JTextField();
         jLabel10 = new javax.swing.JLabel();
-        cboSimEntrada1 = new javax.swing.JComboBox<>();
-        btnAgregarSimEntrada1 = new javax.swing.JButton();
-        btnModificarSimEntrada1 = new javax.swing.JButton();
-        btnEliminarSimEntrada1 = new javax.swing.JButton();
-        txt_nuevoSimboloEntrada1 = new javax.swing.JTextField();
+        cboSimPila = new javax.swing.JComboBox<>();
+        btnAgregarSimPila = new javax.swing.JButton();
+        btnModificarSimPila = new javax.swing.JButton();
+        btnEliminarSimPila = new javax.swing.JButton();
+        txt_nuevoSimboloPila = new javax.swing.JTextField();
         txtEstadoInicial = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -259,53 +259,53 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel10.setText("Seleccione un símbolo para realizar la operación que desee:");
         jPanel4.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, -1));
 
-        jPanel4.add(cboSimEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 110, 30));
+        jPanel4.add(cboSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 110, 30));
 
-        btnAgregarSimEntrada1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnAgregarSimEntrada1.setForeground(new java.awt.Color(255, 255, 255));
-        btnAgregarSimEntrada1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_dark.png"))); // NOI18N
-        btnAgregarSimEntrada1.setToolTipText("Agregar");
-        btnAgregarSimEntrada1.setBorder(null);
-        btnAgregarSimEntrada1.setBorderPainted(false);
-        btnAgregarSimEntrada1.setContentAreaFilled(false);
-        btnAgregarSimEntrada1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnAgregarSimEntrada1.addActionListener(new java.awt.event.ActionListener() {
+        btnAgregarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnAgregarSimPila.setForeground(new java.awt.Color(255, 255, 255));
+        btnAgregarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/add_dark.png"))); // NOI18N
+        btnAgregarSimPila.setToolTipText("Agregar");
+        btnAgregarSimPila.setBorder(null);
+        btnAgregarSimPila.setBorderPainted(false);
+        btnAgregarSimPila.setContentAreaFilled(false);
+        btnAgregarSimPila.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnAgregarSimPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarSimEntrada1ActionPerformed(evt);
+                btnAgregarSimPilaActionPerformed(evt);
             }
         });
-        jPanel4.add(btnAgregarSimEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 30, 30));
+        jPanel4.add(btnAgregarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, 30, 30));
 
-        btnModificarSimEntrada1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnModificarSimEntrada1.setForeground(new java.awt.Color(255, 255, 255));
-        btnModificarSimEntrada1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
-        btnModificarSimEntrada1.setToolTipText("Modificar");
-        btnModificarSimEntrada1.setBorder(null);
-        btnModificarSimEntrada1.setBorderPainted(false);
-        btnModificarSimEntrada1.setContentAreaFilled(false);
-        btnModificarSimEntrada1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnModificarSimEntrada1.addActionListener(new java.awt.event.ActionListener() {
+        btnModificarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnModificarSimPila.setForeground(new java.awt.Color(255, 255, 255));
+        btnModificarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/edit.png"))); // NOI18N
+        btnModificarSimPila.setToolTipText("Modificar");
+        btnModificarSimPila.setBorder(null);
+        btnModificarSimPila.setBorderPainted(false);
+        btnModificarSimPila.setContentAreaFilled(false);
+        btnModificarSimPila.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnModificarSimPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarSimEntrada1ActionPerformed(evt);
+                btnModificarSimPilaActionPerformed(evt);
             }
         });
-        jPanel4.add(btnModificarSimEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 30, 30));
+        jPanel4.add(btnModificarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 80, 30, 30));
 
-        btnEliminarSimEntrada1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        btnEliminarSimEntrada1.setForeground(new java.awt.Color(255, 255, 255));
-        btnEliminarSimEntrada1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/showdeleted.png"))); // NOI18N
-        btnEliminarSimEntrada1.setToolTipText("Eliminar");
-        btnEliminarSimEntrada1.setBorder(null);
-        btnEliminarSimEntrada1.setBorderPainted(false);
-        btnEliminarSimEntrada1.setContentAreaFilled(false);
-        btnEliminarSimEntrada1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        btnEliminarSimEntrada1.addActionListener(new java.awt.event.ActionListener() {
+        btnEliminarSimPila.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        btnEliminarSimPila.setForeground(new java.awt.Color(255, 255, 255));
+        btnEliminarSimPila.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Imagenes/showdeleted.png"))); // NOI18N
+        btnEliminarSimPila.setToolTipText("Eliminar");
+        btnEliminarSimPila.setBorder(null);
+        btnEliminarSimPila.setBorderPainted(false);
+        btnEliminarSimPila.setContentAreaFilled(false);
+        btnEliminarSimPila.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        btnEliminarSimPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarSimEntrada1ActionPerformed(evt);
+                btnEliminarSimPilaActionPerformed(evt);
             }
         });
-        jPanel4.add(btnEliminarSimEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 30, 30));
-        jPanel4.add(txt_nuevoSimboloEntrada1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 90, 30));
+        jPanel4.add(btnEliminarSimPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 80, 30, 30));
+        jPanel4.add(txt_nuevoSimboloPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, 90, 30));
 
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 380, 120));
         jPanel1.add(txtEstadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 80, 30));
@@ -483,19 +483,41 @@ public class VentanaPrincipal extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_btn_siguienteCaracterActionPerformed
 
-    private void btnAgregarSimEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSimEntrada1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnAgregarSimEntrada1ActionPerformed
+    private void btnAgregarSimPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarSimPilaActionPerformed
+        automataDAO = new AutomataPilaDAO();
+        try {
+            automata = automataDAO.agregarSimboloPila(automata, txt_nuevoSimboloPila.getText());
+            llenarFormulario();
+        } catch (AutomataPilaExcepcion ex) {
+            JOptionPane.showMessageDialog(null, "Error al agregar simbolo de entrada: "+ ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnAgregarSimPilaActionPerformed
 
-    private void btnModificarSimEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarSimEntrada1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnModificarSimEntrada1ActionPerformed
+    private void btnModificarSimPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarSimPilaActionPerformed
+        automataDAO = new AutomataPilaDAO();
+        String simbolo = (String) this.cboSimPila.getSelectedItem();
+        String nuevoSimbolo = this.txt_nuevoSimboloPila.getText();
+        try {
+            automata = automataDAO.modificarSimboloPila(automata, simbolo, nuevoSimbolo);
+            llenarFormulario();
+        } catch (AutomataPilaExcepcion ex) {
+            JOptionPane.showMessageDialog(null, "Error al modificar simbolo de pila: "+ ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnModificarSimPilaActionPerformed
 
-    private void btnEliminarSimEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSimEntrada1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnEliminarSimEntrada1ActionPerformed
+    private void btnEliminarSimPilaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarSimPilaActionPerformed
+        automataDAO = new AutomataPilaDAO();
+        String simbolo = (String) this.cboSimPila.getSelectedItem();
+        try {
+            automata = automataDAO.eliminarSimboloPila(automata, simbolo);
+            llenarFormulario();
+        } catch (AutomataPilaExcepcion ex) {
+            JOptionPane.showMessageDialog(null, "Error al eliminar simbolo de pila: "+ ex, "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnEliminarSimPilaActionPerformed
 
     private void llenarFormulario(){
+        
         String simbolos = "";
         cboSimEntrada.removeAllItems();
         for(String i : automata.getSimbolosEntrada()){
@@ -503,11 +525,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             cboSimEntrada.addItem(i);
         }
         txt_simbolosDeEntrada.setText(simbolos);
+        
         simbolos = "";
+        cboSimPila.removeAllItems();
         for(String i : automata.getSimbolosPila()){
             simbolos += i + " ";
+            cboSimPila.addItem(i);
         }
         txt_simbolosEnLaPila.setText(simbolos);
+        
         simbolos = "";
         for(String i : automata.getConfiguracionInicial()){
             simbolos += i + " ";
@@ -572,19 +598,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarSimEntrada;
-    private javax.swing.JButton btnAgregarSimEntrada1;
+    private javax.swing.JButton btnAgregarSimPila;
     private javax.swing.JButton btnAñadirEstado;
     private javax.swing.JButton btnEliminarSimEntrada;
-    private javax.swing.JButton btnEliminarSimEntrada1;
+    private javax.swing.JButton btnEliminarSimPila;
     private javax.swing.JButton btnModificarSimEntrada;
-    private javax.swing.JButton btnModificarSimEntrada1;
+    private javax.swing.JButton btnModificarSimPila;
     private javax.swing.JButton btnVerModificarEstado;
     private javax.swing.JButton btn_iniciarPila;
     private javax.swing.JButton btn_siguienteCaracter;
     private javax.swing.JButton cargarArchivo;
     private javax.swing.JComboBox<String> cboEstados;
     private javax.swing.JComboBox<String> cboSimEntrada;
-    private javax.swing.JComboBox<String> cboSimEntrada1;
+    private javax.swing.JComboBox<String> cboSimPila;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -607,7 +633,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JTextField txtEstadoInicial;
     private javax.swing.JTextField txt_confInicial;
     private javax.swing.JTextField txt_nuevoSimboloEntrada;
-    private javax.swing.JTextField txt_nuevoSimboloEntrada1;
+    private javax.swing.JTextField txt_nuevoSimboloPila;
     private javax.swing.JTextField txt_simbolosDeEntrada;
     private javax.swing.JTextField txt_simbolosEnLaPila;
     // End of variables declaration//GEN-END:variables
