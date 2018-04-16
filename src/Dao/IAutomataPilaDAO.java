@@ -24,9 +24,9 @@ public interface IAutomataPilaDAO {
     
     public AutomataPila agregarSimboloEntrada(AutomataPila automataPila,String simboloEntrada) throws AutomataPilaExcepcion;
     
-    public void modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion;
+    public AutomataPila modificarSimboloEntrada(AutomataPila automataPila,String simboloEntrada,String nuevoSimboloEntrada) throws AutomataPilaExcepcion;
     
-    public void eliminarSimboloEntrada(AutomataPila automataPila,String simboloEntrada) throws AutomataPilaExcepcion; 
+    public AutomataPila eliminarSimboloEntrada(AutomataPila automataPila,String simboloEntrada) throws AutomataPilaExcepcion; 
     
     public void agregarEstado(AutomataPila automataPila,Estado estado) throws AutomataPilaExcepcion;
     

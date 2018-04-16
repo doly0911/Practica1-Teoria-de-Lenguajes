@@ -302,24 +302,36 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
     }
 
     @Override
-    public void modificarSimboloEntrada(AutomataPila automataPila, String simboloEntrada, String nuevoSimboloEntrada) throws AutomataPilaExcepcion {
+    public AutomataPila modificarSimboloEntrada(AutomataPila automataPila, String simboloEntrada, String nuevoSimboloEntrada) throws AutomataPilaExcepcion {
         validarSimbolos(automataPila, nuevoSimboloEntrada);
         ArrayList<String> simbolosEntrada = automataPila.getSimbolosEntrada();
         if (simbolosEntrada.contains(simboloEntrada)) {
             int indice = simbolosEntrada.indexOf(simboloEntrada);
-            simbolosEntrada.add(indice, nuevoSimboloEntrada);
+            simbolosEntrada.set(indice, nuevoSimboloEntrada);
+            automataPila.setSimbolosEntrada(simbolosEntrada);
+            String [][] matrizT;
+            ArrayList<Estado> estados = automataPila.getEstados();
+            for (int k = 0; k < estados.size(); k++) {
+                Estado e = estados.get(k); 
+                matrizT = e.getMatrizT();
+                matrizT[0][indice+1] = nuevoSimboloEntrada; 
+                e.setMatrizT(matrizT);
+                estados.set(k, e);
+            }
+            automataPila.setEstados(estados);   
         } else {
             throw new AutomataPilaExcepcion("El simbolo de entrada que quiere modificar no existe");
         }
-
+        return automataPila;
     }
 
     @Override
-    public void eliminarSimboloEntrada(AutomataPila automataPila, String simboloEntrada) throws AutomataPilaExcepcion {
+    public AutomataPila eliminarSimboloEntrada(AutomataPila automataPila, String simboloEntrada) throws AutomataPilaExcepcion {
         ArrayList<String> simbolosEntrada = automataPila.getSimbolosEntrada();
         if (simbolosEntrada.contains(simboloEntrada)) {
             //Modifico la matriz de estados,eliminando una columna
             int indice = simbolosEntrada.indexOf(simboloEntrada); //posicion del simbolo a eliminar
+            simbolosEntrada.remove(simboloEntrada);
             int filas = automataPila.getSimbolosPila().size();
             int columnas = automataPila.getSimbolosEntrada().size();
             String[][] nuevaTransicionesEstado = new String[filas][columnas - 1]; // creo mi nueva matriz de estados
@@ -331,19 +343,22 @@ public class AutomataPilaDAO implements IAutomataPilaDAO {
                 transicionesEstado = e.getTransicionesEstado(); // me trae los estados de la antigua matriz                
                 for (int i = 0; i < filas; i++) {
                     for (int j = 0; j < columnas; j++) {
-                        if (j != indice) {
+                        k = 0;
+                        if (j != indice && k<columnas - 1) {
                             nuevaTransicionesEstado[i][k] = transicionesEstado[i][j];
                             k++;
                         }
                     }
                 }
                 e.setTransicionesEstado(nuevaTransicionesEstado);
+                e.setMatrizT(crearMatrizT(simbolosEntrada, automataPila.getSimbolosPila(), nuevaTransicionesEstado));
             }
+            
             //elimino el simbolo de entrada
-            simbolosEntrada.remove(simboloEntrada);
+            //simbolosEntrada.remove(simboloEntrada);
             automataPila.setSimbolosEntrada(simbolosEntrada);
         }
-
+        return automataPila;
     }
 
     @Override
