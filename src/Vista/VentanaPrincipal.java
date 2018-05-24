@@ -21,6 +21,10 @@ import java.util.List;
 import java.util.Stack;
 import javax.swing.table.DefaultTableModel;
 import Control.CtrlVentanaPrincipal;
+import Modelo.Gramatica;
+import Utils.ConversorGramatica;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -33,6 +37,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     
     File archivo;
     public AutomataPila automata;
+    public Gramatica gramatica;
     IAutomataPilaDAO automataDAO;
     public static String estadoSeleccionado;
     private DefaultTableModel defaultTableModel;
@@ -121,6 +126,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        txt_gramatica = new javax.swing.JTextArea();
+        jPanel6 = new javax.swing.JPanel();
+        btn_cargarGramatica = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -399,7 +409,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_iniciarPilaActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 90, -1, -1));
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, -1, -1));
 
         txtArea_hilera.setColumns(20);
         txtArea_hilera.setRows(5);
@@ -420,7 +430,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tbl_pila);
 
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 140, 50, 340));
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 50, 340));
 
         btn_siguienteCaracter.setText("Siguiente carácter");
         btn_siguienteCaracter.addActionListener(new java.awt.event.ActionListener() {
@@ -428,21 +438,50 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_siguienteCaracterActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 500, -1, -1));
+        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 300, 550));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 270, 550));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel8.setText("Autómatas de pila");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel14.setText("Es importante iniciar la pila cada vez que se ingrese ");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 620, -1, -1));
+        jLabel14.setText("Es importante iniciar la pila cada vez que se ");
+        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 620, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel16.setText("una hilera.");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 640, -1, 20));
+        jLabel16.setText("ingrese una hilera.");
+        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 640, -1, 20));
+
+        txt_gramatica.setBackground(new java.awt.Color(240, 240, 240));
+        txt_gramatica.setColumns(20);
+        txt_gramatica.setRows(5);
+        jScrollPane2.setViewportView(txt_gramatica);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 210, 410));
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btn_cargarGramatica.setText("Cargar gramática");
+        btn_cargarGramatica.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cargarGramaticaActionPerformed(evt);
+            }
+        });
+        jPanel6.add(btn_cargarGramatica, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 140, 30));
+
+        jButton1.setText("Iniciar reconocedor");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 140, 30));
+
+        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 550));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -680,6 +719,42 @@ public class VentanaPrincipal extends javax.swing.JFrame {
        }
     }//GEN-LAST:event_cbo_listaTransicionesActionPerformed
 
+    private void btn_cargarGramaticaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cargarGramaticaActionPerformed
+        JFileChooser abrir;       
+        abrir = new JFileChooser();
+        abrir.showOpenDialog(this);
+        String g = "";
+        archivo = abrir.getSelectedFile();
+        
+        if(archivo != null){
+            FileReader fr = null;
+            BufferedReader br = null;
+            try {
+                fr = new FileReader(archivo);
+                br = new BufferedReader(fr);
+                while(br.ready()){
+                        g += br.readLine()+"\n";
+                }
+            }catch(IOException e) {
+                    JOptionPane.showMessageDialog(null, "Su archivo no se ha leido correctamente", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            }finally{
+                    try{                    
+                        if(null != fr){   
+                            fr.close();     
+                        }                  
+                    }catch (Exception e2){ 
+                        e2.printStackTrace();
+                    }
+            }
+        }
+        txt_gramatica.setText(g);
+    }//GEN-LAST:event_btn_cargarGramaticaActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        ConversorGramatica conversorGramatica = new ConversorGramatica();
+        conversorGramatica.convertir(txt_gramatica.getText());
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void llenarFormulario(){
         ArrayList<Estado> estados;
         
@@ -782,6 +857,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnModificarSimPila;
     private javax.swing.JButton btnVerModificarEstado;
     private javax.swing.JButton btn_agregarTransicion;
+    private javax.swing.JButton btn_cargarGramatica;
     private javax.swing.JButton btn_iniciarPila;
     private javax.swing.JButton btn_modificarTransicion;
     private javax.swing.JButton btn_siguienteCaracter;
@@ -790,6 +866,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboSimEntrada;
     private javax.swing.JComboBox<String> cboSimPila;
     private javax.swing.JComboBox<String> cbo_listaTransiciones;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -811,12 +888,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTable tbl_pila;
     private javax.swing.JTextArea txtArea_hilera;
     private javax.swing.JTextField txtEstadoInicial;
     private javax.swing.JTextField txt_confInicial;
+    private javax.swing.JTextArea txt_gramatica;
     private javax.swing.JTextField txt_nomTransicion;
     private javax.swing.JTextField txt_nuevoSimboloEntrada;
     private javax.swing.JTextField txt_nuevoSimboloPila;
