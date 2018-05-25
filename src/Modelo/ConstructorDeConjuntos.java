@@ -17,7 +17,7 @@ public class ConstructorDeConjuntos {
     private final ArrayList<Integer> produccionesAnulables;
     private final Gramatica gramatica;
 
-    public ConstructorDeConjuntos(Gramatica gramatica) { //siempre hago el constructor?
+    public ConstructorDeConjuntos(Gramatica gramatica) { 
         this.noTerminalesAnulables = new ArrayList<>();
         this.produccionesAnulables = new ArrayList<>();
         this.gramatica = gramatica;

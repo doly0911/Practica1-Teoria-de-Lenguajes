@@ -44,16 +44,17 @@ public class ConstructorDeConjuntosTest {
     @Test
     public void testConstruirAnulables() {
         System.out.println("construirAnulables");
-        String gramaticaStr = "1.	A = aC\n"
-                + "2.	A = bBc\n"
-                + "3.	B = aA\n"
-                + "4.	B = bB\n"
-                + "5.	C = aCa\n"
-                + "6.	C = bBcc\n"
-                + "7.	C = |";
+        String gramaticaStr = "1. A = BcD\n"
+                + "2. A = aE\n"
+                + "3. B = bAc\n"
+                + "4. B = |\n"
+                + "5. D = dBDc\n"
+                + "6. D = |\n"
+                + "7. E = a\n"
+                + "8. E = BD";
         ConversorGramatica conversor = new ConversorGramatica();
         Gramatica g = conversor.convertir(gramaticaStr);
-        
+
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
         instance.construirAnulables();
         // TODO review the generated test code and remove the default call to fail.
@@ -61,4 +62,3 @@ public class ConstructorDeConjuntosTest {
     }
 
 }
-
