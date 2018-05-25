@@ -20,7 +20,7 @@ public class ConversorGramatica {
         //producciones = producciones.replaceAll("[^w]", ""); //[^w]: todo menos letras
         String [] lineas = producciones.split("\n");
         for(int i=0;i<lineas.length;i++){
-            p.add(lineas[i].replaceAll("[^a-zA-Z_^|]", ""));
+            p.add(lineas[i].replaceAll("[^a-zA-Z_^|]", "")); //no elimina letras a-z A-Z y |, el resto si            
         }
         gramatica.setProducciones(p);
         return gramatica;

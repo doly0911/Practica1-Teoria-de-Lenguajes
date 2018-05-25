@@ -13,8 +13,9 @@ import java.util.ArrayList;
  */
 public class Gramatica {
     private ArrayList<String> producciones;
-    private String[] noTerminalesAnulables;
-    private int[] produccionesAnulables;
+    private ArrayList<String> noTerminalesAnulables;
+    private ArrayList<Integer> produccionesAnulables;
+    public static final String FIN_DE_SECUENCIA = "|";
 
     public ArrayList<String> getProducciones() {
         return producciones;
@@ -23,6 +24,22 @@ public class Gramatica {
     public void setProducciones(ArrayList<String> producciones) {
         this.producciones = producciones;
     }
-    
-    
+
+    public ArrayList<String> getNoTerminalesAnulables() {
+        return noTerminalesAnulables;
+    }
+
+    public void setNoTerminalesAnulables(ArrayList<String> noTerminalesAnulables) {
+        this.noTerminalesAnulables = noTerminalesAnulables;
+    }
+
+    public ArrayList<Integer> getProduccionesAnulables() {
+        return produccionesAnulables;
+    }
+
+    public void setProduccionesAnulables(ArrayList<Integer> produccionesAnulables) {
+        this.produccionesAnulables = produccionesAnulables;
+    }
+
+   
 }
