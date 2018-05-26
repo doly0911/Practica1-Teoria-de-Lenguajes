@@ -12,6 +12,8 @@ import java.util.ArrayList;
  * @author pao_c
  */
 public class Gramatica {
+    private ArrayList<String> noTerminales;
+    private ArrayList<String> terminales;
     private ArrayList<String> producciones;
     private ArrayList<String> noTerminalesAnulables;
     private ArrayList<Integer> produccionesAnulables;
@@ -40,6 +42,24 @@ public class Gramatica {
     public void setProduccionesAnulables(ArrayList<Integer> produccionesAnulables) {
         this.produccionesAnulables = produccionesAnulables;
     }
+
+    public ArrayList<String> getNoTerminales() {
+        return noTerminales;
+    }
+
+    public void setNoTerminales(ArrayList<String> noTerminales) {
+        this.noTerminales = noTerminales;
+    }
+
+    public ArrayList<String> getTerminales() {
+        return terminales;
+    }
+
+    public void setTerminales(ArrayList<String> terminales) {
+        this.terminales = terminales;
+    }
+    
+    
 
    
 }

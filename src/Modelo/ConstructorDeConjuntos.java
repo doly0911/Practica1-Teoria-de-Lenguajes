@@ -16,11 +16,24 @@ public class ConstructorDeConjuntos {
     private final ArrayList<String> noTerminalesAnulables;
     private final ArrayList<Integer> produccionesAnulables;
     private final Gramatica gramatica;
+    private final int dimensionMatriz;
+    private final ArrayList<String> indiceMatriz;
+    
 
-    public ConstructorDeConjuntos(Gramatica gramatica) { 
+    public ConstructorDeConjuntos(Gramatica gramatica) {
         this.noTerminalesAnulables = new ArrayList<>();
         this.produccionesAnulables = new ArrayList<>();
         this.gramatica = gramatica;
+        indiceMatriz = new ArrayList<>();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
+        ArrayList<String> terminales = gramatica.getTerminales();
+        for (String noTerminal : noTerminales) {
+            indiceMatriz.add(noTerminal);
+        }
+        for (String terminal : terminales) {
+            indiceMatriz.add(terminal);
+        }
+        dimensionMatriz = indiceMatriz.size();
     }
 
     public void construirAnulables() {
@@ -44,10 +57,11 @@ public class ConstructorDeConjuntos {
         }
 
         for (int i = 0; i < prod.size(); i++) {
-            String produccion = prod.get(i);
-            for (int j = 0; j < produccion.length(); j++) {
-                s = produccion.charAt(1);
+            String produccion = prod.get(i); // obtengo el String de cada Produccion
+            for (int j = 1; j < produccion.length(); j++) { //Recorro cada String
+                s = produccion.charAt(j);
                 noTerminal = s.toString();
+                boolean esMinuscula = noTerminal.equals(noTerminal.toLowerCase());
                 if (!noTerminalesAnulables.contains(noTerminal)) {
                     esAnulable = false;
                     break;
