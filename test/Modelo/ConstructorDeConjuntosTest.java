@@ -21,6 +21,7 @@ public class ConstructorDeConjuntosTest {
 
     public ConstructorDeConjuntosTest() {
     }
+    private String gramaticaStr;
 
     @BeforeClass
     public static void setUpClass() {
@@ -32,6 +33,14 @@ public class ConstructorDeConjuntosTest {
 
     @Before
     public void setUp() {
+        gramaticaStr = "1. A = BcD\n"
+                + "2. A = aE\n"
+                + "3. B = bAc\n"
+                + "4. B = |\n"
+                + "5. D = dBDc\n"
+                + "6. D = |\n"
+                + "7. E = a\n"
+                + "8. E = BD";
     }
 
     @After
@@ -44,19 +53,23 @@ public class ConstructorDeConjuntosTest {
     @Test
     public void testConstruirAnulables() {
         System.out.println("construirAnulables");
-        String gramaticaStr = "1. A = BcD\n"
-                + "2. A = aE\n"
-                + "3. B = bAc\n"
-                + "4. B = |\n"
-                + "5. D = dBDc\n"
-                + "6. D = |\n"
-                + "7. E = a\n"
-                + "8. E = BD";
         ConversorGramatica conversor = new ConversorGramatica();
         Gramatica g = conversor.convertir(gramaticaStr);
 
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
         instance.construirAnulables();
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
+    @Test
+    public void testConstruirMatrizComienzaDirectamenteCon() {
+        ConversorGramatica conversor = new ConversorGramatica();
+        Gramatica g = conversor.convertir(gramaticaStr);
+
+        ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
+        instance.construirAnulables();
+        instance.crearMatrizComienzaDirectamenteCon();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

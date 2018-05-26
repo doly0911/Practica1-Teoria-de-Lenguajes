@@ -36,19 +36,22 @@ public class ConversorGramatica {
 
         for (int i = 0; i < produccion.size(); i++) {
             String s = produccion.get(i);
-            for (int j = 0; j<s.length(); j++) {
+            for (int j = 0; j < s.length(); j++) {
                 Character c = s.charAt(j);
                 String letra = c.toString();
                 boolean esMinuscula = letra.equals(letra.toLowerCase());
-                if (esMinuscula && !terminales.contains(letra)) {
-                    terminales.add(letra);
-                } else if (!esMinuscula && !noTerminales.contains(letra)) {
-                    noTerminales.add(letra);
+                if (!letra.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                    if (esMinuscula && !terminales.contains(letra)) {
+                        terminales.add(letra);
+                    } else if (!esMinuscula && !noTerminales.contains(letra)) {
+                        noTerminales.add(letra);
+                    }
                 }
+
             }
         }
         gramatica.setTerminales(terminales);
-        gramatica.setNoTerminales(noTerminales);       
+        gramatica.setNoTerminales(noTerminales);
 
     }
 
