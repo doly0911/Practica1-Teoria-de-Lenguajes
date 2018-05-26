@@ -33,14 +33,16 @@ public class ConstructorDeConjuntosTest {
 
     @Before
     public void setUp() {
-        gramaticaStr = "1. A = BcD\n"
-                + "2. A = aE\n"
-                + "3. B = bAc\n"
-                + "4. B = |\n"
-                + "5. D = dBDc\n"
-                + "6. D = |\n"
-                + "7. E = a\n"
-                + "8. E = BD";
+        gramaticaStr = "1.A = BCc\n"
+                + "2.A = eDB\n"
+                + "3.B = |\n"
+                + "4.B = bCDE\n"
+                + "5.C = DaB\n"
+                + "6.C = ca\n"
+                + "7.D = |\n"
+                + "8.D = dD\n"
+                + "9.E = eAf\n"
+                + "10.E = c";
     }
 
     @After
@@ -59,6 +61,20 @@ public class ConstructorDeConjuntosTest {
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
         instance.construirAnulables();
         // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+    
+    @Test
+    public void testConstruirCierreTransitivo() {
+        System.out.println("construirAnulables");
+        ConversorGramatica conversor = new ConversorGramatica();
+        Gramatica g = conversor.convertir(gramaticaStr);
+
+        ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
+        instance.construirAnulables();
+        instance.crearMatrizComienzaDirectamenteCon();
+        int[][] cierreTransitivo = instance.CalcularCierreTransitivo(instance.getComienzaDirectamenteCon());
+        instance.crearPrimerosNoTerminales();
         fail("The test case is a prototype.");
     }
 

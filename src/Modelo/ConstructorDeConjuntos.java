@@ -19,7 +19,8 @@ public class ConstructorDeConjuntos {
     private final int dimensionMatriz;
     private final ArrayList<String> indiceMatriz;
     private int[][] comienzaDirectamenteCon;
-
+    private int[][] comienzaCon;
+    
     public ConstructorDeConjuntos(Gramatica gramatica) {
         this.noTerminalesAnulables = new ArrayList<>();
         this.produccionesAnulables = new ArrayList<>();
@@ -118,6 +119,52 @@ public class ConstructorDeConjuntos {
         return matriz;
     }
     
+    public void crearPrimerosNoTerminales(){
+        ArrayList<ArrayList<String>> primeros = new ArrayList<>();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
+        for (int i = 0; i < noTerminales.size(); i++) {
+            ArrayList<String>terminales = new ArrayList<>();
+            for (int j = noTerminales.size(); j < dimensionMatriz; j++) {
+                if(comienzaDirectamenteCon[i][j]==1){
+                    String terminal = indiceMatriz.get(j); //obtenemos el terminal de la columna
+                    terminales.add(terminal);
+                }
+            }
+            primeros.add(terminales);
+        }
+        gramatica.setPrimerosNoTerminales(primeros);
+    }
+    
+    public void crearPrimerosProducciones(){
+        ArrayList<ArrayList<String>> primeros = gramatica.getPrimerosNoTerminales(); 
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<String> terminales = gramatica.getTerminales();
+        ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
+       
+        for (int i = 0; i < producciones.size(); i++) {
+            String prod = producciones.get(i);
+            ArrayList<String> primerosProd = new ArrayList<>();
+            for (int j = 1; j < prod.length(); j++) {
+                Character c = prod.charAt(j);
+                String s = c.toString();
+                if (terminales.contains(s)){
+                    primerosProd.add(s);
+                    break;
+                }
+                if(!anulables.contains(s)){
+                    int indice = indiceMatriz.indexOf(s);
+                    ArrayList<String> primerosNoTerminal = primeros.get(indice);
+                    
+                }
+                
+            }
+            
+            
+        }
+         
+    
+    }
+    
     public int[][] CalcularProducto(int matrizA[][], int matrizB[][]){
         int matrizC[][] = new int[dimensionMatriz][dimensionMatriz];
         for(int k=0; k<dimensionMatriz; k++){
@@ -133,6 +180,16 @@ public class ConstructorDeConjuntos {
         }
         return matrizC;
     }
+
+    public int[][] getComienzaDirectamenteCon() {
+        return comienzaDirectamenteCon;
+    }
+
+    public void setComienzaDirectamenteCon(int[][] comienzaDirectamenteCon) {
+        this.comienzaDirectamenteCon = comienzaDirectamenteCon;
+    }
+    
+    
 
 }
 
