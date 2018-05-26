@@ -20,7 +20,7 @@ public class ConstructorDeConjuntos {
     private final ArrayList<String> indiceMatriz;
     private int[][] comienzaDirectamenteCon;
     private int[][] comienzaCon;
-    
+
     public ConstructorDeConjuntos(Gramatica gramatica) {
         this.noTerminalesAnulables = new ArrayList<>();
         this.produccionesAnulables = new ArrayList<>();
@@ -89,28 +89,24 @@ public class ConstructorDeConjuntos {
                 String simbolo = c.toString();
                 if (j == 0) {
                     fila = indiceMatriz.indexOf(simbolo);
-                } else {
-                    if (indiceMatriz.contains(simbolo)) {
-                        columna = indiceMatriz.indexOf(simbolo);
-                        comienzaDirectamenteCon[fila][columna] = 1;
-                        if (!noTerminalesAnulables.contains(simbolo)) {
-                            break;
-                        }
+                } else if (indiceMatriz.contains(simbolo)) {
+                    columna = indiceMatriz.indexOf(simbolo);
+                    comienzaDirectamenteCon[fila][columna] = 1;
+                    if (!noTerminalesAnulables.contains(simbolo)) {
+                        break;
                     }
-
                 }
             }
         }
     }
 
-    
-    public int[][] CalcularCierreTransitivo(int matriz[][]){
-        for(int k=0; k<dimensionMatriz; k++){
-            for(int i=0; i<dimensionMatriz; i++){
-                if(matriz[i][k]==1){
-                    for(int j=0; j<dimensionMatriz; j++){
-                        if(matriz[k][j]==1){
-                            matriz[i][j]=1;
+    public int[][] CalcularCierreTransitivo(int matriz[][]) {
+        for (int k = 0; k < dimensionMatriz; k++) {
+            for (int i = 0; i < dimensionMatriz; i++) {
+                if (matriz[i][k] == 1) {
+                    for (int j = 0; j < dimensionMatriz; j++) {
+                        if (matriz[k][j] == 1) {
+                            matriz[i][j] = 1;
                         }
                     }
                 }
@@ -118,14 +114,14 @@ public class ConstructorDeConjuntos {
         }
         return matriz;
     }
-    
-    public void crearPrimerosNoTerminales(){
+
+    public void crearPrimerosNoTerminales() {
         ArrayList<ArrayList<String>> primeros = new ArrayList<>();
         ArrayList<String> noTerminales = gramatica.getNoTerminales();
         for (int i = 0; i < noTerminales.size(); i++) {
-            ArrayList<String>terminales = new ArrayList<>();
+            ArrayList<String> terminales = new ArrayList<>();
             for (int j = noTerminales.size(); j < dimensionMatriz; j++) {
-                if(comienzaDirectamenteCon[i][j]==1){
+                if (comienzaDirectamenteCon[i][j] == 1) {
                     String terminal = indiceMatriz.get(j); //obtenemos el terminal de la columna
                     terminales.add(terminal);
                 }
@@ -134,45 +130,54 @@ public class ConstructorDeConjuntos {
         }
         gramatica.setPrimerosNoTerminales(primeros);
     }
-    
-    public void crearPrimerosProducciones(){
-        ArrayList<ArrayList<String>> primeros = gramatica.getPrimerosNoTerminales(); 
+
+    public void crearPrimerosProducciones() {
+        ArrayList<ArrayList<String>> primeros = gramatica.getPrimerosNoTerminales();
         ArrayList<String> producciones = gramatica.getProducciones();
         ArrayList<String> terminales = gramatica.getTerminales();
         ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
-       
+        ArrayList<ArrayList<String>> primerosProducciones = new ArrayList<>();
+
         for (int i = 0; i < producciones.size(); i++) {
             String prod = producciones.get(i);
             ArrayList<String> primerosProd = new ArrayList<>();
             for (int j = 1; j < prod.length(); j++) {
                 Character c = prod.charAt(j);
                 String s = c.toString();
-                if (terminales.contains(s)){
+                if (terminales.contains(s)) {
                     primerosProd.add(s);
                     break;
                 }
-                if(!anulables.contains(s)){
+                if (!s.equals(Gramatica.FIN_DE_SECUENCIA)) {
                     int indice = indiceMatriz.indexOf(s);
                     ArrayList<String> primerosNoTerminal = primeros.get(indice);
-                    
+                    for (int k = 0; k < primerosNoTerminal.size(); k++) {
+                        String letra = primerosNoTerminal.get(k);
+                        if (!primerosProd.contains(letra)) {
+                            primerosProd.add(letra);
+                        }
+                    }
+                    if (!anulables.contains(s)) {
+                        break;
+                    }
                 }
-                
+
             }
-            
-            
+            primerosProducciones.add(primerosProd);
+            gramatica.setPrimerosProducciones(primerosProducciones);
+
         }
-         
-    
+
     }
-    
-    public int[][] CalcularProducto(int matrizA[][], int matrizB[][]){
+
+    public int[][] CalcularProducto(int matrizA[][], int matrizB[][]) {
         int matrizC[][] = new int[dimensionMatriz][dimensionMatriz];
-        for(int k=0; k<dimensionMatriz; k++){
-            for(int i=0; i<dimensionMatriz; i++){
-                if(matrizA[i][k]==1){
-                    for(int j=0; j<dimensionMatriz; j++){
-                        if(matrizB[k][j] == 1){
-                            matrizC[i][j]=1;
+        for (int k = 0; k < dimensionMatriz; k++) {
+            for (int i = 0; i < dimensionMatriz; i++) {
+                if (matrizA[i][k] == 1) {
+                    for (int j = 0; j < dimensionMatriz; j++) {
+                        if (matrizB[k][j] == 1) {
+                            matrizC[i][j] = 1;
                         }
                     }
                 }
@@ -188,8 +193,5 @@ public class ConstructorDeConjuntos {
     public void setComienzaDirectamenteCon(int[][] comienzaDirectamenteCon) {
         this.comienzaDirectamenteCon = comienzaDirectamenteCon;
     }
-    
-    
 
 }
-

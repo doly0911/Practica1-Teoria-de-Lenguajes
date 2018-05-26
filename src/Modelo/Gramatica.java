@@ -18,6 +18,7 @@ public class Gramatica {
     private ArrayList<String> noTerminalesAnulables;
     private ArrayList<Integer> produccionesAnulables;
     private ArrayList<ArrayList<String>> primerosNoTerminales;
+    private ArrayList<ArrayList<String>> primerosProducciones;
     public static final String FIN_DE_SECUENCIA = "|";
 
     public ArrayList<String> getProducciones() {
@@ -67,6 +68,16 @@ public class Gramatica {
     public void setPrimerosNoTerminales(ArrayList<ArrayList<String>> primerosNoTerminales) {
         this.primerosNoTerminales = primerosNoTerminales;
     }
+
+    public ArrayList<ArrayList<String>> getPrimerosProducciones() {
+        return primerosProducciones;
+    }
+
+    public void setPrimerosProducciones(ArrayList<ArrayList<String>> primerosProducciones) {
+        this.primerosProducciones = primerosProducciones;
+    }
+    
+    
     
    
 }
