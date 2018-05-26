@@ -77,5 +77,36 @@ public class ConstructorDeConjuntos {
         }
 
     }
-
+    
+    public int[][] CalcularCierreTransitivo(int matriz[][]){
+        for(int k=0; k<dimensionMatriz; k++){
+            for(int i=0; i<dimensionMatriz; i++){
+                if(matriz[i][k]==1){
+                    for(int j=0; j<dimensionMatriz; j++){
+                        if(matriz[k][j]==1){
+                            matriz[i][j]=1;
+                        }
+                    }
+                }
+            }
+        }
+        return matriz;
+    }
+    
+    public int[][] CalcularProducto(int matrizA[][], int matrizB[][]){
+        int matrizC[][] = new int[dimensionMatriz][dimensionMatriz];
+        for(int k=0; k<dimensionMatriz; k++){
+            for(int i=0; i<dimensionMatriz; i++){
+                if(matrizA[i][k]==1){
+                    for(int j=0; j<dimensionMatriz; j++){
+                        if(matrizB[k][j] == 1){
+                            matrizC[i][j]=1;
+                        }
+                    }
+                }
+            }
+        }
+        return matrizC;
+    }
 }
+
