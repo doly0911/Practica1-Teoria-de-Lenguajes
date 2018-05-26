@@ -18,8 +18,9 @@ public class ConstructorDeConjuntos {
     private final Gramatica gramatica;
     private final int dimensionMatriz;
     private final ArrayList<String> indiceMatriz;
-    private int[][] comienzaDirectamenteCon;
     private int[][] comienzaCon;
+    private int[][] seguidoDirectamente;
+    private int[][] esFinDe;
 
     public ConstructorDeConjuntos(Gramatica gramatica) {
         this.noTerminalesAnulables = new ArrayList<>();
@@ -35,7 +36,9 @@ public class ConstructorDeConjuntos {
             indiceMatriz.add(terminal);
         }
         dimensionMatriz = indiceMatriz.size();
-        this.comienzaDirectamenteCon = new int[dimensionMatriz][dimensionMatriz];
+        this.comienzaCon = new int[dimensionMatriz][dimensionMatriz];
+        this.seguidoDirectamente = new int[dimensionMatriz][dimensionMatriz];
+        this.esFinDe = new int[dimensionMatriz][dimensionMatriz];
     }
 
     public void construirAnulables() {
@@ -91,7 +94,7 @@ public class ConstructorDeConjuntos {
                     fila = indiceMatriz.indexOf(simbolo);
                 } else if (indiceMatriz.contains(simbolo)) {
                     columna = indiceMatriz.indexOf(simbolo);
-                    comienzaDirectamenteCon[fila][columna] = 1;
+                    comienzaCon[fila][columna] = 1;
                     if (!noTerminalesAnulables.contains(simbolo)) {
                         break;
                     }
@@ -121,7 +124,7 @@ public class ConstructorDeConjuntos {
         for (int i = 0; i < noTerminales.size(); i++) {
             ArrayList<String> terminales = new ArrayList<>();
             for (int j = noTerminales.size(); j < dimensionMatriz; j++) {
-                if (comienzaDirectamenteCon[i][j] == 1) {
+                if (comienzaCon[i][j] == 1) {
                     String terminal = indiceMatriz.get(j); //obtenemos el terminal de la columna
                     terminales.add(terminal);
                 }
@@ -170,6 +173,62 @@ public class ConstructorDeConjuntos {
 
     }
 
+    public void crearEsSeguidoDirectamentePor() {
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
+        int fila = 0, columna = 0;
+        for (int i = 0; i < producciones.size(); i++) {
+            String produccion = producciones.get(i);
+            for (int j = 1; j < produccion.length() - 1; j++) {
+                Character c = produccion.charAt(j);
+                String simbolo = c.toString();
+                if (simbolo.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                    break;
+                }
+                fila = indiceMatriz.indexOf(simbolo);
+                for (int k = j + 1; k < produccion.length(); k++) {
+                    Character s = produccion.charAt(k);
+                    String siguiente = s.toString();
+                    if (!siguiente.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                        columna = indiceMatriz.indexOf(siguiente);
+                        seguidoDirectamente[fila][columna] = 1;
+                        if (!anulables.contains(siguiente)) {
+                            break;
+                        }
+                    }
+
+                }
+
+            }
+        }
+
+    }
+
+    public void crearEsFinDirectoDe() {
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
+        int fila = 0, columna = 0;
+        for (int i = 0; i < producciones.size(); i++) {
+            String produccion = producciones.get(i);
+            Character n = produccion.charAt(0);
+            String ladoIzq = n.toString();
+            columna = indiceMatriz.indexOf(ladoIzq);
+            for (int j = produccion.length() - 1; j > 0; j--) {
+                Character c = produccion.charAt(j);
+                String simbolo = c.toString();
+                if (!simbolo.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                    fila = indiceMatriz.indexOf(simbolo);
+                    esFinDe[fila][columna] = 1;
+                    if (!anulables.contains(simbolo)) {
+                        break;
+                    }
+                }
+
+            }
+        }
+
+    }
+
     public int[][] CalcularProducto(int matrizA[][], int matrizB[][]) {
         int matrizC[][] = new int[dimensionMatriz][dimensionMatriz];
         for (int k = 0; k < dimensionMatriz; k++) {
@@ -186,12 +245,30 @@ public class ConstructorDeConjuntos {
         return matrizC;
     }
 
-    public int[][] getComienzaDirectamenteCon() {
-        return comienzaDirectamenteCon;
+    public int[][] getComienzaCon() {
+        return comienzaCon;
     }
 
-    public void setComienzaDirectamenteCon(int[][] comienzaDirectamenteCon) {
-        this.comienzaDirectamenteCon = comienzaDirectamenteCon;
+    public void setComienzaCon(int[][] comienzaCon) {
+        this.comienzaCon = comienzaCon;
     }
+
+    public int[][] getSeguidoDirectamente() {
+        return seguidoDirectamente;
+    }
+
+    public void setSeguidoDirectamente(int[][] seguidoDirectamente) {
+        this.seguidoDirectamente = seguidoDirectamente;
+    }
+
+    public int[][] getEsFinDe() {
+        return esFinDe;
+    }
+
+    public void setEsFinDe(int[][] esFinDe) {
+        this.esFinDe = esFinDe;
+    }
+    
+    
 
 }

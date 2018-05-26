@@ -73,9 +73,12 @@ public class ConstructorDeConjuntosTest {
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
         instance.construirAnulables();
         instance.crearMatrizComienzaDirectamenteCon();
-        int[][] cierreTransitivo = instance.CalcularCierreTransitivo(instance.getComienzaDirectamenteCon());
+        int[][] cierreTransitivo = instance.CalcularCierreTransitivo(instance.getComienzaCon());
         instance.crearPrimerosNoTerminales();
         instance.crearPrimerosProducciones();
+        instance.crearEsSeguidoDirectamentePor();
+        instance.crearEsFinDirectoDe();
+        instance.CalcularCierreTransitivo(instance.getEsFinDe());
         fail("The test case is a prototype.");
     }
 
