@@ -27,9 +27,12 @@ public class ValidadorGramatica {
            
        if(esGramaticaS()){
            return GRAMATICA_S;
-       }else{
-           return GRAMATICA_INVALIDA;
+       }else if(esGramaticaQ()){
+           return GRAMATICA_Q;
+       }else if(esGramaticaLL()){
+           return GRAMATICA_LL;
        }
+       return GRAMATICA_INVALIDA;
     }
     
     public boolean esGramaticaS(){
@@ -60,6 +63,78 @@ public class ValidadorGramatica {
                 primerosSimbolosNoTerminal.set(indice,primeros);
             }
         }
+        return true;
+    }
+    
+    public boolean esGramaticaQ(){
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<String> terminales = gramatica.getTerminales();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
+        ArrayList<ArrayList<String>> primerosSimbolosNoTerminal = new ArrayList();
+        ArrayList<ArrayList<String>> seleccionesProd = gramatica.getSeleccionProducciones();
+        ArrayList<ArrayList<String>> seleccionesNoTerminal = new ArrayList<>();
+        //inicializar estructura
+        for (int i = 0; i < noTerminales.size(); i++) {
+            primerosSimbolosNoTerminal.add(new ArrayList<>());
+            seleccionesNoTerminal.add(new ArrayList<>());
+        }
+        for (int i = 0; i < producciones.size(); i++) {
+            String produccion = producciones.get(i);
+            ArrayList<String> seleccion = seleccionesProd.get(i);
+            Character c = produccion.charAt(1);
+            String simbolo = c.toString();
+            if(!terminales.contains(simbolo) && !simbolo.equals(Gramatica.VACIO)){
+                return false;
+            }  
+            Character n = produccion.charAt(0);
+            String noTerminal = n.toString();
+            int indice = noTerminales.indexOf(noTerminal);
+            ArrayList<String> primeros = primerosSimbolosNoTerminal.get(indice);
+            if(primeros.contains(simbolo)){
+                return false;
+            }else{
+                primeros.add(simbolo);
+                primerosSimbolosNoTerminal.set(indice,primeros);
+            }
+            ArrayList<String> seleccionNoTerminal = seleccionesNoTerminal.get(indice);
+            for(String s: seleccion){
+                if(seleccionNoTerminal.contains(s)){
+                    return false;
+                }else{
+                    seleccionNoTerminal.add(s);
+                }
+            }
+            seleccionesNoTerminal.set(indice, seleccionNoTerminal);
+        }      
+        return true;
+        
+    }
+    
+    public boolean esGramaticaLL(){
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
+        ArrayList<ArrayList<String>> seleccionesProd = gramatica.getSeleccionProducciones();
+        ArrayList<ArrayList<String>> seleccionesNoTerminal = new ArrayList<>();
+        //inicializar estructura
+        for (int i = 0; i < noTerminales.size(); i++) {
+            seleccionesNoTerminal.add(new ArrayList<>());
+        }
+        for (int i = 0; i < producciones.size(); i++) {
+            String produccion = producciones.get(i);
+            ArrayList<String> seleccion = seleccionesProd.get(i);
+            Character n = produccion.charAt(0);
+            String noTerminal = n.toString();
+            int indice = noTerminales.indexOf(noTerminal);
+            ArrayList<String> seleccionNoTerminal = seleccionesNoTerminal.get(indice);
+            for(String s: seleccion){
+                if(seleccionNoTerminal.contains(s)){
+                    return false;
+                }else{
+                    seleccionNoTerminal.add(s);
+                }
+            }
+            seleccionesNoTerminal.set(indice, seleccionNoTerminal);
+        }      
         return true;
     }
     
