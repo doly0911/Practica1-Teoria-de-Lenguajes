@@ -40,7 +40,7 @@ public class ConversorGramatica {
                 Character c = s.charAt(j);
                 String letra = c.toString();
                 boolean esMinuscula = letra.equals(letra.toLowerCase());
-                if (!letra.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                if (!letra.equals(Gramatica.VACIO)) {
                     if (esMinuscula && !terminales.contains(letra)) {
                         terminales.add(letra);
                     } else if (!esMinuscula && !noTerminales.contains(letra)) {

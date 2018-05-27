@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * N: no terminal
+ * T: terminal
  */
 package Modelo;
 
@@ -21,7 +20,16 @@ public class ConstructorDeConjuntos {
     private int[][] comienzaCon;
     private int[][] seguidoDirectamente;
     private int[][] esFinDe;
+    private int[][] seguidoPor;
 
+    /**
+     * Inicializa las matrices usadas para realizar el proceso que finalmente 
+     * lleva a la construcción de los conjuntos de selección de cada producción.
+     * Todas las matrices son cuadradas y su dimensión es igual a la cantidad 
+     * total de T y N, por lo cual se crea la lista indiceMatriz 
+     * cuyo tamaño es dicha dimensión.
+     * @param gramatica
+     */
     public ConstructorDeConjuntos(Gramatica gramatica) {
         this.noTerminalesAnulables = new ArrayList<>();
         this.produccionesAnulables = new ArrayList<>();
@@ -35,12 +43,17 @@ public class ConstructorDeConjuntos {
         for (String terminal : terminales) {
             indiceMatriz.add(terminal);
         }
-        dimensionMatriz = indiceMatriz.size();
+        //indiceMatriz.add(Gramatica.FIN_DE_SECUENCIA);
+        dimensionMatriz = indiceMatriz.size()+1;
         this.comienzaCon = new int[dimensionMatriz][dimensionMatriz];
         this.seguidoDirectamente = new int[dimensionMatriz][dimensionMatriz];
         this.esFinDe = new int[dimensionMatriz][dimensionMatriz];
+        this.seguidoPor = new int[dimensionMatriz][dimensionMatriz];
     }
 
+    /**
+     * Construye la lista de N anulables y producciones anulables.
+     */
     public void construirAnulables() {
         String noTerminal;
         Character s;
@@ -50,7 +63,7 @@ public class ConstructorDeConjuntos {
             String produccion = prod.get(i);
             s = produccion.charAt(1);
             noTerminal = s.toString(); //Lo ocnvierto a String
-            if (noTerminal.equals(Gramatica.FIN_DE_SECUENCIA)) { //busco el fin se secuencia entre el primer valor de cada produccion
+            if (noTerminal.equals(Gramatica.VACIO)) { //busco el fin se secuencia entre el primer valor de cada produccion
                 Character n = produccion.charAt(0); //obtengo el primer caracter
                 noTerminal = n.toString();
                 noTerminalesAnulables.add(noTerminal);
@@ -82,7 +95,16 @@ public class ConstructorDeConjuntos {
 
     }
 
-    public void crearMatrizComienzaDirectamenteCon() {
+    /**
+     * Crea la matriz comienzaDirectamenteCon que relaciona cada N con el 
+     * primer elemento (que puede ser T o N) de la producción en el cual N es
+     * el lado izquierdo. Si el elemento es un N anulable, también se
+     * crea una relación con el elemento que lo sigue y así sucesivamente.
+     * Finalmente se crea la matriz comienzaCon que corresponde al cierre 
+     * transitivo de comienzaDirectamenteCon.
+     */
+    public void crearRelacionComienzaCon() {
+        int comienzaDirectamenteCon[][] = new int[dimensionMatriz][dimensionMatriz];
         ArrayList<String> producciones = gramatica.getProducciones();
         int fila = 0, columna = 0;
         for (int i = 0; i < producciones.size(); i++) {
@@ -94,30 +116,20 @@ public class ConstructorDeConjuntos {
                     fila = indiceMatriz.indexOf(simbolo);
                 } else if (indiceMatriz.contains(simbolo)) {
                     columna = indiceMatriz.indexOf(simbolo);
-                    comienzaCon[fila][columna] = 1;
+                    comienzaDirectamenteCon[fila][columna] = 1;
                     if (!noTerminalesAnulables.contains(simbolo)) {
                         break;
                     }
                 }
             }
         }
+        comienzaCon = calcularCierreTransitivo(comienzaDirectamenteCon);
     }
 
-    public int[][] CalcularCierreTransitivo(int matriz[][]) {
-        for (int k = 0; k < dimensionMatriz; k++) {
-            for (int i = 0; i < dimensionMatriz; i++) {
-                if (matriz[i][k] == 1) {
-                    for (int j = 0; j < dimensionMatriz; j++) {
-                        if (matriz[k][j] == 1) {
-                            matriz[i][j] = 1;
-                        }
-                    }
-                }
-            }
-        }
-        return matriz;
-    }
 
+    /**
+     * Crea el conjunto de primeros de cada N.
+     */
     public void crearPrimerosNoTerminales() {
         ArrayList<ArrayList<String>> primeros = new ArrayList<>();
         ArrayList<String> noTerminales = gramatica.getNoTerminales();
@@ -134,6 +146,9 @@ public class ConstructorDeConjuntos {
         gramatica.setPrimerosNoTerminales(primeros);
     }
 
+    /**
+     * Crea el conjunto de primeros de cada producción.
+     */
     public void crearPrimerosProducciones() {
         ArrayList<ArrayList<String>> primeros = gramatica.getPrimerosNoTerminales();
         ArrayList<String> producciones = gramatica.getProducciones();
@@ -151,7 +166,7 @@ public class ConstructorDeConjuntos {
                     primerosProd.add(s);
                     break;
                 }
-                if (!s.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                if (!s.equals(Gramatica.VACIO)) {
                     int indice = indiceMatriz.indexOf(s);
                     ArrayList<String> primerosNoTerminal = primeros.get(indice);
                     for (int k = 0; k < primerosNoTerminal.size(); k++) {
@@ -168,12 +183,16 @@ public class ConstructorDeConjuntos {
             }
             primerosProducciones.add(primerosProd);
             gramatica.setPrimerosProducciones(primerosProducciones);
-
         }
-
     }
 
-    public void crearEsSeguidoDirectamentePor() {
+    /**
+     * Crea la matriz seguidoDirectamente que relaciona cada N o T, del lado
+     * derecho de una producción, con el elemento que lo sigue (que puede ser T 
+     * o N). Si el elemento que lo sigue es un N anulable, también se
+     * crea una relación con el siguiente elemento y así sucesivamente.
+     */
+    public void crearRelacionEsSeguidoDirectamentePor() {
         ArrayList<String> producciones = gramatica.getProducciones();
         ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
         int fila = 0, columna = 0;
@@ -182,14 +201,14 @@ public class ConstructorDeConjuntos {
             for (int j = 1; j < produccion.length() - 1; j++) {
                 Character c = produccion.charAt(j);
                 String simbolo = c.toString();
-                if (simbolo.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                if (simbolo.equals(Gramatica.VACIO)) {
                     break;
                 }
                 fila = indiceMatriz.indexOf(simbolo);
                 for (int k = j + 1; k < produccion.length(); k++) {
                     Character s = produccion.charAt(k);
                     String siguiente = s.toString();
-                    if (!siguiente.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                    if (!siguiente.equals(Gramatica.VACIO)) {
                         columna = indiceMatriz.indexOf(siguiente);
                         seguidoDirectamente[fila][columna] = 1;
                         if (!anulables.contains(siguiente)) {
@@ -201,10 +220,19 @@ public class ConstructorDeConjuntos {
 
             }
         }
-
+        seguidoDirectamente[0][dimensionMatriz-1] = 1;
     }
 
-    public void crearEsFinDirectoDe() {
+    /**
+     * Crea la matriz esFinDirectoDe que relaciona cada N con el elemento 
+     * (que puede ser T o N) con el cual termina la producción en el cual N es
+     * el lado izquierdo. Si el elemento es un N anulable, también se
+     * crea una relación con el elemento que lo precede y así sucesivamente.
+     * Finalmente se crea la matriz esFinDe que corresponde al cierre 
+     * transitivo de esFinDirectoDe.
+     */
+    public void crearRelacionEsFinDe() {
+        int esFinDirectoDe[][] = new int[dimensionMatriz][dimensionMatriz];
         ArrayList<String> producciones = gramatica.getProducciones();
         ArrayList<String> anulables = gramatica.getNoTerminalesAnulables();
         int fila = 0, columna = 0;
@@ -216,9 +244,9 @@ public class ConstructorDeConjuntos {
             for (int j = produccion.length() - 1; j > 0; j--) {
                 Character c = produccion.charAt(j);
                 String simbolo = c.toString();
-                if (!simbolo.equals(Gramatica.FIN_DE_SECUENCIA)) {
+                if (!simbolo.equals(Gramatica.VACIO)) {
                     fila = indiceMatriz.indexOf(simbolo);
-                    esFinDe[fila][columna] = 1;
+                    esFinDirectoDe[fila][columna] = 1;
                     if (!anulables.contains(simbolo)) {
                         break;
                     }
@@ -226,9 +254,48 @@ public class ConstructorDeConjuntos {
 
             }
         }
-
+        esFinDe = calcularCierreTransitivo(esFinDirectoDe);
     }
-
+    
+     /**
+     *
+     * @param matriz
+     * @return
+     */
+    public int[][] calcularCierreTransitivo(int matriz[][]) {
+        for (int k = 0; k < dimensionMatriz; k++) {
+            for (int i = 0; i < dimensionMatriz; i++) {
+                if(k==i){
+                    matriz[i][k] = 1;
+                }
+                if (matriz[i][k] == 1) {
+                    for (int j = 0; j < dimensionMatriz; j++) {
+                        if (matriz[k][j] == 1) {
+                            matriz[i][j] = 1;
+                        }
+                    }
+                }
+            }
+        }
+        
+        return matriz;
+    }
+    
+     /**
+     * Calcula la matriz seguidoPor que corresponde asl producto de las matrices
+     * comienzaCon, seguidoDirectamente y esFinDe.
+     */
+    public void crearRelacionEsSeguidoPor(){
+        seguidoPor = CalcularProducto(esFinDe, seguidoDirectamente);
+        seguidoPor = CalcularProducto(seguidoPor, comienzaCon);
+    }
+        
+    /**
+     *
+     * @param matrizA
+     * @param matrizB
+     * @return
+     */
     public int[][] CalcularProducto(int matrizA[][], int matrizB[][]) {
         int matrizC[][] = new int[dimensionMatriz][dimensionMatriz];
         for (int k = 0; k < dimensionMatriz; k++) {
@@ -244,6 +311,42 @@ public class ConstructorDeConjuntos {
         }
         return matrizC;
     }
+    
+    public void crearSiguientesNoTerminales() {
+        indiceMatriz.add(Gramatica.FIN_DE_SECUENCIA);
+        ArrayList<ArrayList<String>> siguientes = new ArrayList<>();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
+        for (int i = 0; i < noTerminales.size(); i++) {
+            ArrayList<String> terminales = new ArrayList<>();
+            for (int j = noTerminales.size(); j < dimensionMatriz; j++) {
+                if (seguidoPor[i][j] == 1) {
+                    String terminal = indiceMatriz.get(j); //obtenemos el terminal de la columna
+                    terminales.add(terminal);
+                }
+            }
+            siguientes.add(terminales);
+        }
+        gramatica.setSiguientesNoTerminales(siguientes);
+    }
+    
+    /**
+     * Construye el conjunto de selección de cada producción a partir de los 
+     * conjuntos de siguientes y primeros.
+     */
+    public void construirSeleccionProducciones(){
+        ArrayList<ArrayList<String>> primerosP = gramatica.getPrimerosProducciones();
+        ArrayList<String> producciones = gramatica.getProducciones();
+        ArrayList<Integer> anulables = gramatica.getProduccionesAnulables();
+        ArrayList<ArrayList<String>> seleccionProducciones = new ArrayList<>();
+        
+        for(ArrayList<String> primeros : primerosP){
+
+            seleccionProducciones.add(primeros);
+        }
+        
+        gramatica.setSeleccionProducciones(seleccionProducciones);
+    }
+    
 
     public int[][] getComienzaCon() {
         return comienzaCon;
@@ -267,6 +370,14 @@ public class ConstructorDeConjuntos {
 
     public void setEsFinDe(int[][] esFinDe) {
         this.esFinDe = esFinDe;
+    }
+
+    public int[][] getSeguidoPor() {
+        return seguidoPor;
+    }
+
+    public void setSeguidoPor(int[][] seguidoPor) {
+        this.seguidoPor = seguidoPor;
     }
     
     

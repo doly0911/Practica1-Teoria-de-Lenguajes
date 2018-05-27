@@ -6,6 +6,7 @@
 package Modelo;
 
 import Utils.ConversorGramatica;
+import java.util.ArrayList;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -19,18 +20,30 @@ import static org.junit.Assert.*;
  */
 public class ConstructorDeConjuntosTest {
 
+    /**
+     *
+     */
     public ConstructorDeConjuntosTest() {
     }
     private String gramaticaStr;
 
+    /**
+     *
+     */
     @BeforeClass
     public static void setUpClass() {
     }
 
+    /**
+     *
+     */
     @AfterClass
     public static void tearDownClass() {
     }
 
+    /**
+     *
+     */
     @Before
     public void setUp() {
         gramaticaStr = "1.A = BCc\n"
@@ -45,6 +58,9 @@ public class ConstructorDeConjuntosTest {
                 + "10.E = c";
     }
 
+    /**
+     *
+     */
     @After
     public void tearDown() {
     }
@@ -64,24 +80,32 @@ public class ConstructorDeConjuntosTest {
         fail("The test case is a prototype.");
     }
     
+    /**
+     *
+     */
     @Test
     public void testConstruirCierreTransitivo() {
         System.out.println("construirAnulables");
         ConversorGramatica conversor = new ConversorGramatica();
         Gramatica g = conversor.convertir(gramaticaStr);
-
+        
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
+        
         instance.construirAnulables();
-        instance.crearMatrizComienzaDirectamenteCon();
-        int[][] cierreTransitivo = instance.CalcularCierreTransitivo(instance.getComienzaCon());
+        instance.crearRelacionComienzaCon();
         instance.crearPrimerosNoTerminales();
         instance.crearPrimerosProducciones();
-        instance.crearEsSeguidoDirectamentePor();
-        instance.crearEsFinDirectoDe();
-        instance.CalcularCierreTransitivo(instance.getEsFinDe());
+        instance.crearRelacionEsSeguidoDirectamentePor();
+        instance.crearRelacionEsFinDe();
+        instance.crearRelacionEsSeguidoPor();
+        instance.crearSiguientesNoTerminales();
+
         fail("The test case is a prototype.");
     }
 
+    /**
+     *
+     */
     @Test
     public void testConstruirMatrizComienzaDirectamenteCon() {
         ConversorGramatica conversor = new ConversorGramatica();
@@ -89,7 +113,7 @@ public class ConstructorDeConjuntosTest {
 
         ConstructorDeConjuntos instance = new ConstructorDeConjuntos(g);
         instance.construirAnulables();
-        instance.crearMatrizComienzaDirectamenteCon();
+        instance.crearRelacionComienzaCon();
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
     }

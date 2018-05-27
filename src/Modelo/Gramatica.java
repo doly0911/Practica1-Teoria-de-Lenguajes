@@ -19,7 +19,10 @@ public class Gramatica {
     private ArrayList<Integer> produccionesAnulables;
     private ArrayList<ArrayList<String>> primerosNoTerminales;
     private ArrayList<ArrayList<String>> primerosProducciones;
-    public static final String FIN_DE_SECUENCIA = "|";
+    private ArrayList<ArrayList<String>> siguientesNoTerminales;
+    private ArrayList<ArrayList<String>> seleccionProducciones;
+    public static final String VACIO = "|";
+    public static final String FIN_DE_SECUENCIA = "&";
 
     public ArrayList<String> getProducciones() {
         return producciones;
@@ -76,8 +79,22 @@ public class Gramatica {
     public void setPrimerosProducciones(ArrayList<ArrayList<String>> primerosProducciones) {
         this.primerosProducciones = primerosProducciones;
     }
+
+    public ArrayList<ArrayList<String>> getSiguientesNoTerminales() {
+        return siguientesNoTerminales;
+    }
+
+    public void setSiguientesNoTerminales(ArrayList<ArrayList<String>> siguientesNoTerminales) {
+        this.siguientesNoTerminales = siguientesNoTerminales;
+    }
+
+    public ArrayList<ArrayList<String>> getSeleccionProducciones() {
+        return seleccionProducciones;
+    }
+
+    public void setSeleccionProducciones(ArrayList<ArrayList<String>> seleccionProducciones) {
+        this.seleccionProducciones = seleccionProducciones;
+    }
+
     
-    
-    
-   
 }
