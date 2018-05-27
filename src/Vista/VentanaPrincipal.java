@@ -756,7 +756,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ConversorGramatica conversor = new ConversorGramatica();
         gramatica = conversor.convertir(txt_gramatica.getText());
         ConstructorDeConjuntos constructor = new ConstructorDeConjuntos(gramatica);
-        //gramatica = constructor.construirConjuntos();
+        constructor.construirConjuntos();
         ArrayList<String> lista;
         String se = "";
         lista = gramatica.getTerminales();
@@ -764,9 +764,14 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         for(String s : lista){
             se = se+" "+s;
         }
-        se = se+" "+"&";
-        txt_simbolosDeEntrada.setText(se);
-        txt_simbolosEnLaPila.setText(se);
+        txt_simbolosDeEntrada.setText(se+" "+"@");
+        
+//        lista = gramatica.getTerminalesEnPila();
+//        Collections.sort(lista);
+//        for(String s : lista){
+//            se = se+" "+s;
+//        }
+//        txt_simbolosEnLaPila.setText(se+" "+"@");
         txt_confInicial.setText("@"+" "+gramatica.getTerminales().get(0));
     }//GEN-LAST:event_jButton1ActionPerformed
 
