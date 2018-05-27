@@ -364,6 +364,27 @@ public class ConstructorDeConjuntos {
         gramatica.setSeleccionProducciones(seleccionProducciones);
     }
     
+    public void crearTerminalesEnPila(){
+        ArrayList<String> tEnPila;
+        ArrayList<String> tPrimero = new ArrayList<>();
+        tEnPila = gramatica.getTerminales();
+        Character t;
+        String tt;
+  
+        for(String s : gramatica.getProducciones()){
+            t = s.charAt(1);
+            tt = t.toString();
+            tPrimero.add(tt);
+        }
+        
+        for(String s : tPrimero){
+            if(tEnPila.contains(s)){
+                tEnPila.remove(s);
+            }
+        }
+        gramatica.setTerminalesEnPila(tEnPila);
+    }
+    
     public void construirConjuntos(){
         this.construirAnulables();
         this.crearRelacionComienzaCon();
@@ -374,6 +395,7 @@ public class ConstructorDeConjuntos {
         this.crearRelacionEsSeguidoPor();
         this.crearSiguientesNoTerminales();
         this.construirSeleccionProducciones();
+        this.crearTerminalesEnPila();
     }
     
 

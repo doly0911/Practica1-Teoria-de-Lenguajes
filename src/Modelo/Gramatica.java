@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class Gramatica {
     private ArrayList<String> noTerminales;
     private ArrayList<String> terminales;
+    private ArrayList<String> terminalesEnPila;
     private ArrayList<String> producciones;
     private ArrayList<String> noTerminalesAnulables;
     private ArrayList<Integer> produccionesAnulables;
@@ -94,6 +95,14 @@ public class Gramatica {
 
     public void setSeleccionProducciones(ArrayList<ArrayList<String>> seleccionProducciones) {
         this.seleccionProducciones = seleccionProducciones;
+    }
+
+    public ArrayList<String> getTerminalesEnPila() {
+        return terminalesEnPila;
+    }
+
+    public void setTerminalesEnPila(ArrayList<String> terminalesEnPila) {
+        this.terminalesEnPila = terminalesEnPila;
     }
 
     
