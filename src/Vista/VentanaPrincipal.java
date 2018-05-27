@@ -802,16 +802,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         defaultTableModel.setColumnCount(1);
         defaultTableModel.setRowCount(numeroSimbolos); //que se configure segun los simbolos a apilar en la conf inicial
         
-        //se identifica el tipo de gramática para poder iniciar el reconocedor descendente
-        ValidadorGramatica validador = new ValidadorGramatica(gramatica); 
-        int tipoDeG = validador.validar();
-        reconocedorDescendente = new ReconocedorDescendente(gramatica, tipoDeG); //constructor que me apila la config inicial
+        reconocedorDescendente = new ReconocedorDescendente(gramatica); //constructor que me apila la config inicial
         pila = reconocedorHilera.getPila();
         List<String> pilaCopia = new ArrayList<>(pila); //hago copia de la pila para usarla en btn_siguienteCaracter
         llenarPila(pilaCopia); //mapea los valores de mi defaultTableModel a la pila Copia
-
-        estadoHilera =0;
-        numeroCaracter =0;
     }//GEN-LAST:event_btn_iniciarReconocedorActionPerformed
 
     private void llenarFormulario(){

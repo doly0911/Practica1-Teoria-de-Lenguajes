@@ -7,6 +7,7 @@ package Utils;
 
 import Modelo.AutomataPila;
 import Modelo.Gramatica;
+import Modelo.ValidadorGramatica;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -71,7 +72,24 @@ public class ConstructorAutomataDeG {
         HashMap<String, ArrayList<String>> transiciones;
         transiciones = new HashMap<>();
         
+        //se identifica el tipo de gramática para poder construir las transiciones
+        ValidadorGramatica validador = new ValidadorGramatica(gramatica); 
+        int tipoDeG = validador.validar();
         
+        switch(tipoDeG){
+            
+            case 0:
+                break;
+                
+            case 1:
+                break;
+                
+            case 2:
+                break;
+            
+            case 3:
+                break;
+        }
         
         return transiciones;
     }

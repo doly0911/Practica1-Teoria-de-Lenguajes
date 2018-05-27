@@ -11,7 +11,7 @@ public class ReconocedorDescendente {
     private Gramatica gramatica;
     private Stack<String> pila;
     
-    public ReconocedorDescendente(Gramatica gramatica, int tipoDeG) {
+    public ReconocedorDescendente(Gramatica gramatica) {
         this.gramatica = gramatica;
         pila = new Stack<>();
         for(String simbolo: gramatica.getAutomataPila().getConfiguracionInicial()){
