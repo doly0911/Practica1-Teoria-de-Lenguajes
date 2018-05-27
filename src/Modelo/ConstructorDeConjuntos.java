@@ -335,16 +335,45 @@ public class ConstructorDeConjuntos {
      */
     public void construirSeleccionProducciones(){
         ArrayList<ArrayList<String>> primerosP = gramatica.getPrimerosProducciones();
+        ArrayList<ArrayList<String>> siguientes = gramatica.getSiguientesNoTerminales();
         ArrayList<String> producciones = gramatica.getProducciones();
         ArrayList<Integer> anulables = gramatica.getProduccionesAnulables();
+        ArrayList<String> noTerminales = gramatica.getNoTerminales();
         ArrayList<ArrayList<String>> seleccionProducciones = new ArrayList<>();
+        ArrayList<String> seleccion;
+        String produccion;
         
-        for(ArrayList<String> primeros : primerosP){
-
-            seleccionProducciones.add(primeros);
+        
+        for (int i = 0; i < primerosP.size(); i++) { 
+            seleccion = primerosP.get(i);
+            produccion = producciones.get(i);
+            Character c = produccion.charAt(0);
+            String noTerminal = c.toString();
+            if(anulables.contains(i)){
+                int indice = noTerminales.indexOf(noTerminal);
+                ArrayList<String> siguientesNoTerminal = siguientes.get(indice);
+                for(String s : siguientesNoTerminal){
+                    if(!seleccion.contains(s)){
+                        seleccion.add(s);
+                    }
+                }
+                
+            }
+            seleccionProducciones.add(seleccion);
         }
-        
         gramatica.setSeleccionProducciones(seleccionProducciones);
+    }
+    
+    public void construirConjuntos(){
+        this.construirAnulables();
+        this.crearRelacionComienzaCon();
+        this.crearPrimerosNoTerminales();
+        this.crearPrimerosProducciones();
+        this.crearRelacionEsSeguidoDirectamentePor();
+        this.crearRelacionEsFinDe();
+        this.crearRelacionEsSeguidoPor();
+        this.crearSiguientesNoTerminales();
+        this.construirSeleccionProducciones();
     }
     
 

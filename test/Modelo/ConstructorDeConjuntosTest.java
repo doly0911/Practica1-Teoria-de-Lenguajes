@@ -99,6 +99,7 @@ public class ConstructorDeConjuntosTest {
         instance.crearRelacionEsFinDe();
         instance.crearRelacionEsSeguidoPor();
         instance.crearSiguientesNoTerminales();
+        instance.construirSeleccionProducciones();
 
         fail("The test case is a prototype.");
     }
