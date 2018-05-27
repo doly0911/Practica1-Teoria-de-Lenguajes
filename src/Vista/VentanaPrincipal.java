@@ -21,10 +21,12 @@ import java.util.List;
 import java.util.Stack;
 import javax.swing.table.DefaultTableModel;
 import Control.CtrlVentanaPrincipal;
+import Modelo.ConstructorDeConjuntos;
 import Modelo.Gramatica;
 import Utils.ConversorGramatica;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -751,8 +753,21 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btn_cargarGramaticaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        ConversorGramatica conversorGramatica = new ConversorGramatica();
-        conversorGramatica.convertir(txt_gramatica.getText());
+        ConversorGramatica conversor = new ConversorGramatica();
+        gramatica = conversor.convertir(txt_gramatica.getText());
+        ConstructorDeConjuntos constructor = new ConstructorDeConjuntos(gramatica);
+        //gramatica = constructor.construirConjuntos();
+        ArrayList<String> lista;
+        String se = "";
+        lista = gramatica.getTerminales();
+        Collections.sort(lista);
+        for(String s : lista){
+            se = se+" "+s;
+        }
+        se = se+" "+"&";
+        txt_simbolosDeEntrada.setText(se);
+        txt_simbolosEnLaPila.setText(se);
+        txt_confInicial.setText("@"+" "+gramatica.getTerminales().get(0));
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void llenarFormulario(){
