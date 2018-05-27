@@ -14,7 +14,6 @@ import java.util.ArrayList;
 public class Gramatica {
     private ArrayList<String> noTerminales;
     private ArrayList<String> terminales;
-    private ArrayList<String> terminalesEnPila;
     private ArrayList<String> producciones;
     private ArrayList<String> noTerminalesAnulables;
     private ArrayList<Integer> produccionesAnulables;
@@ -24,6 +23,7 @@ public class Gramatica {
     private ArrayList<ArrayList<String>> seleccionProducciones;
     public static final String VACIO = "|";
     public static final String FIN_DE_SECUENCIA = "&";
+    private AutomataPila automataPila;
 
     public ArrayList<String> getProducciones() {
         return producciones;
@@ -64,14 +64,6 @@ public class Gramatica {
     public void setTerminales(ArrayList<String> terminales) {
         this.terminales = terminales;
     }
-
-    public ArrayList<String> getTerminalesEnPila() {
-        return terminalesEnPila;
-    }
-
-    public void setTerminalesEnPila(ArrayList<String> terminalesEnPila) {
-        this.terminalesEnPila = terminalesEnPila;
-    }
     
     public ArrayList<ArrayList<String>> getPrimerosNoTerminales() {
         return primerosNoTerminales;
@@ -105,4 +97,13 @@ public class Gramatica {
         this.seleccionProducciones = seleccionProducciones;
     }
 
+    public AutomataPila getAutomataPila() {
+        return automataPila;
+    }
+
+    public void setAutomataPila(AutomataPila automataPila) {
+        this.automataPila = automataPila;
+    }
+
+    
 }
