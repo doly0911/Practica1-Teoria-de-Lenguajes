@@ -5,10 +5,6 @@
  */
 package Modelo;
 
-/**
- *
- * @author pao_c
- */
 public class reconocedorDescendente {
     
 }
