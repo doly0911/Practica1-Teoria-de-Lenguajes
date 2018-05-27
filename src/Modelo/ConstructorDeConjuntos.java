@@ -366,20 +366,15 @@ public class ConstructorDeConjuntos {
     
     public void crearTerminalesEnPila(){
         ArrayList<String> tEnPila;
-        ArrayList<String> tPrimero = new ArrayList<>();
-        tEnPila = gramatica.getTerminales();
-        Character t;
-        String tt;
-  
-        for(String s : gramatica.getProducciones()){
-            t = s.charAt(1);
-            tt = t.toString();
-            tPrimero.add(tt);
-        }
+        Character c;
+        tEnPila = new ArrayList<>();
         
-        for(String s : tPrimero){
-            if(tEnPila.contains(s)){
-                tEnPila.remove(s);
+        for(String p : gramatica.getProducciones()){
+            for(int i=2; i<p.length(); i++){
+                c = p.charAt(i);
+                if(Character.isLowerCase(c)&&(!tEnPila.contains(c.toString()))){
+                    tEnPila.add(c.toString());
+                }
             }
         }
         gramatica.setTerminalesEnPila(tEnPila);

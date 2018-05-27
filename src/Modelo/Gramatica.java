@@ -65,6 +65,14 @@ public class Gramatica {
         this.terminales = terminales;
     }
 
+    public ArrayList<String> getTerminalesEnPila() {
+        return terminalesEnPila;
+    }
+
+    public void setTerminalesEnPila(ArrayList<String> terminalesEnPila) {
+        this.terminalesEnPila = terminalesEnPila;
+    }
+    
     public ArrayList<ArrayList<String>> getPrimerosNoTerminales() {
         return primerosNoTerminales;
     }
@@ -97,13 +105,4 @@ public class Gramatica {
         this.seleccionProducciones = seleccionProducciones;
     }
 
-    public ArrayList<String> getTerminalesEnPila() {
-        return terminalesEnPila;
-    }
-
-    public void setTerminalesEnPila(ArrayList<String> terminalesEnPila) {
-        this.terminalesEnPila = terminalesEnPila;
-    }
-
-    
 }

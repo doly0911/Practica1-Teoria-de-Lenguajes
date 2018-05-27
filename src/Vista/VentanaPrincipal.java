@@ -106,7 +106,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txt_nuevoSimboloPila = new javax.swing.JTextField();
         btnModificarSimPila = new javax.swing.JButton();
         txtEstadoInicial = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
         cbo_listaTransiciones = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         txt_operacionEntrada = new javax.swing.JTextField();
@@ -117,6 +116,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btn_agregarTransicion = new javax.swing.JButton();
         btn_modificarTransicion = new javax.swing.JButton();
         jLabel15 = new javax.swing.JLabel();
+        jLabel17 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         btn_iniciarPila = new javax.swing.JButton();
@@ -125,9 +125,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tbl_pila = new javax.swing.JTable();
         btn_siguienteCaracter = new javax.swing.JButton();
-        jLabel8 = new javax.swing.JLabel();
+        jLabel13 = new javax.swing.JLabel();
+        jLabel18 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
+        jLabel19 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_gramatica = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
@@ -338,10 +341,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel1.add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 210, 380, 120));
         jPanel1.add(txtEstadoInicial, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 390, 80, 30));
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel13.setText("Estados:");
-        jPanel1.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
-
         cbo_listaTransiciones.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbo_listaTransicionesActionPerformed(evt);
@@ -395,6 +394,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel15.setText("Transiciones:");
         jPanel1.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 500, -1, -1));
 
+        jLabel17.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel17.setText("Estados:");
+        jPanel1.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 360, -1, -1));
+
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 420, 660));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
@@ -402,8 +405,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel6.setText("Hilera:");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+        jLabel6.setText("símbolo de fin de secuencia:");
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, -1, 20));
 
         btn_iniciarPila.setText("Iniciar pila");
         btn_iniciarPila.addActionListener(new java.awt.event.ActionListener() {
@@ -411,13 +414,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_iniciarPilaActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 90, -1, -1));
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, -1, -1));
 
         txtArea_hilera.setColumns(20);
         txtArea_hilera.setRows(5);
         jScrollPane1.setViewportView(txtArea_hilera);
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 200, 40));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 140, 200, 40));
 
         tbl_pila.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -432,7 +435,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tbl_pila);
 
-        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 140, 50, 340));
+        jPanel2.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 250, 50, 280));
 
         btn_siguienteCaracter.setText("Siguiente carácter");
         btn_siguienteCaracter.addActionListener(new java.awt.event.ActionListener() {
@@ -440,28 +443,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_siguienteCaracterActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 500, -1, -1));
+        jPanel2.add(btn_siguienteCaracter, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 550, -1, -1));
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 270, 550));
+        jLabel13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel13.setText("&: símbolo de fin de secuencia");
+        jPanel2.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, -1, -1));
+
+        jLabel18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel18.setText("@: símbolo de pila vacía");
+        jPanel2.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+
+        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel14.setText("Es importante iniciar la pila cada vez que se ");
+        jPanel2.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 600, -1, -1));
+
+        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel16.setText("ingrese una hilera.");
+        jPanel2.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 620, -1, 20));
+
+        jLabel19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        jLabel19.setText("Ingrese la hilera y al final ingrese el ");
+        jPanel2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
+
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 270, 660));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel8.setText("Autómatas de pila");
         getContentPane().add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 10, -1, -1));
-
-        jLabel14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel14.setText("Es importante iniciar la pila cada vez que se ");
-        getContentPane().add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 620, -1, -1));
-
-        jLabel16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        jLabel16.setText("ingrese una hilera.");
-        getContentPane().add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 640, -1, 20));
 
         txt_gramatica.setBackground(new java.awt.Color(240, 240, 240));
         txt_gramatica.setColumns(20);
         txt_gramatica.setRows(5);
         jScrollPane2.setViewportView(txt_gramatica);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 210, 410));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 210, 520));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -483,7 +498,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel6.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 140, 30));
 
-        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 550));
+        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 660));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -759,19 +774,22 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         constructor.construirConjuntos();
         ArrayList<String> lista;
         String se = "";
+        
         lista = gramatica.getTerminales();
         Collections.sort(lista);
         for(String s : lista){
             se = se+" "+s;
         }
-        txt_simbolosDeEntrada.setText(se+" "+"@");
+        txt_simbolosDeEntrada.setText(se+" "+"&");
         
-//        lista = gramatica.getTerminalesEnPila();
-//        Collections.sort(lista);
-//        for(String s : lista){
-//            se = se+" "+s;
-//        }
-//        txt_simbolosEnLaPila.setText(se+" "+"@");
+        se = "";
+        lista = gramatica.getTerminalesEnPila();
+        Collections.sort(lista);
+        for(String s : lista){
+            se = se+" "+s;
+        }
+        txt_simbolosEnLaPila.setText(se+" "+"@");
+
         txt_confInicial.setText("@"+" "+gramatica.getTerminales().get(0));
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -895,6 +913,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
+    private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
+    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
