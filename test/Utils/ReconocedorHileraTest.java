@@ -24,22 +24,24 @@ import static org.junit.Assert.*;
  * @author Usuario externo
  */
 public class ReconocedorHileraTest {
-    
+
     public ReconocedorHileraTest() {
     }
-
-
 
     /**
      * Test of ejecutarOperacion method, of class ReconocedorHilera.
      */
     @Test
     public void testReconocerHileraGramaticaS() {
-       String gramaticaStr = "1.B = bCd\n"
-                + "2.B = aB\n"
-                + "3.C = bCd\n"
-                + "4.C = a\n";
-        String hilera = "bbaddd&";
+        String gramaticaStr = "1. A = BcD\n"
+                + "2. A = aE\n"
+                + "3. B = bAc\n"
+                + "4. B = |\n"
+                + "5. D = dBDc\n"
+                + "6. D = |\n"
+                + "7. E = a\n"
+                + "8. E = BD";
+        String hilera = "baacc&";
         ConversorGramatica conversor = new ConversorGramatica();
         Gramatica g = conversor.convertir(gramaticaStr);
         ConstructorDeConjuntos constructor = new ConstructorDeConjuntos(g);
@@ -52,13 +54,11 @@ public class ReconocedorHileraTest {
             Character c = hilera.charAt(i);
             String s = c.toString();
             valor = reconocedor.recorrerCaracter(s);
-            if(valor==0){
+            if (valor == 0) {
                 break;
             }
         }
         assertEquals(1, valor);
     }
 
-
-    
 }

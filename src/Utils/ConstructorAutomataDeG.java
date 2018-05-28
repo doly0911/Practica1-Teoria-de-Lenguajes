@@ -108,6 +108,13 @@ public class ConstructorAutomataDeG {
                 instrucciones.add(INSTRUCCION_RETENGA);
                 transiciones.put("#1", instrucciones);
                 break;
+            case 3: //gramatica Q
+                instrucciones = new ArrayList<>();
+                instrucciones.add(INSTRUCCION_DESAPILAR);
+                instrucciones.add(INSTRUCCION_PERMANEZCA);
+                instrucciones.add(INSTRUCCION_RETENGA);
+                transiciones.put("#1", instrucciones);
+                break;
 
         }
 
@@ -150,8 +157,8 @@ public class ConstructorAutomataDeG {
                 instrucciones.add(INSTRUCCION_DESAPILAR);
                 instrucciones.add(INSTRUCCION_PERMANEZCA);
                 instrucciones.add(INSTRUCCION_AVANCE);
-                transiciones.put("#"+ numeroTransiciones, instrucciones);
-                transicionesEstado[filaTransicion][columnaTransicion] = "#"+ numeroTransiciones;
+                transiciones.put("#" + numeroTransiciones, instrucciones);
+                transicionesEstado[filaTransicion][columnaTransicion] = "#" + numeroTransiciones;
                 numeroTransiciones++;
             } else if (terminales.contains(primerSimbolo)) {
                 transicionesEstado[filaTransicion][columnaTransicion] = "#" + numeroTransiciones;
