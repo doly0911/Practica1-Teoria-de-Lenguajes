@@ -134,7 +134,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel14 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel19 = new javax.swing.JLabel();
-        btn_iniciarReconocedor = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         txt_gramatica = new javax.swing.JTextArea();
@@ -471,14 +470,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel19.setText("Ingrese la hilera y al final ingrese el ");
         jPanel2.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 80, -1, 20));
 
-        btn_iniciarReconocedor.setText("Iniciar pila del reconocedor descendente");
-        btn_iniciarReconocedor.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_iniciarReconocedorActionPerformed(evt);
-            }
-        });
-        jPanel2.add(btn_iniciarReconocedor, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 240, -1, -1));
-
         getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 50, 270, 660));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
@@ -795,22 +786,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         gramatica.setAutomataPila(automata);
         
         //se muestra en la vista los simbolos en la pila, de entrada y la configutación inicial        
-        llenarFormulario2();
+        llenarFormulario();
     }//GEN-LAST:event_btn_construirAutomataActionPerformed
-
-    private void btn_iniciarReconocedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_iniciarReconocedorActionPerformed
-        hilera = this.txtArea_hilera.getText();
-
-        String configuracionInicial = txt_confInicial.getText().trim(); // obtengo la config de la pila
-        int numeroSimbolos = configuracionInicial.length();
-        defaultTableModel.setColumnCount(1);
-        defaultTableModel.setRowCount(numeroSimbolos); //que se configure segun los simbolos a apilar en la conf inicial
-        
-        reconocedorDescendente = new ReconocedorDescendente(gramatica); //constructor que me apila la config inicial
-        pila = reconocedorHilera.getPila();
-        List<String> pilaCopia = new ArrayList<>(pila); //hago copia de la pila para usarla en btn_siguienteCaracter
-        llenarPila(pilaCopia); //mapea los valores de mi defaultTableModel a la pila Copia
-    }//GEN-LAST:event_btn_iniciarReconocedorActionPerformed
 
     private void llenarFormulario(){
         ArrayList<Estado> estados;
@@ -856,6 +833,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
            String llave = (String) transicion.getKey();
            cbo_listaTransiciones.addItem(llave);
        }
+       
+       cbo_seleccion.removeAllItems();
+        int numP = 1;
+        for(ArrayList<String> i : gramatica.getSeleccionProducciones()){
+            simbolos = String.valueOf(numP)+". ";
+            for(String j : i){
+                simbolos += j + " ";
+            }
+            cbo_seleccion.addItem(simbolos);
+            numP++;
+        }
     }
     
     private void llenarFormulario2(){
@@ -892,15 +880,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             numP++;
         }
         
-//        cbo_listaTransiciones.removeAllItems();
-//        transiciones = automata.getTransiciones();
-//        cbo_listaTransiciones.addItem("agregar");
-//        Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
-//        while (it.hasNext()) {
-//            Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
-//            String llave = (String) transicion.getKey();
-//            cbo_listaTransiciones.addItem(llave);
-//        }
+        cbo_listaTransiciones.removeAllItems();
+        transiciones = gramatica.getAutomataPila().getTransiciones();
+        cbo_listaTransiciones.addItem("agregar");
+        Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
+        while (it.hasNext()) {
+            Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
+            String llave = (String) transicion.getKey();
+            cbo_listaTransiciones.addItem(llave);
+        }
     }
     
     private void llenarPila(List<String> pila) {
@@ -962,7 +950,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btn_cargarGramatica;
     private javax.swing.JButton btn_construirAutomata;
     private javax.swing.JButton btn_iniciarPila;
-    private javax.swing.JButton btn_iniciarReconocedor;
     private javax.swing.JButton btn_modificarTransicion;
     private javax.swing.JButton btn_siguienteCaracter;
     private javax.swing.JButton cargarArchivo;
