@@ -32,6 +32,7 @@ public class ReconocedorHilera {
     private static final String INSTRUCCION_CAMBIA = "cambia";
     private static final String INSTRUCCION_ACEPTE = "Acepte";
     private static final String INSTRUCCION_RECHACE = "rechace";
+    private static final String INSTRUCCION_REPLACE = "replace(";
     
     
     public ReconocedorHilera(AutomataPila automataPila){
@@ -70,7 +71,15 @@ public class ReconocedorHilera {
                     if(instruccion.contains(INSTRUCCION_NINGUNA)){
                         break;
                     }
-                    if(instruccion.contains(INSTRUCCION_APILAR)){
+                     if(instruccion.contains(INSTRUCCION_REPLACE)){
+                        String hilera = instruccion.substring(instruccion.indexOf("(")+1,instruccion.indexOf(")"));
+                        pila.pop();
+                         for (int i = 0; i < hilera.length(); i++) {
+                             Character c = hilera.charAt(i);
+                             String simbolo = c.toString();
+                             pila.push(simbolo);
+                         }
+                    }else if(instruccion.contains(INSTRUCCION_APILAR)){
                         String simbolo = instruccion.substring(instruccion.indexOf("(")+1,instruccion.indexOf(")"));
                         pila.push(simbolo);
                     }else if(instruccion.equalsIgnoreCase(INSTRUCCION_DESAPILAR)){
