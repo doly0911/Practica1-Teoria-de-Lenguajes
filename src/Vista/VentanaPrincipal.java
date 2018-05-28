@@ -23,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
 import Control.CtrlVentanaPrincipal;
 import Modelo.ConstructorDeConjuntos;
 import Modelo.Gramatica;
-import Modelo.ReconocedorDescendente;
+
 import Modelo.ValidadorGramatica;
 import Utils.ConstructorAutomataDeG;
 import Utils.ConversorGramatica;
@@ -54,7 +54,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private CtrlVentanaPrincipal ctrlVentanaPrincipal;
     private HashMap<String, ArrayList<String>> transiciones;
     
-    private ReconocedorDescendente reconocedorDescendente;
+    
     
     /**
      * Creates new form VentanaPrincipal
