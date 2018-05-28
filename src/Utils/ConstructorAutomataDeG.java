@@ -36,15 +36,15 @@ public class ConstructorAutomataDeG {
         ArrayList<String> simbolosEntrada;
         simbolosEntrada = gramatica.getTerminales();
         Collections.sort(simbolosEntrada);
-        simbolosEntrada.add("&");
+        simbolosEntrada.add(Gramatica.FIN_DE_SECUENCIA);
         return simbolosEntrada;
     }
     
     public ArrayList<String> crearSimbolosPila(){
         ArrayList<String> simbolosPila;
         Character c;
-        simbolosPila = new ArrayList<>();
-       
+        simbolosPila = gramatica.getNoTerminales();
+        
         for(String p : gramatica.getProducciones()){
             for(int i=2; i<p.length(); i++){
                 c = p.charAt(i);
@@ -54,7 +54,7 @@ public class ConstructorAutomataDeG {
             }
         }
         Collections.sort(simbolosPila);
-        simbolosPila.add("@");
+        simbolosPila.add(AutomataPila.PILA_VACIA);
         return simbolosPila;
     }
     
@@ -62,7 +62,7 @@ public class ConstructorAutomataDeG {
         ArrayList<String> confInicial;
         confInicial = new ArrayList<>();
         
-        confInicial.add("@");
+        confInicial.add(AutomataPila.PILA_VACIA);
         confInicial.add(gramatica.getTerminales().get(0));
         Collections.sort(confInicial);
         return confInicial;
@@ -81,13 +81,13 @@ public class ConstructorAutomataDeG {
             case 0:
                 break;
                 
-            case 1:
+            case 1: //gramatica S
                 break;
                 
-            case 2:
+            case 2: //gramatica Q
                 break;
             
-            case 3:
+            case 3: //gramatica LL
                 break;
         }
         

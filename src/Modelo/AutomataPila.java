@@ -21,7 +21,7 @@ public class AutomataPila {
     ArrayList<String> configuracionInicial;
     HashMap<String, ArrayList<String>> transiciones;
     Stack<String> pila;
-   
+    public static final String PILA_VACIA = "@";
 
     public ArrayList<String> getSimbolosEntrada() {
         return simbolosEntrada;
