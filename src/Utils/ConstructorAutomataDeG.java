@@ -187,10 +187,11 @@ public class ConstructorAutomataDeG {
         transicionesEstado[indicePilaVacia][indiceFinSecuencia] = "#A";
 
         estado.setTransicionesEstado(transicionesEstado);
+        ConversorAutomata ca = new ConversorAutomata();
+        estado.setMatrizT(ca.crearMatrizT(automata.getSimbolosEntrada(), automata.getSimbolosPila(), estado.getTransicionesEstado()));
         ArrayList<Estado> estados = new ArrayList<>();
         estados.add(estado);
         automata.setEstados(estados);
-
     }
 
     private void crearTransicionReplace(int numeroTransiciones, String hilera, boolean esRetenga) {

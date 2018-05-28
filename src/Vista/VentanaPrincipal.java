@@ -27,11 +27,23 @@ import Modelo.ReconocedorDescendente;
 import Modelo.ValidadorGramatica;
 import Utils.ConstructorAutomataDeG;
 import Utils.ConversorGramatica;
+import Utils.GeneradorPDF;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -53,8 +65,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private String caracterAcual;
     private CtrlVentanaPrincipal ctrlVentanaPrincipal;
     private HashMap<String, ArrayList<String>> transiciones;
-    
-    private ReconocedorDescendente reconocedorDescendente;
+    String conjuntosSeleccion;
     
     /**
      * Creates new form VentanaPrincipal
@@ -69,6 +80,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         numeroCaracter = 0;
         hilera = "";
         caracterAcual = "";
+        conjuntosSeleccion = "";
     }
 
     /**
@@ -141,6 +153,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btn_cargarGramatica = new javax.swing.JButton();
         btn_construirAutomata = new javax.swing.JButton();
         cbo_seleccion = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -413,13 +426,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jLabel6.setText("símbolo de fin de secuencia:");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, -1, 20));
 
-        btn_iniciarPila.setText("Iniciar pila del autómata de pila");
+        btn_iniciarPila.setText("Iniciar pila");
         btn_iniciarPila.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_iniciarPilaActionPerformed(evt);
             }
         });
-        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 200, -1, -1));
+        jPanel2.add(btn_iniciarPila, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 200, -1, -1));
 
         txtArea_hilera.setColumns(20);
         txtArea_hilera.setRows(5);
@@ -501,12 +514,19 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 btn_construirAutomataActionPerformed(evt);
             }
         });
-        jPanel6.add(btn_construirAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 160, 30));
+        jPanel6.add(btn_construirAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 190, 30));
 
         getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 560));
 
-        cbo_seleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        getContentPane().add(cbo_seleccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 640, 170, 30));
+        getContentPane().add(cbo_seleccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 630, 170, 30));
+
+        jButton1.setText("Generar PDF");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        getContentPane().add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(820, 680, 110, -1));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -789,6 +809,46 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         llenarFormulario();
     }//GEN-LAST:event_btn_construirAutomataActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JFileChooser dlg;       
+        dlg = new JFileChooser();
+        int option = dlg.showSaveDialog(this);
+        String ruta = "";
+        if(option == JFileChooser.APPROVE_OPTION){
+            archivo = dlg.getSelectedFile();
+            ruta = archivo.toString();
+        }       
+        
+        String contenido = "Simbolos de entrada: "+txt_simbolosDeEntrada.getText()+
+                "\n Simbolos en la pila: "+ txt_simbolosEnLaPila.getText()+
+                "\n Configuración inicial de la pila: "+ txt_confInicial.getText()+
+                "\n Conjuntos de selección: \n "+ conjuntosSeleccion;
+        
+        
+                
+        
+        try{
+            FileOutputStream archiv = new FileOutputStream(ruta+".pdf");
+            Document doc = new Document();
+            PdfWriter.getInstance(doc, archiv);
+            doc.open();
+            Image imagen = Image.getInstance("C:\\Users\\pao_c\\Documents\\NetBeansProjects\\Practica1-Teoria-de-Lenguajes\\Matriz.jpg");
+            imagen.scaleAbsolute(100, 100);
+            imagen.setAlignment(Element.ALIGN_CENTER);
+            doc.add(imagen);
+            doc.add(new Paragraph(contenido));
+            doc.close();
+            JOptionPane.showMessageDialog(null, "Pdf correctamente creado");
+        } catch (FileNotFoundException ex) {
+            System.out.println("error");
+        } catch (DocumentException ex) {
+            System.out.println("error");
+        } catch (IOException ex) {
+            Logger.getLogger(VentanaPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     private void llenarFormulario(){
         ArrayList<Estado> estados;
         
@@ -842,52 +902,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 simbolos += j + " ";
             }
             cbo_seleccion.addItem(simbolos);
+            conjuntosSeleccion += simbolos+"\n";
             numP++;
-        }
-    }
-    
-    private void llenarFormulario2(){
-        String simbolos = "";
-        cboSimEntrada.removeAllItems();
-        for(String i : gramatica.getAutomataPila().getSimbolosEntrada()){
-            simbolos += i + " ";
-            cboSimEntrada.addItem(i);
-        }
-        txt_simbolosDeEntrada.setText(simbolos);
-        
-        simbolos = "";
-        cboSimPila.removeAllItems();
-        for(String i : gramatica.getAutomataPila().getSimbolosPila()){
-            simbolos += i + " ";
-            cboSimPila.addItem(i);
-        }
-        txt_simbolosEnLaPila.setText(simbolos);
-        
-        simbolos = "";
-        for(String i : gramatica.getAutomataPila().getConfiguracionInicial()){
-            simbolos += i + " ";
-        } 
-        txt_confInicial.setText(simbolos);
-        
-        cbo_seleccion.removeAllItems();
-        int numP = 1;
-        for(ArrayList<String> i : gramatica.getSeleccionProducciones()){
-            simbolos = String.valueOf(numP)+". ";
-            for(String j : i){
-                simbolos += j + " ";
-            }
-            cbo_seleccion.addItem(simbolos);
-            numP++;
-        }
-        
-        cbo_listaTransiciones.removeAllItems();
-        transiciones = gramatica.getAutomataPila().getTransiciones();
-        cbo_listaTransiciones.addItem("agregar");
-        Iterator it = transiciones.entrySet().iterator(); //recorriendo el HashMap
-        while (it.hasNext()) {
-            Map.Entry transicion = (Map.Entry) it.next(); // me envie el key y el valor
-            String llave = (String) transicion.getKey();
-            cbo_listaTransiciones.addItem(llave);
         }
     }
     
@@ -958,6 +974,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboSimPila;
     private javax.swing.JComboBox<String> cbo_listaTransiciones;
     private javax.swing.JComboBox<String> cbo_seleccion;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

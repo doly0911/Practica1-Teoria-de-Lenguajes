@@ -101,7 +101,7 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         ));
         jScrollPane1.setViewportView(tblMatrizT);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 520, 120));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 160, 520, 170));
 
         jButton1.setText("Guardar matriz como imagen");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -111,7 +111,7 @@ public class VistaEditarEstado extends javax.swing.JFrame {
         });
         jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 110, -1, -1));
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 300));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 600, 350));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
