@@ -141,6 +141,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         btn_cargarGramatica = new javax.swing.JButton();
         btn_construirAutomata = new javax.swing.JButton();
+        cbo_seleccion = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -489,7 +490,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txt_gramatica.setRows(5);
         jScrollPane2.setViewportView(txt_gramatica);
 
-        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 210, 520));
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(770, 170, 210, 420));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createEtchedBorder());
@@ -511,7 +512,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
         jPanel6.add(btn_construirAutomata, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 160, 30));
 
-        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 660));
+        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(750, 50, 250, 560));
+
+        cbo_seleccion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        getContentPane().add(cbo_seleccion, new org.netbeans.lib.awtextra.AbsoluteConstraints(790, 640, 170, 30));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -877,6 +881,17 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         } 
         txt_confInicial.setText(simbolos);
         
+        cbo_seleccion.removeAllItems();
+        int numP = 1;
+        for(ArrayList<String> i : gramatica.getSeleccionProducciones()){
+            simbolos = String.valueOf(numP)+". ";
+            for(String j : i){
+                simbolos += j + " ";
+            }
+            cbo_seleccion.addItem(simbolos);
+            numP++;
+        }
+        
 //        cbo_listaTransiciones.removeAllItems();
 //        transiciones = automata.getTransiciones();
 //        cbo_listaTransiciones.addItem("agregar");
@@ -955,6 +970,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cboSimEntrada;
     private javax.swing.JComboBox<String> cboSimPila;
     private javax.swing.JComboBox<String> cbo_listaTransiciones;
+    private javax.swing.JComboBox<String> cbo_seleccion;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;

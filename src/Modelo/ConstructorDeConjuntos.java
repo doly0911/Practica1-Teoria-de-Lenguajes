@@ -258,7 +258,7 @@ public class ConstructorDeConjuntos {
     }
     
      /**
-     *
+     * Reliza la operación que calcula el cierre transitivo de una relación/matriz
      * @param matriz
      * @return
      */
@@ -291,7 +291,7 @@ public class ConstructorDeConjuntos {
     }
         
     /**
-     *
+     * Calcula el producto de dos relaciones/matrices.
      * @param matrizA
      * @param matrizB
      * @return
@@ -312,6 +312,9 @@ public class ConstructorDeConjuntos {
         return matrizC;
     }
     
+    /**
+     * Crea el conjunto de siguientes de cada no terminal usando la matriz seguidoPor
+     */
     public void crearSiguientesNoTerminales() {
         indiceMatriz.add(Gramatica.FIN_DE_SECUENCIA);
         ArrayList<ArrayList<String>> siguientes = new ArrayList<>();
@@ -363,7 +366,10 @@ public class ConstructorDeConjuntos {
         }
         gramatica.setSeleccionProducciones(seleccionProducciones);
     }
-       
+    
+    /**
+     * Hace un llamado a todos los métodos necesarios para construir los conjuntos.
+     */
     public void construirConjuntos(){
         this.construirAnulables();
         this.crearRelacionComienzaCon();
